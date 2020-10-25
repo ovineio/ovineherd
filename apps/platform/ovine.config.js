@@ -5,6 +5,8 @@
  * 文档： https://ovine.igroupes.com/org/docs/advance/configurations
  */
 
+const ip = require('ip')
+
 module.exports = {
   publicPath: '/', // 必须以斜线结尾
   favicon: '/static/images/favicon.ico',
@@ -13,5 +15,11 @@ module.exports = {
   initTheme: 'cxd',
   ui: {
     withoutPace: true,
+  },
+  // 针对每个环境不同配置
+  env: {
+    localhost: {
+      publicPath: `http://${ip.address()}/`,
+    },
   },
 }

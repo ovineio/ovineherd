@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
 
+import { Button } from 'amis'
 import React from 'react'
 import ReactDOM from 'react-dom'
+
+import { Amis } from '@core/components/amis/schema'
+import { initAppTheme } from '@core/styled/theme'
+
 
 import './public_path'
 
@@ -9,9 +14,12 @@ const appRootId = '#app-root'
 
 function render(props) {
   const { container } = props
-  console.log('=@@""', container, container.querySelector(appRootId))
+  initAppTheme()
   ReactDOM.render(
-    <div>123</div>,
+    <div>
+      <Button>123</Button>
+      <Amis schema={{type: 'html', html: 'xx'}} />
+    </div>,
     container ? container.querySelector(appRootId) : document.querySelector(appRootId)
   )
 }
