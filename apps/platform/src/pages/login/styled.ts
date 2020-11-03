@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 
 export const Login = styled.div`
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  font-family: 'Comfortaa', sans-serif;
+
   .img-bk {
     min-width: 105%;
     min-height: 105%;
@@ -9,7 +14,6 @@ export const Login = styled.div`
     top: 50%;
     filter: blur(5px);
     transform: translate(-50%, -50%);
-    z-index: -1;
     opacity: 0.5;
   }
 
@@ -17,25 +21,20 @@ export const Login = styled.div`
     color: #3cabdb;
   }
 
-  body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: #000;
-  }
-
-  .card {
+  .login-card {
     overflow: hidden;
     width: 600px;
     height: 400px;
     position: absolute;
+    z-index: 2;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
     display: table;
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+
+    /* border-radius: 5px; */
 
     .side {
       width: 50%;
@@ -45,8 +44,9 @@ export const Login = styled.div`
         padding: 20px;
 
         .img-logo {
+          font-size: 14px;
+          margin-bottom: 30px;
           text-align: center;
-          margin-bottom: 10px;
         }
 
         span {
@@ -58,15 +58,14 @@ export const Login = styled.div`
         }
 
         input {
-          border: 2px solid #eee;
+          border: 1px solid #d8d8d8;
           padding: 10px;
-          font-size: 11px;
+          font-size: 12px;
           display: block;
           width: 100%;
           outline: none;
-          font-family: 'Comfortaa', sans-serif;
-          margin-bottom: 10px;
-          border-radius: 3px;
+
+          margin-bottom: 20px;
           transition: border 0.2s ease-in-out;
 
           &:focus {
@@ -75,22 +74,20 @@ export const Login = styled.div`
         }
 
         .btn-submit {
-          width: 100%;
+          margin-top: 40px;
           top: 0;
-          height: 50px;
-          background: linear-gradient(to right, #167ffc, #595bd4);
+          width: 100%;
+          height: 40px;
           border: 0;
-          border-radius: 2px;
-          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
-          color: #fff;
-          font-family: 'Comfortaa', sans-serif;
+          box-shadow: 0 0 0 transparent;
           outline: none;
           position: relative;
           transition: all 0.2s ease-in-out;
+          background: linear-gradient(to right, #167ffc, #595bd4);
+          color: #fff;
 
           &:hover {
-            box-shadow: 0 0 0 transparent;
-            top: 3px;
+            background: linear-gradient(to right, rgb(9, 116, 243), rgb(52 55 216));
           }
         }
 

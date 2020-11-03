@@ -11,10 +11,10 @@ import App from './components/app'
 
 const appRootId = '#app-root'
 
-const appConfig = {
-  constants: {
-    baseUrl: window.__POWERED_BY_QIANKUN__ ? '/platform/' : '/',
-  },
+const appConfig: any = {
+  // constants: {
+  //   baseUrl: window.__POWERED_BY_QIANKUN__ ? '/platform/' : '/',
+  // },
 }
 
 function render(props) {

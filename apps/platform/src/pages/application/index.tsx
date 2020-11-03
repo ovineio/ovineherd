@@ -30,7 +30,8 @@ const CardItem = (props: ItemProps) => {
 
   return (
     <S.StyledCardItem className="col-lg-3" onClick={toggleDialog}>
-      <div className="item-content" style={itemBgStyle}>
+      <div className="item-content">
+        <div className="item-cover" style={itemBgStyle} />
         <div className="item-mask" />
         <ul className="item-actions">
           <li className="fa fa-cog" data-tooltip="编辑" data-position="bottom" />

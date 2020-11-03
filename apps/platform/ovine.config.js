@@ -10,12 +10,13 @@ module.exports = (option) => {
   const { env, port } = option
 
   const publicPathMap = {
-    localhost: `http://localhost:${port}/`,
-    staging: 'https://cdn-igroupes.com/ovine/',
+    localhost: `http://localhost:${port}/platform/`,
+    staging: 'https://ovine.igroupes.com/platform/',
     production: 'https://cdn-igroupes.com/ovine/',
   }
 
   const config = {
+    routePrefix: '/platform/', //
     publicPath: publicPathMap[env], // 静态资源公共路径
     favicon: '/static/images/favicon.ico',
     title: 'OvineHerd', // 页面标题

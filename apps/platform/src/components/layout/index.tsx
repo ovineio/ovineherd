@@ -3,7 +3,6 @@ import React from 'react'
 import Routes from '~/routes'
 
 import Header from './header'
-
 import * as S from './styled'
 
 export default (props) => {

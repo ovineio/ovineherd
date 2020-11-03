@@ -4,36 +4,31 @@ import { app } from '@core/app'
 
 import { Login } from './styled'
 
+const imgSrc = 'https://static.igroupes.com/ovine_bg_cxd.jpeg'
+
 export default () => {
   const toHome = () => {
     app.routerHistory.push('/')
   }
   return (
     <Login>
-      <img
-        src="https://images.unsplash.com/photo-1557217620-07784062e4b0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80"
-        alt=""
-        className="img-bk"
-      />
-      <div className="card">
+      <img src={imgSrc} alt="" className="img-bk" />
+      <div className="login-card">
         <div className="side form">
           <div className="img-logo">OvineHerd</div>
 
-          <span>E-mail</span>
-          <input type="text" />
+          <span>密码</span>
+          <input type="text" placeholder="请输入账号" />
 
-          <span>Password</span>
-          <input type="password" />
+          <span>密码</span>
+          <input type="password" placeholder="请输入密码" />
 
           <button type="button" className="btn-submit" onClick={toHome}>
-            Login
+            登录
           </button>
         </div>
         <div className="side picture">
-          <img
-            src="https://images.unsplash.com/photo-1557217620-07784062e4b0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80"
-            alt=""
-          />
+          <img src={imgSrc} alt="" />
         </div>
       </div>
     </Login>

@@ -18,7 +18,7 @@
     "pretty": "prettier --loglevel warn --write --config .prettierrc \"**/*.{md,yml,json,yaml,css}\"",
     "eslint": "eslint --cache \"**/*.{js,jsx,ts,tsx}\" --fix",
     "cp:lib:cli": "rimraf ./node_modules/@ovine/cli/lib && cp -rf ../../../ovine/packages/cli/lib/. ./node_modules/@ovine/cli/lib",
-    "cp:lib:core": "yarn rm:core && cp -rf ../../../ovine/packages/core ./node_modules/@ovine/core",
+    "cp:lib:core": "rimraf ./node_modules/@ovine/core/lib && cp -rf ../../../ovine/packages/core/lib/. ./node_modules/@ovine/core/lib",
     "cp:lib": "yarn cp:lib:cli && yarn cp:lib:core",
     "rm:core": "rimraf ./node_modules/@ovine/core",
     "rm:lib": "yarn rm:core "
