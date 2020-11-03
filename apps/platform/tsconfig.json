@@ -12,7 +12,8 @@
     "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "@core/*": ["../node_modules/@ovine/core/lib/*"]
     },
     "types": [
       "@types/react",

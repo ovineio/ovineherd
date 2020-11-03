@@ -72,8 +72,14 @@ setDefaultMountApp('/platform')
 /**
  * Step4 启动应用
  */
-start()
+start({
+  excludeAssetFilter: (assetUrl) => {
+    console.log('assetUrl----->', assetUrl)
+    return true
+  },
+})
 
 runAfterFirstMounted(() => {
+  document.querySelector('.loading-screen').style.display = 'none'
   console.log('[MainApp] first app mounted')
 })

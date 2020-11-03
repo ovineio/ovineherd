@@ -1,27 +1,30 @@
 /* eslint-disable no-console */
+import './public_path'
+import '@core/app/includes'
 
-import { Button } from 'amis'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { Amis } from '@core/components/amis/schema'
-import { initAppTheme } from '@core/styled/theme'
+import { app } from '@core/app'
 
-
-import './public_path'
+import App from './components/app'
 
 const appRootId = '#app-root'
 
+const appConfig = {
+  constants: {
+    baseUrl: window.__POWERED_BY_QIANKUN__ ? '/platform/' : '/',
+  },
+}
+
 function render(props) {
-  const { container } = props
-  initAppTheme()
-  ReactDOM.render(
-    <div>
-      <Button>123</Button>
-      <Amis schema={{type: 'html', html: 'xx'}} />
-    </div>,
-    container ? container.querySelector(appRootId) : document.querySelector(appRootId)
-  )
+  app.create(appConfig).then(() => {
+    const { container } = props
+    ReactDOM.render(
+      <App />,
+      container ? container.querySelector(appRootId) : document.querySelector(appRootId)
+    )
+  })
 }
 
 function storeTest(props) {
@@ -52,7 +55,6 @@ export async function mount(props) {
 }
 
 export async function unmount(props) {
-  console.log('@____>')
   const { container } = props
   ReactDOM.unmountComponentAtNode(
     container ? container.querySelector(appRootId) : document.querySelector(appRootId)

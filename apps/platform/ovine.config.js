@@ -4,22 +4,27 @@
  * 请按文档内容编辑好后再保存。或者关闭 dev server 进行编辑。
  * 文档： https://ovine.igroupes.com/org/docs/advance/configurations
  */
+const path = require('path')
 
-const ip = require('ip')
+module.exports = (option) => {
+  const { env, port } = option
 
-module.exports = {
-  publicPath: '/', // 必须以斜线结尾
-  favicon: '/static/images/favicon.ico',
-  title: 'OvineHerd', // 页面标题
-  envModes: ['localhost', 'staging', 'production'], // 环境列表
-  initTheme: 'cxd',
-  ui: {
-    withoutPace: true,
-  },
-  // 针对每个环境不同配置
-  env: {
-    localhost: {
-      publicPath: `http://${ip.address()}/`,
+  const publicPathMap = {
+    localhost: `http://localhost:${port}/`,
+    staging: 'https://cdn-igroupes.com/ovine/',
+    production: 'https://cdn-igroupes.com/ovine/',
+  }
+
+  const config = {
+    publicPath: publicPathMap[env], // 静态资源公共路径
+    favicon: '/static/images/favicon.ico',
+    title: 'OvineHerd', // 页面标题
+    envModes: ['localhost', 'staging', 'production'], // 环境列表
+    initTheme: 'cxd',
+    template: {
+      path: path.resolve(__dirname, './template.ejs'),
     },
-  },
+  }
+
+  return config
 }
