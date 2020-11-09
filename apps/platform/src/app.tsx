@@ -6,19 +6,25 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { app } from '@core/app'
+import { AppConfig } from '@core/app/types'
+import { DeepPartial } from '@core/utils/types'
 
 import App from './components/app'
+import { env } from './core/env'
+import { request } from './core/request'
 
 const appRootId = '#app-root'
 
-const appConfig: any = {
+const appConfig: DeepPartial<AppConfig> = {
+  request,
+  env,
   // constants: {
   //   baseUrl: window.__POWERED_BY_QIANKUN__ ? '/platform/' : '/',
   // },
 }
 
 function render(props) {
-  app.create(appConfig).then(() => {
+  app.create(appConfig as AppConfig).then(() => {
     const { container } = props
     ReactDOM.render(
       <App />,

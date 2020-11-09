@@ -553,7 +553,7 @@ export default () => {
   }
 
   return (
-    <S.StyledSetting>
+    <S.StyledSetting className="container">
       <Amis schema={settingSchema} />
     </S.StyledSetting>
   )

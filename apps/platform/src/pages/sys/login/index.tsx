@@ -1,3 +1,7 @@
+/**
+ * 平台登录
+ */
+
 import React from 'react'
 
 import { app } from '@core/app'
@@ -8,7 +12,7 @@ const imgSrc = 'https://static.igroupes.com/ovine_bg_cxd.jpeg'
 
 export default () => {
   const toHome = () => {
-    app.routerHistory.push('/')
+    app.routerHistory.push('/sys/')
   }
   return (
     <Login>
@@ -17,7 +21,7 @@ export default () => {
         <div className="side form">
           <div className="img-logo">OvineHerd</div>
 
-          <span>密码</span>
+          <span>账号</span>
           <input type="text" placeholder="请输入账号" />
 
           <span>密码</span>

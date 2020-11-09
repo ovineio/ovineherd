@@ -130,7 +130,7 @@ export default () => {
   }
 
   return (
-    <S.StyledAppCards>
+    <S.StyledAppCards className="container">
       <h5 className="m-b-md">我的应用</h5>
       <div className="row no-gutters items-grid">
         <div className="col-lg-3">
