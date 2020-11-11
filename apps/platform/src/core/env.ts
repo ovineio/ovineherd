@@ -3,7 +3,7 @@
  *
  */
 
-export const env = {
+const env = {
   // 默认配置,如果对应的环境的变量不设置，就会使用默认的
   default: {
     disableLimit: true,
@@ -36,3 +36,5 @@ export const env = {
     },
   },
 }
+
+export default env

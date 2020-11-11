@@ -10,14 +10,14 @@ import { AppConfig } from '@core/app/types'
 import { DeepPartial } from '@core/utils/types'
 
 import App from './components/app'
-import { env } from './core/env'
-import { request } from './core/request'
+import appEnv from './core/env'
+import appRequestIns from './core/request'
 
 const appRootId = '#app-root'
 
 const appConfig: DeepPartial<AppConfig> = {
-  request,
-  env,
+  request: appRequestIns,
+  env: appEnv,
   // constants: {
   //   baseUrl: window.__POWERED_BY_QIANKUN__ ? '/platform/' : '/',
   // },
