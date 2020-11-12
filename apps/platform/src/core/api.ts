@@ -6,7 +6,7 @@ import { get, map, omitBy } from 'lodash'
 import { stringify } from 'qs'
 
 import { app } from '@core/app'
-import { ReqOption } from '@core/utils/request/types'
+import { ReqOption, ReqApiRes } from '@core/utils/request/types'
 
 export const apis = {
   user: {
@@ -20,7 +20,7 @@ export const apis = {
       url: 'GET /v1/user/$id',
     },
     add: {
-      url: 'POST /v1/user/login',
+      url: 'POST /v1/user',
     },
     edit: {
       url: 'PUT /v1/user/$id',
@@ -37,7 +37,7 @@ export const apis = {
       url: 'GET /v1/config/$id',
     },
     add: {
-      url: 'POST /v1/config/login',
+      url: 'POST /v1/config',
     },
     edit: {
       url: 'PUT /v1/config/$id',
@@ -60,7 +60,7 @@ export const apis = {
       url: 'GET /v1/category/$id',
     },
     add: {
-      url: 'POST /v1/category/login',
+      url: 'POST /v1/category',
     },
     edit: {
       url: 'PUT /v1/category/$id',
@@ -77,7 +77,7 @@ export const apis = {
       url: 'GET /v1/product/$id',
     },
     add: {
-      url: 'POST /v1/product/login',
+      url: 'POST /v1/product',
     },
     edit: {
       url: 'PUT /v1/product/$id',
@@ -86,7 +86,27 @@ export const apis = {
       url: 'DELETE /v1/product/$id',
     },
   },
+  authorization: {
+    list: {
+      url: 'GET /v1/authorization',
+    },
+    one: {
+      url: 'GET /v1/authorization/$id',
+    },
+    add: {
+      url: 'POST /v1/authorization',
+    },
+    edit: {
+      url: 'PUT /v1/authorization/$id',
+    },
+    del: {
+      url: 'DELETE /v1/authorization/$id',
+    },
+  },
 }
+
+export type ApiType = 'user' | 'product' | 'authorization' | 'category' | 'config'
+export type ApiName = 'login' | 'list' | 'one' | 'add' | 'edit' | 'del'
 
 type QueryOption = { [key: string]: string | number }
 
@@ -107,18 +127,37 @@ export const getApiConditionStr = (conditions: QueryOption): string => {
 }
 
 // 获取请求参数
-export const getApiQuery = (option: any) => {
+export const getApiQuery = (data: any) => {
+  const { type, query, names, ...reset } = data
+  const queryObj: any = {}
+  const namesObj: any = {}
+
+  map(reset, (val, key) => {
+    if (key.startsWith('q_')) {
+      queryObj[key.slice(3)] = val
+    } else if (key.startsWith('n_')) {
+      namesObj[key.slice(3)] = val
+    }
+  })
+
   const queryParams = {
-    ...option,
-    query: getApiConditionStr(option.query),
-    names: getApiConditionStr(option.names),
+    type,
+    ...reset,
+    query: getApiConditionStr({
+      ...query,
+      ...queryObj,
+    }),
+    names: getApiConditionStr({
+      ...names,
+      ...namesObj,
+    }),
   }
 
   return omitBy(queryParams, (val) => val === '' || typeof val === 'undefined')
 }
 
-export const getApiQueryStr = (option: any) => {
-  const queryStr = stringify(getApiQuery(option))
+export const getApiQueryStr = (data: any) => {
+  const queryStr = stringify(getApiQuery(data))
 
   return queryStr
 }
@@ -127,20 +166,52 @@ export const getOneItem = (source: any) => {
   return get(source, 'data.items.0') || {}
 }
 
+type ApiOption = ReqOption & {
+  apiName: ApiName
+  apiType: ApiType
+}
+export const getApiOption = (option: ApiOption) => {
+  const { apiType, apiName, ...rest } = option
+  const apiInfo = get(apis, `${apiType}.${apiName}`)
+
+  return {
+    ...apiInfo,
+    ...rest,
+  }
+}
+
+type ApiData = {
+  onlyOne?: boolean // 从list中选取第一个作为返回数据
+  onlyData?: boolean // 只返回接口中 data 数据
+  withHttp?: boolean // 返回整个 http 请求所有内容
+  [key: string]: any
+}
+
+// 增加参数提示
+export function requestApi<T = {}>(
+  apiType: ApiType,
+  apiName: ApiName,
+  data?: ApiData,
+  option?: ReqOption
+) {
+  return request<T>(`${apiType}.${apiName}`, data, option)
+}
+
 // data:  onlyOne 获取 items 单独的一个
-export const request = (apiKey: string, data: any = {}, option?: ReqOption) => {
+export function request<T = {}>(apiKey: string, data?: ApiData, option?: ReqOption) {
   const apiInfo = get(apis, apiKey)
-  const { onlyOne, onlyData = true, withHttp = false, ...params } = data
+
+  const { onlyOne, onlyData = true, withHttp = false, ...params } = data || {}
 
   const reqOption = {
-    data: getApiQuery(params),
     domain: 'api',
+    data: params,
     ...apiInfo,
     ...option,
   }
 
   // 简化数据读取逻辑
-  const req = app.request(reqOption).then((source) => {
+  const req = app.request<T>(reqOption).then((source) => {
     if (withHttp) {
       return source
     }
@@ -159,5 +230,5 @@ export const request = (apiKey: string, data: any = {}, option?: ReqOption) => {
     return source.data
   })
 
-  return req
+  return req as Promise<ReqApiRes<T>>
 }

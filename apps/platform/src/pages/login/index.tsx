@@ -8,7 +8,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useImmer } from '@core/utils/hooks'
 import { setStore } from '@core/utils/store'
 
-import { storeKeys } from '~/core/constants'
+import { storeKey } from '~/core/constants'
 import { userLogin } from '~/core/user'
 
 import { Login } from './styled'
@@ -76,8 +76,8 @@ export default () => {
         return
       }
 
-      setStore(storeKeys.auth, data.id)
-      setStore(storeKeys.userInfo, data)
+      setStore(storeKey.auth, data.id)
+      setStore(storeKey.userInfo, data)
 
       const locState: any = location.state || { from: { pathname: '/sys/' } }
       history.replace(locState.from)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route, useParams } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 
 import { useAppContext } from '~/components/app/context'
 import { isLogin } from '~/core/user'
@@ -14,10 +14,10 @@ export const CustomRoute = (props) => {
 
 // 用于登录拦截
 export const PrivateRoute = ({ children, ...rest }) => {
-  const { custom } = useAppContext()
-  const { orgId } = useParams<{ orgId: string }>()
+  const { custom, appInfo } = useAppContext()
+  const { orgId, type } = appInfo
 
-  const isLoginApp = isLogin(custom.isolation)
+  const isLoginApp = isLogin(type, custom.isolation)
   const redirect = orgId ? `/org/${orgId}/login` : '/sys/login'
 
   return (

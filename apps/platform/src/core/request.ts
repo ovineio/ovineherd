@@ -11,7 +11,8 @@ import logger from '@core/utils/logger'
 import { Request } from '@core/utils/request'
 import { getStore } from '@core/utils/store'
 
-import { storeKeys } from './constants'
+import { getApiQuery } from './api'
+import { storeKey } from './constants'
 
 // 日志模块 https://ovine.igroupes.com/org/docs/modules/logger
 const log = logger.getLogger('app:request')
@@ -21,13 +22,19 @@ const appRequestIns = new Request()
 // 请求准备阶段 回调
 appRequestIns.onPreRequest = (option) => {
   option.mock = false // 全局控制是否开启 mock， 必须在 ovine cli --mock 选项开启的情况下，才有效
+  const { method, data = {} } = option
+
+  if (method === 'GET') {
+    // 添加 GET 请求参数逻辑
+    option.data = getApiQuery(data)
+  }
+
   return option
 }
 
 // 请求发送前 回调
 appRequestIns.onRequest = (option) => {
-  const { key, token } = getStore(storeKeys.auth) || {}
-
+  const { key, token } = getStore(storeKey.auth) || {}
   // 开启携带 cookies 信息
   option.fetchOptions.credentials = 'include'
 

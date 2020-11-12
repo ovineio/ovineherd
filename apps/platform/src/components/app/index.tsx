@@ -8,8 +8,8 @@ import { app } from '@core/app'
 import GlobalStyle from '@core/styled/global'
 import { useImmer } from '@core/utils/hooks'
 
-import OrgLogin from '~/pages/org/login'
-import SysLogin from '~/pages/sys/login'
+import Login from '~/pages/login'
+import Register from '~/pages/register'
 import { PrivateRoute, CustomRoute } from '~/routes/route'
 
 import Layout from '../layout'
@@ -22,7 +22,7 @@ export type State = Omit<AppContextState, 'setContext'> & {
 
 export default () => {
   const [state, setState] = useImmer<State>({
-    custom: initState.custom,
+    ...initState,
     theme: app.theme.getName(),
   })
 
@@ -52,17 +52,13 @@ export default () => {
         <AppContext.Provider value={contextValue}>
           <CustomRoute path="/">
             <Switch>
-              <Route path="/org/:orgId/login" component={OrgLogin} />
-              <Route path="/sys/login" component={SysLogin} />
-              <Route path="/sys/register" component={SysLogin} />
+              <Route path="/org/:orgId/login" component={Login} />
+              <Route path="/sys/login" component={Login} />
+              <Route path="/sys/register" component={Register} />
 
               <PrivateRoute path="/">
-                <Route path="/org/:orgId">
-                  <Layout type="org" />
-                </Route>
-                <Route path="/sys/">
-                  <Layout type="sys" />
-                </Route>
+                <Route path="/org/:orgId/" component={Layout} />
+                <Route path="/sys/" component={Layout} />
               </PrivateRoute>
               <Route path="*" component={() => <div>404</div>} />
             </Switch>

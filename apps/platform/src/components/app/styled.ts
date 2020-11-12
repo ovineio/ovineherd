@@ -19,4 +19,12 @@ export const AppStyle = createGlobalStyle`
         border-bottom: 0;
         font-weight: 400;
     }
+
+    .cxd-Wizard--horizontal {
+        .cxd-Wizard-steps {
+            ul {
+                margin-left: -20px;
+            }
+        }
+    }
 `

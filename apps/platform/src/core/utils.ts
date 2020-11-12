@@ -4,16 +4,16 @@
 
 import { get } from 'lodash'
 
-import { app } from '@ovine/core/lib/app'
+import { app } from '@core/app'
 
 import { AppType } from './types'
 
 // app类型检测
-const checkAppType = (appType: AppType, type: AppType) => {
+const checkAppType = (appType: AppType, type?: AppType, pathName?: string) => {
   if (type) {
     return type === appType
   }
-  const { pathname } = window.location
+  const pathname = pathName || window.location.pathname
   const path = `${app.constants.baseUrl}${appType}`
   return pathname.startsWith(`${path}/`) || pathname === path
 }
@@ -23,6 +23,9 @@ export const isSys = (type?: AppType) => checkAppType('sys', type)
 
 // 组织检测
 export const isOrg = (type?: AppType) => checkAppType('org', type)
+
+export const getAppType = (pathName?: string): AppType =>
+  checkAppType('org', undefined, pathName) ? 'org' : 'sys'
 
 // 获取组织ID
 export const getOrgId = (): string =>

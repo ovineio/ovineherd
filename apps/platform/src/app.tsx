@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom'
 
 import { app } from '@core/app'
 import { AppConfig } from '@core/app/types'
+import { initLogger } from '@core/utils/logger'
 import { DeepPartial } from '@core/utils/types'
 
 import App from './components/app'
@@ -26,6 +27,7 @@ const appConfig: DeepPartial<AppConfig> = {
 function render(props) {
   app.create(appConfig as AppConfig).then(() => {
     const { container } = props
+    initLogger(app.env.logger)
     ReactDOM.render(
       <App />,
       container ? container.querySelector(appRootId) : document.querySelector(appRootId)

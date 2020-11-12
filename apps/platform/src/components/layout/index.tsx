@@ -1,7 +1,10 @@
 import React from 'react'
 import { useRouteMatch } from 'react-router-dom'
 
+import OrgRoutes from '~/routes/org'
 import SysRoutes from '~/routes/sys'
+
+import { useAppContext } from '../app/context'
 
 import Header from './header'
 import * as S from './styled'
@@ -42,18 +45,18 @@ const menus = {
 }
 
 type LayoutProps = {
-  type: 'sys' | 'org'
   children: any
 }
-export default (props) => {
-  const { children, type } = props
+export default (props: LayoutProps) => {
+  const { children } = props
   const { path, url } = useRouteMatch()
+  const { appInfo } = useAppContext()
 
   return (
     <S.Layout>
-      <Header menus={menus[type]} urlPrefix={url} />
+      <Header menus={menus[appInfo.type]} urlPrefix={url} />
       <S.Body className="py-4">
-        <SysRoutes pathPrefix={path} />
+        {appInfo.isOrg ? <OrgRoutes pathPrefix={path} /> : <SysRoutes pathPrefix={path} />}
         {children}
       </S.Body>
     </S.Layout>

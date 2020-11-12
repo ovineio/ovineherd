@@ -1,11 +1,29 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 
+import { app } from '@ovine/core/lib/app'
 import { useImmer } from '@ovine/core/lib/utils/hooks'
 
-import { CustomType, initState, useAppContext } from '~/components/app/context'
-import { request } from '~/core/api'
-import { relation } from '~/core/constants'
-import { getOrgId } from '~/core/utils'
+import { initState, useAppContext } from '~/components/app/context'
+import { requestApi } from '~/core/api'
+import { entityType } from '~/core/constants'
+import { AppInfo, CustomType } from '~/core/types'
+import { getAppType, getOrgId } from '~/core/utils'
+
+// 获取 应用 信息
+function useAppInfo() {
+  const location = useLocation()
+  const { pathname } = location
+
+  const appInfo: AppInfo = useMemo(() => {
+    const type = getAppType(`${app.constants.baseUrl}${pathname.slice(1)}`)
+    const isOrg = type === 'org'
+    const orgId = isOrg ? getOrgId() : ''
+    return { isOrg, orgId, type, isSys: !isOrg }
+  }, [pathname])
+
+  return appInfo
+}
 
 type CustomData = Partial<
   CustomType & {
@@ -19,16 +37,15 @@ type CustomState = {
 export const useCustom = () => {
   const [state, setState] = useImmer<CustomState>({})
   const { setContext } = useAppContext()
-  const orgId = getOrgId()
+  const appInfo = useAppInfo()
 
+  const { orgId } = appInfo
   const { sys, org } = state
 
   const getSysCustom = () => {
-    request('config.list', {
+    requestApi('config', 'list', {
       onlyOne: true,
-      query: {
-        type: relation.system,
-      },
+      type: entityType.system,
     }).then((source: any) => {
       setState((d) => {
         source.isLoad = true
@@ -38,10 +55,11 @@ export const useCustom = () => {
   }
 
   const getOrgCustom = () => {
-    request('config.list', {
+    requestApi('config', 'list', {
       onlyOne: true,
+      type: entityType.org,
       query: {
-        type: relation.org,
+        relation1: orgId,
       },
     }).then((source: any) => {
       setState((d) => {
@@ -63,6 +81,12 @@ export const useCustom = () => {
       })
     }
   }, [])
+
+  useEffect(() => {
+    setContext((d) => {
+      d.appInfo = appInfo
+    })
+  }, [appInfo])
 
   useEffect(() => {
     if (!org?.isLoad) {

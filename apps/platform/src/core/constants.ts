@@ -3,12 +3,12 @@
  */
 
 // 用于存储的key
-export const storeKeys = {
+export const storeKey = {
   auth: 'authStore',
   userInfo: 'userInfoStore',
 }
 
-export const relation = {
+export const entityType = {
   system: 'ovine_system', // 平台类型
   systemUser: 'ovine_system_user', // 平台用户
   systemUserInfo: 'ovine_system_user_info', // 平台用户
@@ -25,4 +25,21 @@ export const relation = {
   appUserInfo: 'ovine_app_user_info', // 应用用户个人信息
 
   appLimit: 'ovine_app_limit', //
+}
+
+export const relation = {
+  org: {
+    user: {
+      type: entityType.orgUser,
+      relation1_type: 'config',
+      relation2_type: 'category',
+    },
+    entity: {
+      type: entityType.org,
+      relation1_type: 'config', // 关联组织配置
+      relation2_type: 'user', // 关联当前管理员
+      level: '1',
+      parent_id: 'root',
+    },
+  },
 }

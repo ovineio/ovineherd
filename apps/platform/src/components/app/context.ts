@@ -2,12 +2,7 @@ import { useContext, createContext } from 'react'
 
 import { ImmerSetter } from '@core/utils/hooks'
 
-export type CustomType = {
-  logo: string // 企业标志
-  title: string // 企业标题
-  slogan: string // 企业标语
-  isolation: boolean // 是否独立
-}
+import { AppInfo, AppType, CustomType } from '~/core/types'
 
 // type UserInfo = {
 //   avatar: string // 头像
@@ -19,15 +14,21 @@ export type CustomType = {
 
 export type AppContextState = {
   custom: CustomType
+  appInfo: AppInfo
   setContext: ImmerSetter<AppContextState>
 }
 
-export const initState = {
+export const initState: AppContextState = {
+  appInfo: {
+    type: 'sys' as AppType,
+    isSys: true,
+    isOrg: false,
+    orgId: '',
+  },
   custom: {
     logo: '',
     title: '',
     slogan: '',
-    type: '',
     isolation: false,
   },
   setContext: () => {

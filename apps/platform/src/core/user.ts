@@ -6,11 +6,12 @@
 
 import { getStore, setStore } from '@core/utils/store'
 
-import { request } from './api'
-import { relation, storeKeys } from './constants'
+import { requestApi } from './api'
+import { entityType, storeKey } from './constants'
+import { AppType } from './types'
 import { isOrg, isSys } from './utils'
 
-const userInfo: any = getStore(storeKeys.userInfo) || {}
+const userInfo: any = getStore(storeKey.userInfo) || {}
 
 export async function onAuth() {
   // try {
@@ -25,8 +26,8 @@ export async function onAuth() {
 
 // 根据 token 获取用户信息
 export async function fetchUserInfo(id: string) {
-  return request('user.one', { id }).then((source) => {
-    setStore(storeKeys.userInfo, source)
+  return requestApi('user', 'one', { id }).then((source) => {
+    setStore(storeKey.userInfo, source)
   })
 }
 
@@ -41,7 +42,7 @@ export function getUserInfo() {
 
 //   app.routerHistory.push('/login')
 //   toast.info(tip, '系统提示')
-//   clearStore(storeKeys.auth)
+//   clearStore(storeKey.auth)
 
 //   if (useApi) {
 //     app.request({ api: 'asd' })
@@ -49,18 +50,18 @@ export function getUserInfo() {
 // }
 
 // 判断用户是否是登陆状态
-export function isLogin(isolation: boolean = false) {
-  const withAuth = !!getStore(storeKeys.auth)
+export function isLogin(type?: AppType, isolation: boolean = false) {
+  const withAuth = !!getStore(storeKey.auth)
 
   if (!withAuth) {
     return false
   }
 
-  if (isSys() && isSysUser()) {
+  if (isSys(type) && isSysUser()) {
     return true
   }
 
-  if (isOrg()) {
+  if (isOrg(type)) {
     if (isolation) {
       return isOrgUser()
     }
@@ -77,23 +78,22 @@ export function getUserId() {
 
 // 是否是 平台用户
 export function isSysUser(info = userInfo) {
-  return info.type === relation.systemUser
+  return info.type === entityType.systemUser
 }
 
 // 是否是 组织用户
 export function isOrgUser(info = userInfo) {
-  return info.type === relation.orgUser
+  return info.type === entityType.orgUser
 }
 
 export function userLogin(data: any) {
-  return request(
-    'user.login',
+  return requestApi(
+    'user',
+    'login',
     {
       ...data,
       onlyData: false,
-      query: {
-        type: relation.systemUser,
-      },
+      type: entityType.systemUser,
     },
     {
       onSuccess: (source) => {
@@ -103,4 +103,8 @@ export function userLogin(data: any) {
       },
     }
   )
+}
+
+export function userLogout() {
+  //
 }
