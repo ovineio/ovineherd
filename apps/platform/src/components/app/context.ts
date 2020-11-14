@@ -2,19 +2,12 @@ import { useContext, createContext } from 'react'
 
 import { ImmerSetter } from '@core/utils/hooks'
 
-import { AppInfo, AppType, CustomType } from '~/core/types'
-
-// type UserInfo = {
-//   avatar: string // 头像
-//   nickname: string // 昵称
-//   realName: string // 真实名字
-//   username: string // 登录账号
-//   type: string
-// }
+import { AppInfo, AppType, CustomType, UserInfo } from '~/core/types'
 
 export type AppContextState = {
   custom: CustomType
   appInfo: AppInfo
+  userInfo?: UserInfo
   setContext: ImmerSetter<AppContextState>
 }
 

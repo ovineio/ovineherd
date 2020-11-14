@@ -4,13 +4,16 @@ import { useLocation } from 'react-router-dom'
 import { app } from '@ovine/core/lib/app'
 import { useImmer } from '@ovine/core/lib/utils/hooks'
 
+import { subscribe } from '@ovine/core/lib/utils/message'
+
 import { initState, useAppContext } from '~/components/app/context'
-import { requestApi } from '~/core/api'
-import { entityType } from '~/core/constants'
+import { orgConfigApi, sysConfigApi } from '~/core/api/resource'
+import { msgKey } from '~/core/constants'
 import { AppInfo, CustomType } from '~/core/types'
+import { fetchUserInfo } from '~/core/user'
 import { getAppType, getOrgId } from '~/core/utils'
 
-// 获取 应用 信息
+// 获取 应用 基本信息
 function useAppInfo() {
   const location = useLocation()
   const { pathname } = location
@@ -34,7 +37,9 @@ type CustomState = {
   sys?: CustomData
   org?: CustomData
 }
-export const useCustom = () => {
+
+// 获取 应用配置 -- 将配置存入本地
+export const useAppConfig = () => {
   const [state, setState] = useImmer<CustomState>({})
   const { setContext } = useAppContext()
   const appInfo = useAppInfo()
@@ -42,11 +47,8 @@ export const useCustom = () => {
   const { orgId } = appInfo
   const { sys, org } = state
 
-  const getSysCustom = () => {
-    requestApi('config', 'list', {
-      onlyOne: true,
-      type: entityType.system,
-    }).then((source: any) => {
+  const getSysConfig = () => {
+    sysConfigApi().then((source: any) => {
       setState((d) => {
         source.isLoad = true
         d.sys = source
@@ -54,14 +56,8 @@ export const useCustom = () => {
     })
   }
 
-  const getOrgCustom = () => {
-    requestApi('config', 'list', {
-      onlyOne: true,
-      type: entityType.org,
-      query: {
-        relation1: orgId,
-      },
-    }).then((source: any) => {
+  const getOrgConfig = () => {
+    orgConfigApi({ orgId }).then((source: any) => {
       setState((d) => {
         source.isLoad = true
         d.org = source
@@ -70,9 +66,9 @@ export const useCustom = () => {
   }
 
   useEffect(() => {
-    getSysCustom()
+    getSysConfig()
     if (orgId) {
-      getOrgCustom()
+      getOrgConfig()
     } else {
       setState((d) => {
         d.org = {
@@ -92,7 +88,7 @@ export const useCustom = () => {
     if (!org?.isLoad) {
       return
     }
-    getOrgCustom()
+    getOrgConfig()
   }, [orgId])
 
   useEffect(() => {
@@ -109,4 +105,25 @@ export const useCustom = () => {
       d.custom = info
     })
   }, [org, sys])
+}
+
+export function useUserInfo(option: { isLogin: boolean }) {
+  const { setContext } = useAppContext()
+  const { isLogin } = option
+
+  const fetchInfo = () => {
+    fetchUserInfo().then((userInfo) => {
+      setContext((d) => {
+        d.userInfo = userInfo
+      })
+    })
+  }
+
+  useEffect(() => {
+    if (!isLogin) {
+      return
+    }
+    fetchInfo()
+    subscribe(msgKey.updateSelfInfo, fetchInfo)
+  }, [isLogin])
 }

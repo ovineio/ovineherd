@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 import * as S from './styled'
+import UserItem from './user_item'
 
 type Props = {
   urlPrefix: string
@@ -48,7 +49,7 @@ export default (props: Props) => {
               })}
             </ul>
           </div>
-          <div>用户信息</div>
+          <UserItem />
         </div>
       </nav>
     </S.Header>

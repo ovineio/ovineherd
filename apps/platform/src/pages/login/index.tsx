@@ -3,13 +3,13 @@
  */
 
 import React from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation, Link } from 'react-router-dom'
 
 import { useImmer } from '@core/utils/hooks'
 import { setStore } from '@core/utils/store'
 
+import { sysUserLoginApi } from '~/core/api/resource'
 import { storeKey } from '~/core/constants'
-import { userLogin } from '~/core/user'
 
 import { Login } from './styled'
 
@@ -17,8 +17,8 @@ const imgSrc = 'https://static.igroupes.com/ovine_bg_cxd.jpeg'
 
 type State = {
   inputs: {
-    username?: string
-    password?: string
+    username: string
+    password: string
   }
   loading: boolean
   tips: {
@@ -27,7 +27,10 @@ type State = {
 }
 
 const initState = {
-  inputs: {},
+  inputs: {
+    username: '',
+    password: '',
+  },
   loading: false,
   tips: {},
 }
@@ -66,15 +69,19 @@ export default () => {
     setState((d) => {
       d.loading = true
     })
-    userLogin(inputs).then((source: any) => {
+
+    sysUserLoginApi({
+      ...inputs,
+      onlyData: false,
+    }).then((data: any) => {
       setState((d) => {
         d.loading = false
       })
-      const { code, msg, data } = source || {}
-      if (code) {
-        setErrorTip(msg)
-        return
-      }
+      // const { code, msg, data } = source || {}
+      // if (code) {
+      //   setErrorTip(msg)
+      //   return
+      // }
 
       setStore(storeKey.auth, data.id)
       setStore(storeKey.userInfo, data)
@@ -88,8 +95,11 @@ export default () => {
     <Login>
       <img src={imgSrc} alt="" className="img-bk" />
       <div className="login-card">
-        <div className="side form">
-          <div className="img-logo">OvineHerd</div>
+        <div className="side login-form">
+          <div className="img-brand">
+            <img alt="logo" src="https://ovine.igroupes.com/demo/static/images/logo_grey.png" />
+            <span>OvineHerd 低代码平台</span>
+          </div>
 
           <span>账号</span>
           <input
@@ -108,13 +118,16 @@ export default () => {
             onChange={onInputChange}
             placeholder="请输入密码"
           />
-          <span>{tips.error}</span>
+          <span className="tip-text">{tips.error}</span>
+          <Link to="/register" className="register-text pull-right">
+            立即注册
+          </Link>
           <button type="button" className="btn-submit" onClick={onSubmit}>
             {loading && <i className="fa fa-circle-o-notch fa-spin" />}
             <span>登录</span>
           </button>
         </div>
-        <div className="side picture">
+        <div className="side login-picture">
           <img src={imgSrc} alt="" />
         </div>
       </div>

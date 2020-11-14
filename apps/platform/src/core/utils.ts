@@ -30,3 +30,15 @@ export const getAppType = (pathName?: string): AppType =>
 // 获取组织ID
 export const getOrgId = (): string =>
   get(window.location.pathname.match(/\/org\/(.+)\//), '1') || ''
+
+type LinkType = 'login' | 'selfInfo'
+export const getLink = (type: LinkType, orgId: string = getOrgId()): string => {
+  switch (type) {
+    case 'login':
+      return orgId ? `/org/${orgId}/login` : '/sys/login'
+    case 'selfInfo':
+      return orgId ? `/org/${orgId}/setting?#userInfo` : '/sys/setting?#userInfo'
+    default:
+      return '/'
+  }
+}

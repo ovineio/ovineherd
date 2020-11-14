@@ -3,12 +3,13 @@ import { Redirect, Route } from 'react-router-dom'
 
 import { useAppContext } from '~/components/app/context'
 import { isLogin } from '~/core/user'
+import { getLink } from '~/core/utils'
 
-import { useCustom } from './hooks'
+import { useAppConfig, useUserInfo } from './hooks'
 
 // 用于读取自定义配置
-export const CustomRoute = (props) => {
-  useCustom()
+export const ConfigRoute = (props) => {
+  useAppConfig()
   return props.children
 }
 
@@ -18,7 +19,11 @@ export const PrivateRoute = ({ children, ...rest }) => {
   const { orgId, type } = appInfo
 
   const isLoginApp = isLogin(type, custom.isolation)
-  const redirect = orgId ? `/org/${orgId}/login` : '/sys/login'
+  const loginLink = getLink('login', orgId)
+
+  useUserInfo({
+    isLogin: isLoginApp,
+  })
 
   return (
     <Route
@@ -29,7 +34,7 @@ export const PrivateRoute = ({ children, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: redirect,
+              pathname: loginLink,
               state: { from: location },
             }}
           />

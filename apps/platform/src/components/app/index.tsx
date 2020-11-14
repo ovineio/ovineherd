@@ -10,7 +10,7 @@ import { useImmer } from '@core/utils/hooks'
 
 import Login from '~/pages/login'
 import Register from '~/pages/register'
-import { PrivateRoute, CustomRoute } from '~/routes/route'
+import { PrivateRoute, ConfigRoute } from '~/routes/route'
 
 import Layout from '../layout'
 import { initState, AppContext, AppContextState } from './context'
@@ -50,7 +50,7 @@ export default () => {
         <GlobalStyle />
         <AppStyle />
         <AppContext.Provider value={contextValue}>
-          <CustomRoute path="/">
+          <ConfigRoute path="/">
             <Switch>
               <Route path="/org/:orgId/login" component={Login} />
               <Route path="/sys/login" component={Login} />
@@ -62,7 +62,7 @@ export default () => {
               </PrivateRoute>
               <Route path="*" component={() => <div>404</div>} />
             </Switch>
-          </CustomRoute>
+          </ConfigRoute>
         </AppContext.Provider>
       </ThemeProvider>
     </Router>

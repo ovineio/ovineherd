@@ -16,3 +16,29 @@ export type AppInfo = {
   isSys: boolean
   orgId?: string
 }
+
+export enum ApiType {
+  user = 'user',
+  product = 'product',
+  authorization = 'authorization',
+  category = 'category',
+  config = 'config',
+}
+
+export enum ApiName {
+  login = 'login',
+  list = 'list',
+  one = 'one',
+  add = 'add',
+  edit = 'edit',
+  del = 'del',
+}
+
+export type UserInfo = {
+  avatar: string // 头像
+  nickname: string // 昵称
+  // eslint-disable-next-line
+  real_name: string // 真实名字
+  username: string // 登录账号
+  type: string
+}

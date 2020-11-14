@@ -9,6 +9,29 @@ export const AppStyle = createGlobalStyle`
         background-color: transparent;
     }
 
+    // TODO: 处理字体大小问题
+
+    /* .cxd-Table-table {
+        font-size: unset;
+    }
+
+    .cxd-Form {
+        font-size: unset;
+    } */
+
+    .cxd-Modal-header {
+        padding-top: 0.8rem;
+        padding-bottom: 0.8rem;
+    }
+    .cxd-Modal-body {
+        padding-bottom: 1rem;
+    }
+    .cxd-Modal-footer {
+        margin: 0;
+        padding-left: 1.875rem;
+        padding-right: 1.875rem;
+    }
+
     .cxd-section-header {
         padding: 16px 0;
         font-size: 16px;

@@ -8,6 +8,8 @@ import { stringify } from 'qs'
 import { app } from '@core/app'
 import { ReqOption, ReqApiRes } from '@core/utils/request/types'
 
+import { ApiName, ApiType } from '../types'
+
 export const apis = {
   user: {
     login: {
@@ -105,9 +107,6 @@ export const apis = {
   },
 }
 
-export type ApiType = 'user' | 'product' | 'authorization' | 'category' | 'config'
-export type ApiName = 'login' | 'list' | 'one' | 'add' | 'edit' | 'del'
-
 type QueryOption = { [key: string]: string | number }
 
 export const getApiConditionStr = (conditions: QueryOption): string => {
@@ -134,9 +133,9 @@ export const getApiQuery = (data: any) => {
 
   map(reset, (val, key) => {
     if (key.startsWith('q_')) {
-      queryObj[key.slice(3)] = val
+      queryObj[key.slice(2)] = val
     } else if (key.startsWith('n_')) {
-      namesObj[key.slice(3)] = val
+      namesObj[key.slice(2)] = val
     }
   })
 
@@ -166,11 +165,12 @@ export const getOneItem = (source: any) => {
   return get(source, 'data.items.0') || {}
 }
 
-type ApiOption = ReqOption & {
-  apiName: ApiName
-  apiType: ApiType
-}
-export const getApiOption = (option: ApiOption) => {
+export const getApiOption = (
+  option: ReqOption & {
+    apiName: ApiName
+    apiType: ApiType
+  }
+) => {
   const { apiType, apiName, ...rest } = option
   const apiInfo = get(apis, `${apiType}.${apiName}`)
 
@@ -180,7 +180,24 @@ export const getApiOption = (option: ApiOption) => {
   }
 }
 
-type ApiData = {
+export const getReqOption = (
+  apiOption: ApiData & {
+    apiType: ApiType
+    apiName: ApiName
+  },
+  option?: ReqOption
+) => {
+  const { apiType, apiName, ...data } = apiOption
+  const apiInfo = get(apis, `${apiType}.${apiName}`)
+
+  return {
+    data,
+    ...apiInfo,
+    ...option,
+  }
+}
+
+export type ApiData = {
   onlyOne?: boolean // 从list中选取第一个作为返回数据
   onlyData?: boolean // 只返回接口中 data 数据
   withHttp?: boolean // 返回整个 http 请求所有内容
@@ -194,6 +211,18 @@ export function requestApi<T = {}>(
   data?: ApiData,
   option?: ReqOption
 ) {
+  return request<T>(`${apiType}.${apiName}`, data, option)
+}
+
+// 增加调用参数简化
+export function requestByOption<T = {}>(
+  apiOption: ApiData & {
+    apiType: ApiType
+    apiName: ApiName
+  },
+  option?: ReqOption
+) {
+  const { apiType, apiName, ...data } = apiOption
   return request<T>(`${apiType}.${apiName}`, data, option)
 }
 

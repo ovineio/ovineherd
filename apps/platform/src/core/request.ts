@@ -11,7 +11,7 @@ import logger from '@core/utils/logger'
 import { Request } from '@core/utils/request'
 import { getStore } from '@core/utils/store'
 
-import { getApiQuery } from './api'
+import { getApiQuery } from './api/utils'
 import { storeKey } from './constants'
 
 // 日志模块 https://ovine.igroupes.com/org/docs/modules/logger

@@ -1,11 +1,6 @@
 import { app } from '@core/app'
 
-import { getApiOption } from '~/core/api'
-import { relation } from '~/core/constants'
-
-const store = {
-  addOrgId: '',
-}
+import { sysOrgApis } from './api'
 
 const orgSchema = {
   type: 'page',
@@ -18,28 +13,29 @@ const orgSchema = {
         title: '组织列表',
         body: {
           type: 'crud',
+          name: 'orgList',
           filterTogglable: false,
-          perPageAvailable: [50, 100, 200],
+          perPageAvailable: [20, 50, 150],
           defaultParams: {
-            size: 50,
+            perPage: 20,
           },
           api: '$preset.apis.listOrg',
-          headerToolbar: ['$preset.forms.filter', '$preset.actions.addOrg'],
+          headerToolbar: ['$preset.forms.filterOrg', '$preset.actions.addOrg'],
           footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
           columns: [
             {
               name: 'id',
-              label: 'ID',
+              label: '组织ID',
               type: 'text',
-              width: 40,
+              toggled: false,
             },
             {
-              name: 'title',
+              name: 'name',
               label: '名称',
               type: 'text',
             },
             {
-              name: 'short_title',
+              name: 'short_name',
               label: '简称',
               type: 'text',
             },
@@ -50,13 +46,25 @@ const orgSchema = {
             },
             {
               name: 'isolation',
-              label: '独立',
-              type: 'text',
+              label: '类型',
+              type: 'tpl',
+              tpl: `
+                <% if(data.leader) {%>
+                  <span class="badge badge-primary">独立应用</span>
+                <% } else { %>
+                  <span class="badge badge-info">普通应用</span>
+                <%  } %>
+              `,
             },
             {
               name: 'desc',
               label: '描述',
               type: 'text',
+              // eslint-disable-next-line
+              tpl: '${desc|default:-|truncate:10}',
+              popOver: {
+                body: '$desc',
+              },
             },
             {
               name: 'admin',
@@ -72,8 +80,12 @@ const orgSchema = {
             {
               type: 'operation',
               label: '操作',
-              width: 80,
-              buttons: ['$preset.actions.edit', '$preset.actions.member', '$preset.actions.remove'],
+              width: 120,
+              buttons: [
+                '$preset.actions.viewOrg',
+                '$preset.actions.editOrg',
+                '$preset.actions.delOrg',
+              ],
             },
           ],
         },
@@ -148,6 +160,7 @@ const orgSchema = {
     ],
   },
   preset: {
+    apis: sysOrgApis,
     actions: {
       addOrg: {
         type: 'action',
@@ -156,31 +169,50 @@ const orgSchema = {
         level: 'primary',
         icon: 'iconfont icon-plus pull-left',
         actionType: 'dialog',
+        showCloseButton: false,
         dialog: {
           title: '添加一个组织',
           actions: [],
-          // size: 'lg',
           bodyClassName: 'p-none',
           body: '$preset.forms.addOrg',
         },
       },
-      edit: {
+      viewOrg: {
         type: 'action',
-        iconOnly: true,
-        tooltip: '编辑',
-        icon: 'iconfont icon-edit',
+        label: '查看',
+        level: 'link',
+        actionType: 'dialog',
+        dialog: {
+          title: '管理员详细资料',
+          actions: [],
+          closeOnEsc: true,
+          body: {
+            api: '$preset.apis.viewUser',
+            $preset: 'forms.viewUser',
+          },
+        },
       },
-      member: {
+      editOrg: {
         type: 'action',
-        iconOnly: true,
-        tooltip: '成员管理',
-        icon: 'fa fa-user-o',
+        label: '编辑',
+        level: 'link',
+        actionType: 'dialog',
+        dialog: {
+          title: '编辑管理员',
+          body: {
+            api: '$preset.apis.editUser',
+            $preset: 'forms.updateUser',
+          },
+        },
       },
-      remove: {
+      delOrg: {
         type: 'action',
-        iconOnly: true,
-        tooltip: '删除',
-        icon: 'iconfont icon-close text-danger',
+        label: '删除',
+        className: 'text-danger',
+        level: 'link',
+        actionType: 'ajax',
+        confirmText: '[删除确认] 确认要删除该用户: 【$real_name】 ?',
+        api: '$preset.apis.delUser',
       },
     },
     forms: {
@@ -272,9 +304,8 @@ const orgSchema = {
               {
                 type: 'action',
                 label: '立即登录该组织',
-                actionType: 'close',
                 onAction: () => {
-                  app.routerHistory.push(`/org/${store.addOrgId}/login`)
+                  app.routerHistory.push(`/org/${sysOrgApis.store.addOrgId}/login`)
                 },
               },
               {
@@ -282,20 +313,22 @@ const orgSchema = {
                 label: '关闭',
                 level: 'primary',
                 actionType: 'close',
+                reload: true,
               },
             ],
           },
         ],
       },
-      filter: {
+      filterOrg: {
         type: 'form',
         wrapWithPanel: false,
         mode: 'inline',
         controls: [
           {
             type: 'text',
-            name: 'keywords',
+            name: 'q_id',
             placeholder: '请输入ID',
+            target: 'orgList',
             addOn: {
               iconOnly: true,
               icon: 'iconfont icon-ai-search',
@@ -303,46 +336,6 @@ const orgSchema = {
             },
           },
         ],
-      },
-    },
-    apis: {
-      listOrg: getApiOption({
-        apiType: 'category',
-        apiName: 'list',
-        data: {
-          '&': '$$',
-          type: relation.org.entity.type,
-        },
-      }),
-      addOrg: {
-        url: 'fakeAddOrg',
-        onFakeRequest: async () => {
-          // const { username, password, ...rest } = option.data
-          // const { value: orgAdmUserId } = await requestApi<any>('user', 'add', {
-          //   ...relation.org.user,
-          //   username,
-          //   password,
-          // })
-          // const { value: orgConfId } = await requestApi<any>('config', 'add', {
-          //   ...rest,
-          //   type: relation.org.entity.type,
-          // })
-          // const { value: orgId } = await requestApi<any>('category', 'add', {
-          //   ...relation.org.entity,
-          //   relation1: orgConfId,
-          //   relation2: orgAdmUserId,
-          // })
-          // await requestApi<any>('user', 'edit', {
-          //   id: orgAdmUserId,
-          //   relation2: orgId,
-          // })
-
-          store.addOrgId = '1000'
-
-          return {
-            status: 0,
-          }
-        },
       },
     },
   },
