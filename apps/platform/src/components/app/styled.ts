@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
+// TODO: 移动端展示兼容
+
 export const AppStyle = createGlobalStyle`
     .app-root {
         background-color: #faf9f8;
@@ -8,16 +10,6 @@ export const AppStyle = createGlobalStyle`
     .cxd-Page-main{
         background-color: transparent;
     }
-
-    // TODO: 处理字体大小问题
-
-    /* .cxd-Table-table {
-        font-size: unset;
-    }
-
-    .cxd-Form {
-        font-size: unset;
-    } */
 
     .cxd-Modal-header {
         padding-top: 0.8rem;
@@ -31,9 +23,11 @@ export const AppStyle = createGlobalStyle`
         padding-left: 1.875rem;
         padding-right: 1.875rem;
     }
+    .cxd-TextareaControl {
+        color: #666;
+    }
 
     .cxd-section-header {
-        padding: 16px 0;
         font-size: 16px;
         color: #333;
         border-left: #108cee 0.25rem solid;

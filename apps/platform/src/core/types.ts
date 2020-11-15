@@ -4,9 +4,18 @@ export type UrlParams = {
 }
 
 export type CustomType = {
-  logo: string // 企业标志
-  title: string // 企业标题
-  slogan: string // 企业标语
+  desc: string
+  enable_register_org: '0' | '1'
+  favicon: string
+  login_bg_img: string
+  login_intro_img: string
+  login_logo: string
+  login_title: string
+  logo: string // 导航LOGO
+  name: string // 用于 浏览器标题展示
+  slogan: string // 用于 浏览器标题展示
+  title: string // 导航L标题
+  type: string // 类型
   isolation: boolean // 是否独立
 }
 
@@ -35,9 +44,9 @@ export enum ApiName {
 }
 
 export type UserInfo = {
+  id: string
   avatar: string // 头像
   nickname: string // 昵称
-  // eslint-disable-next-line
   real_name: string // 真实名字
   username: string // 登录账号
   type: string

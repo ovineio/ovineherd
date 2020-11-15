@@ -25,7 +25,7 @@ const env = {
   // 测试环境
   staging: {
     domains: {
-      api: 'https://ovine.igroupes.com',
+      api: 'http://39.105.197.166:5288',
     },
   },
   // 生产环境

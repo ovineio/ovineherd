@@ -1,14 +1,14 @@
 import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { app } from '@ovine/core/lib/app'
-import { useImmer } from '@ovine/core/lib/utils/hooks'
-
-import { subscribe } from '@ovine/core/lib/utils/message'
+import { app } from '@core/app'
+import { useImmer } from '@core/utils/hooks'
+import { subscribe } from '@core/utils/message'
+import { setStore } from '@core/utils/store'
 
 import { initState, useAppContext } from '~/components/app/context'
 import { orgConfigApi, sysConfigApi } from '~/core/api/resource'
-import { msgKey } from '~/core/constants'
+import { msgKey, storeKey } from '~/core/constants'
 import { AppInfo, CustomType } from '~/core/types'
 import { fetchUserInfo } from '~/core/user'
 import { getAppType, getOrgId } from '~/core/utils'
@@ -103,6 +103,7 @@ export const useAppConfig = () => {
         ...custom,
       }
       d.custom = info
+      setStore(storeKey.siteCustom, info)
     })
   }, [org, sys])
 }

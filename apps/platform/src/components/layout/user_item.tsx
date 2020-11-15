@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import ContentLoader from 'react-content-loader'
 import { Link } from 'react-router-dom'
 
 import { Amis } from '@core/components/amis/schema'
@@ -10,15 +11,10 @@ import { Amis } from '@core/components/amis/schema'
 import { getLink } from '~/core/utils'
 
 import { useAppContext } from '../app/context'
-
 import * as S from './styled'
 
 export default () => {
   const { userInfo: info, appInfo } = useAppContext()
-
-  if (!info) {
-    return null
-  }
 
   const loginLink = getLink('login', appInfo.orgId)
   const selfInfoLink = getLink('selfInfo', appInfo.orgId)
@@ -28,6 +24,21 @@ export default () => {
       <img className="avatar-img" src={info.avatar} alt="头像" />
     ) : (
       <div className="avatar-img">{info.real_name.substr(0, 1)}</div>
+    )
+  }
+
+  if (!info.id) {
+    return (
+      <ContentLoader
+        speed={2}
+        width={40}
+        height={40}
+        viewBox="0 0 40 40"
+        backgroundColor="#f3f3f3"
+        foregroundColor="#ecebeb"
+      >
+        <circle cx="20" cy="20" r="20" />
+      </ContentLoader>
     )
   }
 

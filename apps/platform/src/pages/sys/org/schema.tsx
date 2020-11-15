@@ -11,6 +11,7 @@ const orgSchema = {
     tabs: [
       {
         title: '组织列表',
+        hash: 'orgList',
         body: {
           type: 'crud',
           name: 'orgList',
@@ -92,19 +93,14 @@ const orgSchema = {
       },
       {
         title: '审核组织申请',
+        hash: 'orgApplyList',
         body: {
           type: 'crud',
-          data: {
-            items: [
-              {
-                id: 123,
-              },
-            ],
-          },
+          api: '$preset.apis.listOrgApply',
           filterTogglable: false,
-          perPageAvailable: [50, 100, 200],
+          perPageAvailable: [20, 50, 150],
           defaultParams: {
-            size: 50,
+            perPage: 20,
           },
           perPageField: 'size',
           pageField: 'page',
@@ -115,11 +111,11 @@ const orgSchema = {
               name: 'id',
               label: 'ID',
               type: 'text',
-              width: 40,
+              toggled: false,
             },
             {
-              name: 'name',
-              label: '姓名',
+              name: 'username',
+              label: '登录账号',
               type: 'text',
             },
             {
@@ -128,23 +124,39 @@ const orgSchema = {
               type: 'text',
             },
             {
-              name: 'leader',
-              label: '管理员',
+              name: 'name',
+              label: '组织名称',
               type: 'text',
             },
             {
-              name: 'department',
-              label: '所属部门',
-              type: 'text',
+              name: 'status',
+              label: '处理状态',
+              type: 'tpl',
+              tpl: `
+                <% if(data.status === '1') {%>
+                  <span class="badge badge-pill badge-success">已发放</span>
+                <% } else if (data.status === '2') { %>
+                  <span class="badge badge-pill badge-danger">已拒绝</span>
+                <% } else if (data.status === '3') { %>
+                  <span class="badge badge-pill badge-primary">暂不处理</span>
+                <%  } else { %>
+                  <span class="badge badge-pill badge-secondary">未处理</span>
+                <% } %>
+              `,
             },
             {
               name: 'desc',
-              label: '成员描述',
+              label: '处理备注',
               type: 'text',
+              // eslint-disable-next-line
+              tpl: '${desc|default:-|truncate:10}',
+              popOver: {
+                body: '$desc',
+              },
             },
             {
-              name: 'createTime',
-              label: '添加时间',
+              name: 'created_time',
+              label: '申请时间',
               type: 'datetime',
               width: 150,
             },
@@ -152,7 +164,7 @@ const orgSchema = {
               type: 'operation',
               label: '操作',
               width: 80,
-              buttons: ['$preset.actions.edit', '$preset.actions.remove'],
+              buttons: ['$preset.actions.checkOrgApply'],
             },
           ],
         },
@@ -213,6 +225,16 @@ const orgSchema = {
         actionType: 'ajax',
         confirmText: '[删除确认] 确认要删除该用户: 【$real_name】 ?',
         api: '$preset.apis.delUser',
+      },
+      checkOrgApply: {
+        type: 'action',
+        label: '处理',
+        level: 'link',
+        actionType: 'dialog',
+        dialog: {
+          title: '处理组织申请',
+          body: '$preset.forms.checkOrgApply',
+        },
       },
     },
     forms: {
@@ -334,6 +356,43 @@ const orgSchema = {
               icon: 'iconfont icon-ai-search',
               type: 'submit',
             },
+          },
+        ],
+      },
+      checkOrgApply: {
+        type: 'form',
+        mode: 'horizontal',
+        api: '$preset.apis.checkOrgApply',
+        controls: [
+          {
+            name: 'status',
+            label: '状态',
+            type: 'list',
+            required: true,
+            value: '3',
+            options: [
+              {
+                label: '已发放',
+                value: '1',
+              },
+              {
+                label: '已拒绝',
+                value: '2',
+              },
+              {
+                label: '暂不处理',
+                value: '3',
+              },
+            ],
+          },
+          {
+            name: 'desc',
+            label: '处理备注',
+            type: 'textarea',
+            required: true,
+            placeholder: '请输入处理备注',
+            descriptionClassName: 'd-block',
+            description: '每次处理申请，请务必备注清楚',
           },
         ],
       },

@@ -7985,6 +7985,11 @@ react-color@2.13.8:
     reactcss "^1.2.0"
     tinycolor2 "^1.4.1"
 
+react-content-loader@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.npm.taobao.org/react-content-loader/download/react-content-loader-5.1.4.tgz#854bafe4415dd9de07174621375bc308edd0ebb5"
+  integrity sha1-hUuv5EFd2d4HF0YhN1vDCO3Q67U=
+
 react-cropper@1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/react-cropper/download/react-cropper-1.0.0.tgz#7b65a85bbfcd64fa586be25742b3f16a37847414"

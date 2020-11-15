@@ -8,6 +8,7 @@ import { ApiType } from './types'
 export const storeKey = {
   auth: 'authStore',
   userInfo: 'userInfoStore',
+  siteCustom: 'siteCustomStore',
 }
 
 // 用于消息通知的key
@@ -55,11 +56,11 @@ export const relation = {
     //   type: entityType.systemUser,
     //   relation1_type: 'user',
     // },
-    orgApplyCheck: {
-      //  组织审核
+    // 注册申请
+    orgRegisterApply: {
       apiType: ApiType.product,
       type: entityType.systemOrgApply,
-      relation1_type: 'user',
+      relation1_type: 'user', // 关联 审核人
     },
   },
   org: {

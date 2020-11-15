@@ -1,7 +1,7 @@
 import { publish } from '@core/utils/message'
 
 import { userSelfInfoReqOpt } from '~/core/api/resource'
-import { apis, getReqOption } from '~/core/api/utils'
+import { apis, getOneItem, getReqOption } from '~/core/api/utils'
 import { msgKey, relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 import { getUserId } from '~/core/user'
@@ -33,8 +33,57 @@ export function sysUserEditSelfReqOpt() {
   return reqOption
 }
 
+function sysInfoReqOpt() {
+  const reqOption = getReqOption(
+    {
+      ...relation.sys.entityInfo,
+      apiName: ApiName.list,
+    },
+    {
+      onSuccess: (source) => {
+        source.data = getOneItem(source)
+        return source
+      },
+    }
+  )
+
+  return reqOption
+}
+
+function sysEditInfoReqOpt() {
+  const reqOption = getReqOption(
+    {
+      ...relation.sys.entityInfo,
+      apiName: ApiName.edit,
+      '&': '$$',
+    },
+    {
+      onSuccess: (source) => {
+        source.data = {}
+        return source
+      },
+    }
+  )
+
+  return reqOption
+}
+
 export const sysSettingApis = {
+  uploadImg: {
+    maxSize: 500 * 1000,
+    limit: {
+      maxWidth: 500,
+      maxHeight: 500,
+    },
+    crop: {
+      aspectRatio: 1,
+      scalable: true,
+      rotatable: true,
+    },
+    reciever: apis.file.upload,
+  },
   selfInfo: sysUserSelfInfoReqOpt(),
   editSelf: sysUserEditSelfReqOpt(),
-  uploadImg: apis.file.upload,
+  sysInfo: sysInfoReqOpt(),
+  sysEditInfo: sysEditInfoReqOpt(),
 }

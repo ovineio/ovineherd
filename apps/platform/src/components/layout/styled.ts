@@ -30,6 +30,19 @@ export const Header = styled.div`
       color: #108cee !important;
     }
   }
+
+  .navbar-brand {
+    img {
+      width: auto;
+      max-height: 40px;
+      padding-right: 5px;
+    }
+    img,
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
 `
 
 export const Layout = styled.div`

@@ -6,6 +6,7 @@ declare module '*.svg'
 
 declare module '@generated' // .ovine/*
 
+declare const $: any
 interface Window {
   __POWERED_BY_QIANKUN__: any
 }

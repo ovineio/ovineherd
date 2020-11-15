@@ -30,8 +30,30 @@ function sysAddOrgReqOpt() {
   }
 }
 
+function sysListApplyReqOpt() {
+  const reqOption = getReqOption({
+    ...relation.sys.orgRegisterApply,
+    apiName: ApiName.list,
+    '&': '$$',
+  })
+
+  return reqOption
+}
+
+function sysCheckOrgApplyReqOpt() {
+  const reqOption = getReqOption({
+    ...relation.sys.orgRegisterApply,
+    apiName: ApiName.edit,
+    '&': '$$',
+  })
+
+  return reqOption
+}
+
 export const sysOrgApis = {
   store,
   listOrg: sysListOrgReqOpt(),
+  listOrgApply: sysListApplyReqOpt(),
+  checkOrgApply: sysCheckOrgApplyReqOpt(),
   addOrg: sysAddOrgReqOpt(),
 }

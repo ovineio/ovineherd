@@ -30,9 +30,10 @@ export default () => {
   const contextValue = { ...state, setContext: setState as any }
 
   useEffect(() => {
-    const { title } = custom
+    const { title, favicon } = custom
     if (title) {
       document.title = title
+      $('link[rel="shortcut icon"]').attr('href', favicon)
     }
   }, [custom])
 

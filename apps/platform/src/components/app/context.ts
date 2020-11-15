@@ -1,13 +1,16 @@
 import { useContext, createContext } from 'react'
 
 import { ImmerSetter } from '@core/utils/hooks'
+import { getStore } from '@core/utils/store'
 
+import { storeKey } from '~/core/constants'
 import { AppInfo, AppType, CustomType, UserInfo } from '~/core/types'
+import { getUserInfo } from '~/core/user'
 
 export type AppContextState = {
-  custom: CustomType
+  custom: Partial<CustomType>
   appInfo: AppInfo
-  userInfo?: UserInfo
+  userInfo: Partial<UserInfo>
   setContext: ImmerSetter<AppContextState>
 }
 
@@ -18,12 +21,8 @@ export const initState: AppContextState = {
     isOrg: false,
     orgId: '',
   },
-  custom: {
-    logo: '',
-    title: '',
-    slogan: '',
-    isolation: false,
-  },
+  userInfo: getUserInfo(),
+  custom: getStore<CustomType>(storeKey.siteCustom) || {},
   setContext: () => {
     //
   },

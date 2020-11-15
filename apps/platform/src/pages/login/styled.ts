@@ -42,19 +42,6 @@ export const Login = styled.div`
       width: 50%;
       padding: 20px;
 
-      .img-brand {
-        margin-bottom: 30px;
-        text-align: center;
-        img {
-          width: auto;
-          height: 40px;
-        }
-        span {
-          font-size: 14px;
-          margin: 10px 0 0;
-        }
-      }
-
       span {
         display: block;
         margin-bottom: 3px;
@@ -83,8 +70,14 @@ export const Login = styled.div`
         color: #ea5151;
       }
 
+      .register-text {
+        margin-top: 15px;
+        height: 20px;
+        line-height: 20px;
+      }
+
       .btn-submit {
-        margin-top: 30px;
+        margin-top: 15px;
         top: 0;
         width: 100%;
         height: 40px;
@@ -117,6 +110,20 @@ export const Login = styled.div`
         font-size: 12px;
         margin-top: 15px;
         display: block;
+      }
+    }
+
+    .logo-brand {
+      height: 75px;
+      margin-bottom: 30px;
+      text-align: center;
+      img {
+        width: auto;
+        height: 40px;
+      }
+      span {
+        font-size: 14px;
+        margin: 10px 0 0;
       }
     }
 

@@ -42,3 +42,17 @@ export const getLink = (type: LinkType, orgId: string = getOrgId()): string => {
       return '/'
   }
 }
+
+export function getTextWidth(text: string = '') {
+  const dom = document.createElement('span')
+  dom.style.display = 'inline-block'
+  dom.textContent = text
+  document.body.appendChild(dom)
+  const width = dom.clientWidth
+  document.body.removeChild(dom)
+  return width
+}
+
+export function isStrTrue(str: string) {
+  return str === '1'
+}
