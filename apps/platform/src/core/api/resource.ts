@@ -81,7 +81,7 @@ export function orgRegisterApi() {
 
 // 平台管理员 添加一个组织
 export async function sysCreateOrgApi(option: any) {
-  const { username, password, ...rest } = option
+  const { username, isolation = '0', password, ...rest } = option
 
   const ids = {
     orgAdmUserId: '',
@@ -110,6 +110,7 @@ export async function sysCreateOrgApi(option: any) {
     // 创建一个组织， 并将 配置/用户 关联到该组织
     const { id: orgId } = await requestByOption({
       ...relation.org.entity,
+      isolation,
       apiName: ApiName.add,
       relation1: ids.orgInfoId,
       relation2: ids.orgAdmUserId,
@@ -156,7 +157,7 @@ export async function sysCreateOrgApi(option: any) {
 // 平台管理员 查询 组织申请 列表
 export function sysListOrgApplyReqOpt() {
   const reqOption = getReqOption({
-    ...relation.sys.orgApplyCheck,
+    ...relation.sys.orgRegisterApply,
     apiName: ApiName.list,
     '&': '$$',
   })
@@ -167,7 +168,7 @@ export function sysListOrgApplyReqOpt() {
 // 平台管理员 组织申请 审核 列表
 export function sysListOrgApplyCheckReqOpt() {
   const reqOption = getReqOption({
-    ...relation.sys.orgApplyCheck,
+    ...relation.sys.orgRegisterApply,
     apiName: ApiName.list,
     '&': '$$',
   })

@@ -50,7 +50,7 @@ export const apis = {
   },
   file: {
     upload: {
-      url: 'POST /v1/file',
+      url: 'POST /v1/file?has_domain=yes',
     },
   },
   category: {

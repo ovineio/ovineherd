@@ -15,11 +15,7 @@ const orgSchema = {
         body: {
           type: 'crud',
           name: 'orgList',
-          filterTogglable: false,
-          perPageAvailable: [20, 50, 150],
-          defaultParams: {
-            perPage: 20,
-          },
+          $ref: 'globalCrudCCommon',
           api: '$preset.apis.listOrg',
           headerToolbar: ['$preset.forms.filterOrg', '$preset.actions.addOrg'],
           footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
@@ -31,44 +27,41 @@ const orgSchema = {
               toggled: false,
             },
             {
-              name: 'name',
-              label: '名称',
+              name: 'config.name',
+              label: '组织名称',
               type: 'text',
             },
             {
-              name: 'short_name',
-              label: '简称',
-              type: 'text',
-            },
-            {
-              name: 'logo',
-              label: 'LOGO',
-              type: 'text',
+              name: 'config.logo',
+              label: '组织LOGO',
+              type: 'image',
+              $ref: 'globalImageCell',
             },
             {
               name: 'isolation',
               label: '类型',
               type: 'tpl',
               tpl: `
-                <% if(data.leader) {%>
-                  <span class="badge badge-primary">独立应用</span>
+                <% if(data.isolation) {%>
+                  <span class="badge badge-pill badge-primary">独立应用</span>
                 <% } else { %>
-                  <span class="badge badge-info">普通应用</span>
+                  <span class="badge badge-pill badge-info">普通应用</span>
                 <%  } %>
               `,
             },
             {
-              name: 'desc',
-              label: '描述',
+              name: 'config.sys_desc',
+              label: '备注信息',
+              remark: '对该组织备注信息信息',
               type: 'text',
               // eslint-disable-next-line
-              tpl: '${desc|default:-|truncate:10}',
+              tpl: '${config.sys_desc|default:-|truncate:10}',
               popOver: {
-                body: '$desc',
+                body: '$config.sys_desc',
               },
             },
             {
-              name: 'admin',
+              name: 'user.username',
               label: '管理员',
               type: 'text',
             },
@@ -96,14 +89,8 @@ const orgSchema = {
         hash: 'orgApplyList',
         body: {
           type: 'crud',
+          $ref: 'globalCrudCCommon',
           api: '$preset.apis.listOrgApply',
-          filterTogglable: false,
-          perPageAvailable: [20, 50, 150],
-          defaultParams: {
-            perPage: 20,
-          },
-          perPageField: 'size',
-          pageField: 'page',
           headerToolbar: [],
           footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
           columns: [
@@ -146,7 +133,7 @@ const orgSchema = {
             },
             {
               name: 'desc',
-              label: '处理备注',
+              label: '处理备注信息',
               type: 'text',
               // eslint-disable-next-line
               tpl: '${desc|default:-|truncate:10}',
@@ -195,12 +182,13 @@ const orgSchema = {
         level: 'link',
         actionType: 'dialog',
         dialog: {
-          title: '管理员详细资料',
+          title: '组织详细资料',
           actions: [],
           closeOnEsc: true,
+          bodyClassName: 'p-t-none',
           body: {
-            api: '$preset.apis.viewUser',
-            $preset: 'forms.viewUser',
+            api: '$preset.apis.viewOrg',
+            $preset: 'forms.viewOrg',
           },
         },
       },
@@ -210,10 +198,14 @@ const orgSchema = {
         level: 'link',
         actionType: 'dialog',
         dialog: {
-          title: '编辑管理员',
+          title: '编辑组织',
+          data: {
+            // eslint-disable-next-line
+            '&': '${config}',
+          },
           body: {
-            api: '$preset.apis.editUser',
-            $preset: 'forms.updateUser',
+            api: '$preset.apis.editOrg',
+            $preset: 'forms.editOrg',
           },
         },
       },
@@ -223,8 +215,10 @@ const orgSchema = {
         className: 'text-danger',
         level: 'link',
         actionType: 'ajax',
-        confirmText: '[删除确认] 确认要删除该用户: 【$real_name】 ?',
-        api: '$preset.apis.delUser',
+        confirmText:
+          // eslint-disable-next-line
+          '[删除确认] 确认要删除该组织: 【${config.name|default:-}】，组织删除后将不可恢复?',
+        api: '$preset.apis.delOrg',
       },
       checkOrgApply: {
         type: 'action',
@@ -266,7 +260,7 @@ const orgSchema = {
             api: '$preset.apis.addOrg',
             controls: [
               {
-                name: 'title',
+                name: 'name',
                 label: '组织名称',
                 type: 'text',
                 required: true,
@@ -275,31 +269,19 @@ const orgSchema = {
                 },
               },
               {
-                name: 'short_title',
-                label: '组织简称',
-                type: 'text',
-                required: true,
-                validations: {
-                  minLength: 2,
-                  maxLength: 8,
-                },
-              },
-              {
                 name: 'logo',
                 label: '组织LOGO',
                 type: 'image',
               },
               {
+                $ref: 'globalSwitch',
                 name: 'isolation',
-                label: '是否独立组织',
-                type: 'switch',
-                trueValue: '1',
-                falseValue: '0',
+                label: '是否独立',
                 option: '设置为独立应用，将使用独立体系',
               },
               {
                 name: 'sys_desc', // 用于平台使用的组织描述
-                label: '组织描述',
+                label: '备注信息',
                 type: 'textarea',
               },
             ],
@@ -335,9 +317,188 @@ const orgSchema = {
                 label: '关闭',
                 level: 'primary',
                 actionType: 'close',
-                reload: true,
+                reload: 'orgList',
               },
             ],
+          },
+        ],
+      },
+      editOrg: {
+        type: 'form',
+        mode: 'horizontal',
+        controls: [
+          {
+            name: 'name',
+            label: '组织名称',
+            type: 'text',
+            placeholder: '请输入组织名称',
+            required: true,
+            validations: {
+              minLength: 2,
+            },
+          },
+          {
+            name: 'logo',
+            label: '组织LOGO',
+            type: 'image',
+            $ref: 'globalImgUpload',
+          },
+          {
+            name: 'sys_desc', // 用于平台使用的组织描述
+            label: '备注信息',
+            placeholder: '请输入备注信息',
+            type: 'textarea',
+          },
+        ],
+      },
+      viewOrg: {
+        type: 'form',
+        horizontal: {
+          left: 'col-md-2',
+          right: 'col-md-10',
+        },
+        controls: [
+          {
+            type: 'tpl',
+            tpl: `
+              <h6 class="cxd-section-header m-t-md m-b-md" style="margin-left: -20px;">组织信息</h6>
+            `,
+          },
+          {
+            name: 'id',
+            label: '组织ID',
+            type: 'tpl',
+            tpl: `
+            <span><%= data.id %></span> 
+            <span class="badge badge-pill badge-info m-l-md">创建于: <%= data.created_time%></span>
+          `,
+          },
+          {
+            type: 'grid',
+            mode: 'normal',
+            columns: [
+              {
+                md: 6,
+                mode: 'horizontal',
+                horizontal: {
+                  left: 'col-md-4',
+                  right: 'col-md-8',
+                },
+                controls: [
+                  {
+                    name: 'config.name',
+                    label: '组织名称',
+                    type: 'static',
+                  },
+                  {
+                    name: 'config.slogan',
+                    label: '组织标语',
+                    type: 'static',
+                  },
+                  {
+                    name: 'config.title',
+                    label: '导航标题',
+                    type: 'static',
+                  },
+                  {
+                    name: 'config.desc',
+                    label: '组织介绍',
+                    type: 'static',
+                  },
+                ],
+              },
+              {
+                md: 6,
+                mode: 'horizontal',
+                horizontal: {
+                  left: 'col-md-3',
+                  right: 'col-md-9',
+                },
+                controls: [
+                  {
+                    name: 'config.logo',
+                    type: 'static-image',
+                    label: 'LOGO',
+                    labelClassName: 'text-right',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'divider',
+          },
+          {
+            type: 'tpl',
+            tpl: `
+              <h6 class="cxd-section-header m-t-md m-b-md" style="margin-left: -20px;">管理员信息</h6>
+              `,
+          },
+          {
+            name: 'id',
+            label: '用户ID',
+            type: 'tpl',
+            tpl: `
+            <span><%= data.id %></span> 
+            <span class="badge badge-pill badge-info m-l-md">创建于: <%= data.created_time%></span>
+          `,
+          },
+          {
+            type: 'grid',
+            mode: 'normal',
+            columns: [
+              {
+                md: 6,
+                mode: 'horizontal',
+                horizontal: {
+                  left: 'col-md-4',
+                  right: 'col-md-8',
+                },
+                controls: [
+                  {
+                    name: 'real_name',
+                    label: '姓名',
+                    type: 'static',
+                  },
+                  {
+                    type: 'static',
+                    name: 'username',
+                    label: '登录账号',
+                  },
+                  {
+                    type: 'static',
+                    name: 'email',
+                    label: '邮箱',
+                  },
+                  {
+                    type: 'static',
+                    name: 'phone',
+                    label: '手机号',
+                  },
+                ],
+              },
+              {
+                md: 6,
+                mode: 'horizontal',
+                horizontal: {
+                  left: 'col-md-3',
+                  right: 'col-md-9',
+                },
+                controls: [
+                  {
+                    name: 'avatar',
+                    type: 'static-image',
+                    label: '头像',
+                    labelClassName: 'text-right',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'static',
+            name: 'desc',
+            label: '描述信息',
           },
         ],
       },
@@ -370,6 +531,8 @@ const orgSchema = {
             type: 'list',
             required: true,
             value: '3',
+            descriptionClassName: 'd-block',
+            description: '所有的操作，均由手动处理，此处只是记录一下而已。',
             options: [
               {
                 label: '已发放',
@@ -387,12 +550,12 @@ const orgSchema = {
           },
           {
             name: 'desc',
-            label: '处理备注',
+            label: '处理备注信息',
             type: 'textarea',
             required: true,
-            placeholder: '请输入处理备注',
+            placeholder: '请输入处理备注信息',
             descriptionClassName: 'd-block',
-            description: '每次处理申请，请务必备注清楚',
+            description: '每次处理申请，请务必备注信息清楚',
           },
         ],
       },

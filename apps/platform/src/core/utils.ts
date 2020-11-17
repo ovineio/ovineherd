@@ -37,7 +37,7 @@ export const getLink = (type: LinkType, orgId: string = getOrgId()): string => {
     case 'login':
       return orgId ? `/org/${orgId}/login` : '/sys/login'
     case 'selfInfo':
-      return orgId ? `/org/${orgId}/setting?#userInfo` : '/sys/setting?#userInfo'
+      return orgId ? `/org/${orgId}/setting?t=1#userInfo` : '/sys/setting?t=1#userInfo'
     default:
       return '/'
   }

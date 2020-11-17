@@ -2,6 +2,7 @@
  * 平台登录
  */
 
+import { Icon } from 'amis/lib/components/icons'
 import React from 'react'
 import ContentLoader from 'react-content-loader'
 import { useHistory, useLocation, Link } from 'react-router-dom'
@@ -12,7 +13,6 @@ import { setStore } from '@core/utils/store'
 import { useAppContext } from '~/components/app/context'
 import { sysUserLoginApi } from '~/core/api/resource'
 import { storeKey } from '~/core/constants'
-
 import { isStrTrue } from '~/core/utils'
 
 import { Login } from './styled'
@@ -41,7 +41,9 @@ const initState = {
 export default () => {
   const history = useHistory()
   const location = useLocation()
-  const { custom } = useAppContext()
+  const { custom, appInfo } = useAppContext()
+
+  const { isSysAdmLogin } = appInfo
 
   const [state, setState] = useImmer<State>(initState)
 
@@ -82,12 +84,11 @@ export default () => {
       setState((d) => {
         d.loading = false
       })
-      const { code, msg } = source || {}
+      const { code, msg, data } = source || {}
       if (code) {
         setErrorTip(msg)
         return
       }
-      const data = source
       setStore(storeKey.auth, data.id)
       setStore(storeKey.userInfo, data)
 
@@ -100,6 +101,12 @@ export default () => {
     <Login>
       <img src={custom.login_bg_img || imgSrc} alt="back-img" className="img-bk" />
       <div className="login-card">
+        {isSysAdmLogin && (
+          <div className="admin-mark">
+            <Icon icon="leftTopMark" />
+            <span>平台管理后台</span>
+          </div>
+        )}
         <div className="side login-form">
           {!custom.login_logo ? (
             <div className="logo-brand">
@@ -141,7 +148,7 @@ export default () => {
           />
           <span className="tip-text">{tips.error}</span>
           <span className="register-text">
-            {isStrTrue(custom.enable_register_org) && (
+            {!isSysAdmLogin && isStrTrue(custom.enable_register_org) && (
               <Link to="/sys/register" className="pull-right">
                 立即申请组织
               </Link>

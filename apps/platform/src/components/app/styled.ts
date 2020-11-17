@@ -7,6 +7,22 @@ export const AppStyle = createGlobalStyle`
         background-color: #faf9f8;
     }
 
+    span.badge {
+        font-size: 10px;
+    }
+
+    .table-cell-image {
+        .cxd-Image {
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            &-thumb {
+                overflow: inherit;
+                height: 100%;
+            }
+        }
+    }
+
     .cxd-Page-main{
         background-color: transparent;
     }
@@ -26,6 +42,9 @@ export const AppStyle = createGlobalStyle`
     .cxd-TextareaControl {
         color: #666;
     }
+    .cxd-Table-toolbar {
+        padding: 0.625rem 20px
+    }
 
     .cxd-section-header {
         font-size: 16px;
@@ -43,5 +62,10 @@ export const AppStyle = createGlobalStyle`
                 margin-left: -20px;
             }
         }
+    }
+
+    .cxd-Table-table > tbody > tr > td,
+    .cxd-Table-table > tbody > tr > th {
+        vertical-align: middle;
     }
 `

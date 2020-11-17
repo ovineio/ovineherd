@@ -99,8 +99,10 @@ export const UserItem = styled.div`
     &.show {
       display: block;
     }
-    li {
+    .info-title {
       padding: 8px 15px;
+    }
+    li {
       list-style: none;
       background: #fff;
       &:not(.info-title):hover {
@@ -109,6 +111,8 @@ export const UserItem = styled.div`
         color: #108cee;
       }
       a {
+        display: block;
+        padding: 8px 15px;
         color: inherit;
       }
       i {

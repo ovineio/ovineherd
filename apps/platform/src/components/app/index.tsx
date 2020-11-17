@@ -1,5 +1,5 @@
 import { AlertComponent, ToastComponent, ContextMenu } from 'amis'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Switch, Router, Route } from 'react-router-dom'
 
 import { ThemeProvider } from 'styled-components'
@@ -26,16 +26,8 @@ export default () => {
     theme: app.theme.getName(),
   })
 
-  const { custom, theme } = state
+  const { theme } = state
   const contextValue = { ...state, setContext: setState as any }
-
-  useEffect(() => {
-    const { title, favicon } = custom
-    if (title) {
-      document.title = title
-      $('link[rel="shortcut icon"]').attr('href', favicon)
-    }
-  }, [custom])
 
   return (
     <Router history={app.routerHistory}>
@@ -55,6 +47,7 @@ export default () => {
             <Switch>
               <Route path="/org/:orgId/login" component={Login} />
               <Route path="/sys/login" component={Login} />
+              <Route path="/sys/admin" component={Login} />
               <Route path="/sys/register" component={Register} />
 
               <PrivateRoute path="/">

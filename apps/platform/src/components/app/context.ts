@@ -20,6 +20,7 @@ export const initState: AppContextState = {
     isSys: true,
     isOrg: false,
     orgId: '',
+    isSysAdmLogin: true,
   },
   userInfo: getUserInfo(),
   custom: getStore<CustomType>(storeKey.siteCustom) || {},

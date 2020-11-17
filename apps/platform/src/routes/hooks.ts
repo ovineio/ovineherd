@@ -22,7 +22,8 @@ function useAppInfo() {
     const type = getAppType(`${app.constants.baseUrl}${pathname.slice(1)}`)
     const isOrg = type === 'org'
     const orgId = isOrg ? getOrgId() : ''
-    return { isOrg, orgId, type, isSys: !isOrg }
+    const isSysAdmLogin = pathname.indexOf('/sys/admin') > -1
+    return { isOrg, orgId, type, isSysAdmLogin, isSys: !isOrg }
   }, [pathname])
 
   return appInfo
@@ -38,10 +39,10 @@ type CustomState = {
   org?: CustomData
 }
 
-// 获取 应用配置 -- 将配置存入本地
+// 应用的配置信息
 export const useAppConfig = () => {
   const [state, setState] = useImmer<CustomState>({})
-  const { setContext } = useAppContext()
+  const { custom, setContext } = useAppContext()
   const appInfo = useAppInfo()
 
   const { orgId } = appInfo
@@ -78,6 +79,15 @@ export const useAppConfig = () => {
     }
   }, [])
 
+  // 设置自定义信息
+  useEffect(() => {
+    const { title, favicon } = custom
+    if (title) {
+      document.title = title
+      $('link[rel="shortcut icon"]').attr('href', favicon)
+    }
+  }, [custom])
+
   useEffect(() => {
     setContext((d) => {
       d.appInfo = appInfo
@@ -97,10 +107,10 @@ export const useAppConfig = () => {
     }
 
     setContext((d) => {
-      const custom = org.slogan ? org : sys
+      const conf = org.slogan ? org : sys
       const info = {
         ...initState.custom,
-        ...custom,
+        ...conf,
       }
       d.custom = info
       setStore(storeKey.siteCustom, info)
@@ -108,6 +118,7 @@ export const useAppConfig = () => {
   }, [org, sys])
 }
 
+// 获取用户信息
 export function useUserInfo(option: { isLogin: boolean }) {
   const { setContext } = useAppContext()
   const { isLogin } = option

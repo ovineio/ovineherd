@@ -15,6 +15,27 @@ export const Login = styled.div`
     transform: translate(-50%, -50%);
     opacity: 0.5;
   }
+  .admin-mark {
+    position: absolute;
+    top: 0;
+    left: -5px;
+    span {
+      position: absolute;
+      z-index: 2;
+      display: block;
+      left: 0;
+      top: 0;
+      width: 100%;
+      line-height: 23px;
+      text-align: center;
+      text-indent: -5px;
+      color: #fff;
+    }
+  }
+  .icon-leftTopMark {
+    width: 100px;
+    height: 30px;
+  }
 
   a {
     color: #167ffc;
@@ -26,7 +47,6 @@ export const Login = styled.div`
   .login-card {
     display: flex;
     flex-wrap: nowrap;
-    overflow: hidden;
     width: 600px;
     height: 400px;
     position: absolute;

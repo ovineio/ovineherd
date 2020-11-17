@@ -5,7 +5,6 @@ import { Amis } from '@core/components/amis/schema'
 import Tabs from '~/components/tabs'
 
 import orgSchema from './schema'
-// import * as S from './styled'
 
 export default () => {
   return (

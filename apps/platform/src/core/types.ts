@@ -23,6 +23,7 @@ export type AppInfo = {
   type: AppType
   isOrg: boolean
   isSys: boolean
+  isSysAdmLogin: boolean
   orgId?: string
 }
 

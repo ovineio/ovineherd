@@ -7,7 +7,9 @@ import ContentLoader from 'react-content-loader'
 import { Link } from 'react-router-dom'
 
 import { Amis } from '@core/components/amis/schema'
+import { publish } from '@ovine/core/lib/utils/message'
 
+import { msgKey } from '~/core/constants'
 import { getLink } from '~/core/utils'
 
 import { useAppContext } from '../app/context'
@@ -57,7 +59,7 @@ export default () => {
                   <span>{info.real_name}</span>
                 </li>
                 <li>
-                  <Link to={selfInfoLink}>
+                  <Link to={selfInfoLink} onClick={() => publish(msgKey.activeUserInfoTab)}>
                     <i className="iconfont icon-myaccount" />
                     <span>个人资料</span>
                   </Link>

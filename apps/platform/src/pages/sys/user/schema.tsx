@@ -11,13 +11,9 @@ const orgSchema = {
         title: '管理员列表',
         body: {
           type: 'crud',
+          $ref: 'globalCrudCCommon',
           api: '$preset.apis.listUser',
           name: 'userList',
-          filterTogglable: false,
-          perPageAvailable: [20, 50, 150],
-          defaultParams: {
-            perPage: 20,
-          },
           headerToolbar: ['$preset.forms.filter', '$preset.actions.add'],
           footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
           columns: [

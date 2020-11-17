@@ -14,6 +14,7 @@ export const storeKey = {
 // 用于消息通知的key
 export const msgKey = {
   updateSelfInfo: 'updateSelfInfoMsg',
+  activeUserInfoTab: 'activeUserInfoTabMsg',
 }
 
 export const entityType = {

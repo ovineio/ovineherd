@@ -11,14 +11,20 @@ import { initLogger } from '@core/utils/logger'
 import { DeepPartial } from '@core/utils/types'
 
 import App from './components/app'
+import { schemaDefinitions } from './core/amis'
 import appEnv from './core/env'
 import appRequestIns from './core/request'
+
+import './icons'
 
 const appRootId = '#app-root'
 
 const appConfig: DeepPartial<AppConfig> = {
   request: appRequestIns,
   env: appEnv,
+  amis: {
+    definitions: schemaDefinitions,
+  },
   // constants: {
   //   baseUrl: window.__POWERED_BY_QIANKUN__ ? '/platform/' : '/',
   // },

@@ -8,11 +8,26 @@ const store = {
 }
 
 function sysListOrgReqOpt() {
-  const reqOption = getReqOption({
-    ...relation.org.entity,
-    apiName: ApiName.list,
-    '&': '$$',
-  })
+  const reqOption = getReqOption(
+    {
+      ...relation.org.entity,
+      apiName: ApiName.list,
+      '&': '$$',
+    },
+    {
+      onSuccess: (source) => {
+        source.data.items = source.data.items.map((data) => {
+          const { relation1_data: config, relation2_data: user, ...rest } = data
+          return {
+            config,
+            user,
+            ...rest,
+          }
+        })
+        return source
+      },
+    }
+  )
 
   return reqOption
 }
@@ -28,6 +43,16 @@ function sysAddOrgReqOpt() {
       }
     },
   }
+}
+
+function sysEditOrgReqOpt() {
+  const reqOption = getReqOption({
+    ...relation.org.orgInfo,
+    apiName: ApiName.edit,
+    '&': '$$',
+  })
+
+  return reqOption
 }
 
 function sysListApplyReqOpt() {
@@ -50,10 +75,21 @@ function sysCheckOrgApplyReqOpt() {
   return reqOption
 }
 
+export function sysDelOrgReqOpt() {
+  const reqOption = getReqOption({
+    ...relation.org.entity,
+    apiName: ApiName.del,
+  })
+
+  return reqOption
+}
+
 export const sysOrgApis = {
   store,
   listOrg: sysListOrgReqOpt(),
   listOrgApply: sysListApplyReqOpt(),
   checkOrgApply: sysCheckOrgApplyReqOpt(),
+  delOrg: sysDelOrgReqOpt(),
   addOrg: sysAddOrgReqOpt(),
+  editOrg: sysEditOrgReqOpt(),
 }

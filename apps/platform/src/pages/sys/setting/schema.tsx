@@ -6,6 +6,7 @@ export const settingSchema = {
   body: {
     type: 'tabs',
     mode: 'vertical',
+    activeKey: 'userInfo',
     tabs: [
       {
         title: '个人信息',
