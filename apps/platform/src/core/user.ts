@@ -15,22 +15,27 @@ let userInfo: any = getStore(storeKey.userInfo) || {}
 
 // 根据 token 获取用户信息
 export async function fetchUserInfo() {
-  return userSelfInfoApi({ id: getUserId() }).then((source) => {
-    userInfo = source
-    setStore(storeKey.userInfo, source)
-    return userInfo
+  return userSelfInfoApi({ id: getToken() }).then((source) => {
+    setUserInfo(source)
+    return source
   })
+}
+
+export function setUserInfo(info: any) {
+  userInfo = info
+  setStore(storeKey.userInfo, info)
 }
 
 // 获取缓存的用户信息
 export function getUserInfo() {
-  return userInfo
+  return userInfo || getStore(storeKey.userInfo) || {}
 }
 
 // 判断用户是否是登陆状态
 export function isLogin(type?: AppType, isolation: boolean = false) {
   const withAuth = !!getStore(storeKey.auth)
 
+  // debugger
   if (!withAuth) {
     return false
   }
@@ -47,6 +52,10 @@ export function isLogin(type?: AppType, isolation: boolean = false) {
   }
 
   return false
+}
+
+export function getToken() {
+  return getStore(storeKey.auth) || ''
 }
 
 // 获取用户ID

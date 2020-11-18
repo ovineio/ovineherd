@@ -35,7 +35,6 @@ export function sysUserLoginApi(option: ApiData) {
     {
       ...option,
       onlyData: false,
-      type: relation.sys.user.type,
     },
     {
       // 不提示错误信息
@@ -58,20 +57,26 @@ export function sysConfigApi() {
   return requestByOption({
     onlyOne: true,
     apiName: ApiName.list,
-    ...relation.sys.entityInfo,
+    ...relation.sys.sysInfo,
   })
 }
 
 // 获取 组织配置
 export function orgConfigApi(option: { orgId: string }) {
-  return requestByOption({
-    ...relation.sys.entityInfo,
-    apiName: ApiName.list,
-    onlyOne: true,
-    query: {
-      relation1: option.orgId,
+  return requestByOption(
+    {
+      ...relation.org.entity,
+      apiName: ApiName.one,
+      onlyOne: true,
+      id: option.orgId,
     },
-  })
+    {
+      onSuccess: (source) => {
+        source.data = source.data.relation1_data
+        return source
+      },
+    }
+  )
 }
 
 // 注册一个 组织，提交到 平台管理员审核列表
@@ -179,7 +184,7 @@ export function sysListOrgApplyCheckReqOpt() {
 // 平台管理员 修改平台 信息
 export function sysEditInfoReqOpt() {
   const reqOption = getReqOption({
-    ...relation.sys.entityInfo,
+    ...relation.sys.sysInfo,
     apiName: ApiName.edit,
     '&': '$$',
   })

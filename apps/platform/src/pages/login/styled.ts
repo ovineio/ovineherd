@@ -35,6 +35,9 @@ export const Login = styled.div`
   .icon-leftTopMark {
     width: 100px;
     height: 30px;
+    path {
+      fill: #4966e0;
+    }
   }
 
   a {

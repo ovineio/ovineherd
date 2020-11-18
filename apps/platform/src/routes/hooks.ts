@@ -11,7 +11,7 @@ import { orgConfigApi, sysConfigApi } from '~/core/api/resource'
 import { msgKey, storeKey } from '~/core/constants'
 import { AppInfo, CustomType } from '~/core/types'
 import { fetchUserInfo } from '~/core/user'
-import { getAppType, getOrgId } from '~/core/utils'
+import { getAppType, getOrgId, isSysAdmLogin } from '~/core/utils'
 
 // 获取 应用 基本信息
 function useAppInfo() {
@@ -20,10 +20,10 @@ function useAppInfo() {
 
   const appInfo: AppInfo = useMemo(() => {
     const type = getAppType(`${app.constants.baseUrl}${pathname.slice(1)}`)
+
     const isOrg = type === 'org'
     const orgId = isOrg ? getOrgId() : ''
-    const isSysAdmLogin = pathname.indexOf('/sys/admin') > -1
-    return { isOrg, orgId, type, isSysAdmLogin, isSys: !isOrg }
+    return { isOrg, orgId, type, isSysAdmLogin: isSysAdmLogin(pathname), isSys: !isOrg }
   }, [pathname])
 
   return appInfo
@@ -124,7 +124,7 @@ export function useUserInfo(option: { isLogin: boolean }) {
   const { isLogin } = option
 
   const fetchInfo = () => {
-    fetchUserInfo().then((userInfo) => {
+    fetchUserInfo().then((userInfo: any) => {
       setContext((d) => {
         d.userInfo = userInfo
       })

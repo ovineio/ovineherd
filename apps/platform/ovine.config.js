@@ -11,7 +11,7 @@ module.exports = (option) => {
 
   const publicPathMap = {
     localhost: `http://localhost:${port}/platform/`,
-    staging: 'https://ovine.igroupes.com/platform/',
+    staging: 'http://ovine.igroupes.com/platform/',
     production: 'https://cdn-igroupes.com/ovine/',
   }
 

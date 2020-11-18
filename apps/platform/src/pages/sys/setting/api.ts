@@ -36,7 +36,7 @@ export function sysUserEditSelfReqOpt() {
 function sysInfoReqOpt() {
   const reqOption = getReqOption(
     {
-      ...relation.sys.entityInfo,
+      ...relation.sys.sysInfo,
       apiName: ApiName.list,
     },
     {
@@ -53,7 +53,7 @@ function sysInfoReqOpt() {
 function sysEditInfoReqOpt() {
   const reqOption = getReqOption(
     {
-      ...relation.sys.entityInfo,
+      ...relation.sys.sysInfo,
       apiName: ApiName.edit,
       '&': '$$',
     },

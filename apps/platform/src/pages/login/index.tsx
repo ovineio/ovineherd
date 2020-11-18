@@ -5,15 +5,16 @@
 import { Icon } from 'amis/lib/components/icons'
 import React from 'react'
 import ContentLoader from 'react-content-loader'
-import { useHistory, useLocation, Link } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
 import { useImmer } from '@core/utils/hooks'
 import { setStore } from '@core/utils/store'
 
 import { useAppContext } from '~/components/app/context'
 import { sysUserLoginApi } from '~/core/api/resource'
-import { storeKey } from '~/core/constants'
-import { isStrTrue } from '~/core/utils'
+import { relation, storeKey } from '~/core/constants'
+import { isOrgUser, setUserInfo } from '~/core/user'
+import { getLink, isStrTrue } from '~/core/utils'
 
 import { Login } from './styled'
 
@@ -40,7 +41,6 @@ const initState = {
 }
 export default () => {
   const history = useHistory()
-  const location = useLocation()
   const { custom, appInfo } = useAppContext()
 
   const { isSysAdmLogin } = appInfo
@@ -79,6 +79,7 @@ export default () => {
 
     sysUserLoginApi({
       ...inputs,
+      type: isSysAdmLogin ? relation.sys.user.type : relation.org.user.type,
       onlyData: false,
     }).then((source: any) => {
       setState((d) => {
@@ -90,10 +91,10 @@ export default () => {
         return
       }
       setStore(storeKey.auth, data.id)
-      setStore(storeKey.userInfo, data)
+      setUserInfo(data)
 
-      const locState: any = location.state || { from: { pathname: '/sys/' } }
-      history.replace(locState.from)
+      const home = getLink('home', isOrgUser() ? data.relation2 : '')
+      history.replace(home)
     })
   }
 

@@ -1,4 +1,9 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 import { app } from '@core/app'
+
+import { getLink } from '~/core/utils'
 
 import { sysOrgApis } from './api'
 
@@ -29,7 +34,20 @@ const orgSchema = {
             {
               name: 'config.name',
               label: '组织名称',
-              type: 'text',
+              type: 'container',
+              body: {
+                component: (props) => {
+                  const { config, user, id } = props.data
+                  return (
+                    <Link
+                      to={`${getLink('login', id)}?username=${user.username}`}
+                      title="点击进入组织后台"
+                    >
+                      {config.name}
+                    </Link>
+                  )
+                },
+              },
             },
             {
               name: 'config.logo',

@@ -24,6 +24,9 @@ export const isSys = (type?: AppType) => checkAppType('sys', type)
 // 组织检测
 export const isOrg = (type?: AppType) => checkAppType('org', type)
 
+export const isSysAdmLogin = (path: string = window.location.pathname) =>
+  path.indexOf('/sys/admin') > -1
+
 export const getAppType = (pathName?: string): AppType =>
   checkAppType('org', undefined, pathName) ? 'org' : 'sys'
 
@@ -31,13 +34,15 @@ export const getAppType = (pathName?: string): AppType =>
 export const getOrgId = (): string =>
   get(window.location.pathname.match(/\/org\/(.+)\//), '1') || ''
 
-type LinkType = 'login' | 'selfInfo'
+type LinkType = 'home' | 'login' | 'selfInfo'
 export const getLink = (type: LinkType, orgId: string = getOrgId()): string => {
   switch (type) {
     case 'login':
-      return orgId ? `/org/${orgId}/login` : '/sys/login'
+      return orgId ? `/org/${orgId}/login` : isSys() ? '/sys/admin' : '/sys/login'
     case 'selfInfo':
       return orgId ? `/org/${orgId}/setting?t=1#userInfo` : '/sys/setting?t=1#userInfo'
+    case 'home':
+      return orgId ? `/org/${orgId}/` : '/sys/'
     default:
       return '/'
   }

@@ -22,8 +22,8 @@ export default () => {
   const selfInfoLink = getLink('selfInfo', appInfo.orgId)
 
   const renderAvatar = () => {
-    return info.avatar ? (
-      <img className="avatar-img" src={info.avatar} alt="头像" />
+    return info.avatar || !info.real_name ? (
+      <img className="avatar-img text-sm" src={info.avatar} alt="头像" />
     ) : (
       <div className="avatar-img">{info.real_name.substr(0, 1)}</div>
     )

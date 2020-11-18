@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 
 import { useAppContext } from '~/components/app/context'
@@ -18,12 +18,20 @@ export const PrivateRoute = ({ children, ...rest }) => {
   const { custom, appInfo } = useAppContext()
   const { orgId, type } = appInfo
 
-  const isLoginApp = isLogin(type, custom.isolation)
+  const [isMounted, setMounted] = useState(false)
   const loginLink = getLink('login', orgId)
+  const isLoginApp = isMounted && isLogin(type, custom.isolation)
 
   useUserInfo({
-    isLogin: isLoginApp,
+    isLogin: isMounted && isLoginApp,
   })
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <Route

@@ -43,7 +43,7 @@ export const relation = {
       type: entityType.system,
       relation1_type: 'config', // 平台配置 信息
     },
-    entityInfo: {
+    sysInfo: {
       apiType: ApiType.config,
       type: entityType.system,
     },
