@@ -6,7 +6,7 @@ export const StyledAppCards = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 160px;
+    height: 180px;
     background-color: #fff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     transition: all 0.3s cubic-bezier(0.44, 0.9, 0.6, 0.94);
@@ -24,7 +24,7 @@ export const StyledAppCards = styled.div`
 `
 
 export const StyledCardItem = styled.div`
-  height: 160px;
+  height: 180px;
   margin-bottom: 16px;
   &:hover {
     .item-info {
@@ -69,7 +69,7 @@ export const StyledCardItem = styled.div`
 
   .item-cover {
     height: 100%;
-    background-size: cover;
+    background-size: 100% 136px;
   }
 
   .item-actions {
@@ -95,6 +95,7 @@ export const StyledCardItem = styled.div`
     z-index: 3;
     bottom: 0;
     left: 0;
+    width: 100%;
     padding: 12px 16px 12px;
     font-size: 14px;
     box-sizing: border-box;

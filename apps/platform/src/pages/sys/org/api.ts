@@ -36,6 +36,7 @@ function sysAddOrgReqOpt() {
   return {
     url: 'fakeAddOrg',
     onFakeRequest: async (option) => {
+      option.data.title = option.data.name
       const { orgId } = await sysCreateOrgApi(option.data)
       store.addOrgId = orgId
       return {

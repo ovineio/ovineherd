@@ -24,6 +24,7 @@ const appConfig: DeepPartial<AppConfig> = {
   env: appEnv,
   amis: {
     definitions: schemaDefinitions,
+    affixOffsetTop: 60,
   },
   // constants: {
   //   baseUrl: window.__POWERED_BY_QIANKUN__ ? '/platform/' : '/',

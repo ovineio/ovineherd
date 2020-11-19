@@ -55,7 +55,7 @@ export default (props: LayoutProps) => {
   return (
     <S.Layout>
       <Header menus={menus[appInfo.type]} urlPrefix={url} />
-      <S.Body className="py-4">
+      <S.Body className="m-t-md">
         {params.orgId ? (
           <OrgRoutes pathPrefix={`/org/${params.orgId}/`} />
         ) : (

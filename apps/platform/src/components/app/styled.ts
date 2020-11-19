@@ -11,6 +11,10 @@ export const AppStyle = createGlobalStyle`
         font-size: 10px;
     }
 
+    .cxd-ImageControl-pasteTip {
+        z-index: 2;
+    }
+
     .table-cell-image {
         .cxd-Image {
             width: 50px;

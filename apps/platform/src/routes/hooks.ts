@@ -107,10 +107,12 @@ export const useAppConfig = () => {
     }
 
     setContext((d) => {
-      const conf = org.slogan ? org : sys
+      // 暂时先忽略 slogan 配置
+      // const conf = org.slogan ? org : sys
       const info = {
         ...initState.custom,
-        ...conf,
+        ...sys,
+        ...org,
       }
       d.custom = info
       setStore(storeKey.siteCustom, info)

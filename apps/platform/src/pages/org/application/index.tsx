@@ -1,49 +1,85 @@
-import React from 'react'
+import { confirm, toast } from 'amis'
+import React, { useEffect } from 'react'
 
 import { Amis } from '@core/components/amis/schema'
-import { useImmer } from '@core/utils/hooks'
-import { choice } from '@core/utils/tool'
+import { useImmer, useSubscriber } from '@core/utils/hooks'
+import { publish } from '@core/utils/message'
 
+import { msgKey } from '~/core/constants'
+
+import { appApis } from './api'
+import { AppControls } from './schema'
 import * as S from './styled'
 
-const testImgs = [
-  'https://striker.teambition.net/thumbnail/110icf34e88844ff7d5a862d8373b2a7f2e6/w/600/h/300',
-  'https://tcs-ga.teambition.net/thumbnail/110z3251840899548ed5f8779ecc5d4afe64/w/600/h/300',
-  'https://tcs-ga.teambition.net/thumbnail/111t8347eb9f695618c61aa97eff2b5318a1/w/600/h/300',
-]
-
-const icoImg = 'https://cp.greennode.info/favicon.ico'
+const defBg =
+  'https://striker.teambition.net/thumbnail/110icf34e88844ff7d5a862d8373b2a7f2e6/w/600/h/300'
+const defIcon = 'https://cp.greennode.info/favicon.ico'
 
 type ItemProps = {
-  // info: any
-  toggleDialog: () => void
+  item: any
+  toggleDialog: (toggle: boolean, info: any) => void
 }
 const CardItem = (props: ItemProps) => {
-  const { toggleDialog } = props
+  const { toggleDialog, item = {} } = props
+
+  const { id, config = {}, user = {} } = item
 
   const itemBgStyle = {
-    backgroundImage: `url(${choice(testImgs)})`,
+    backgroundImage: `url(${config.org_app_bg || defBg})`,
   }
   const icoImgStyle = {
-    backgroundImage: `url(${icoImg})`,
+    backgroundImage: `url(${config.logo || defIcon})`,
+  }
+
+  const onEditClick = () => {
+    config.username = user.username
+    config.user_id = user.id
+    toggleDialog(true, config)
+  }
+
+  const onDelClick = () => {
+    confirm(
+      `确认是否删除该应用 【${config.name}】,删除应用后将不可恢复！请谨慎操作～`,
+      '删除确认'
+    ).then(async (choose) => {
+      if (choose) {
+        await appApis.orgDelAppApi(id)
+        publish(msgKey.updateOrgAppList)
+        toast.success('删除应用成功')
+      }
+    })
   }
 
   return (
-    <S.StyledCardItem className="col-lg-3" onClick={toggleDialog}>
+    <S.StyledCardItem className="col-lg-3">
       <div className="item-content">
         <div className="item-cover" style={itemBgStyle} />
         <div className="item-mask" />
         <ul className="item-actions">
-          <li className="fa fa-cog" data-tooltip="编辑" data-position="bottom" />
-          <li className="fa fa-trash-o" data-tooltip="删除  " data-position="bottom" />
+          <li
+            className="fa fa-cog"
+            data-tooltip="编辑"
+            data-position="bottom"
+            onClick={onEditClick}
+          />
+          <li
+            className="fa fa-trash-o"
+            data-tooltip="删除  "
+            data-position="bottom"
+            onClick={onDelClick}
+          />
         </ul>
         <div className="item-info">
           <h6 className="item-title">
             <i style={icoImgStyle} />
-            <span>项目名称好牛逼</span>
+            <span>{config.name}</span>
           </h6>
           <p>
-            一大堆描述文案。，一大堆描述文案一大堆描述文案一大堆描述文案大堆描述文案一大堆描述文案一大堆描述文案大堆描述文案一大堆描述文案一大堆描述文案大堆描述文案一大堆描述文案一大堆描述文案
+            {config.org_desc ? (
+              config.org_desc
+            ) : (
+              <span className="text-secondary">暂无应用描述</span>
+            )}
           </p>
         </div>
       </div>
@@ -54,17 +90,21 @@ const CardItem = (props: ItemProps) => {
 type State = {
   showUpdateDialog: boolean
   activeItemInfo: any
+  listSource: any[]
 }
 
 const initState = {
   showUpdateDialog: false,
   activeItemInfo: {},
+  listSource: [],
 }
 
 export default () => {
   const [state, setState] = useImmer<State>(initState)
 
-  const { showUpdateDialog, activeItemInfo } = state
+  const { showUpdateDialog, activeItemInfo, listSource } = state
+
+  const isEdit = !!activeItemInfo.id
 
   const toggleDialog = (toggle, info = {}) => {
     setState((d) => {
@@ -73,61 +113,36 @@ export default () => {
     })
   }
 
+  const fetchList = () => {
+    appApis.orgListAppApi().then((source) => {
+      setState((d) => {
+        d.listSource = source
+      })
+    })
+  }
+
   const updateDialogSchema = {
     type: 'dialog',
     show: showUpdateDialog,
     onClose: toggleDialog,
-    title: '创建一个新应用',
     data: activeItemInfo,
+    title: isEdit ? '编辑应用' : '创建一个新应用',
     bodyClassName: 'p-b-none',
     body: {
       type: 'form',
-      controls: [
-        {
-          type: 'text',
-          name: 'name',
-          label: '名称',
-          placeholder: '请填写应用名称',
-          required: true,
-        },
-        {
-          type: 'text',
-          name: 'path',
-          label: '短路径',
-          placeholder: '不填将自动生成',
-          description: '后续将不能修改',
-        },
-        {
-          type: 'textarea',
-          name: 'remark',
-          label: '应用描述',
-          placeholder: '请填写应用描述',
-        },
-        {
-          type: 'divider',
-        },
-        {
-          type: 'group',
-          label: ' ',
-          controls: [
-            {
-              type: 'image',
-              name: 'logo',
-              mode: 'nomral',
-              label: '上传LOGO',
-            },
-            {
-              type: 'image',
-              name: 'bg_img',
-              mode: 'nomral',
-              labelClassName: 'text-right',
-              label: '背景图片',
-            },
-          ],
-        },
-      ],
+      api: isEdit ? appApis.editApp : appApis.addApp,
+      controls: AppControls,
     },
   }
+
+  useEffect(() => {
+    fetchList()
+  }, [])
+
+  useSubscriber(msgKey.updateOrgAppList, () => {
+    toggleDialog(false)
+    fetchList()
+  })
 
   return (
     <S.StyledAppCards className="container">
@@ -139,9 +154,9 @@ export default () => {
             <span>添加一个新应用</span>
           </div>
         </div>
-        <CardItem toggleDialog={() => toggleDialog(true, {})} />
-        <CardItem toggleDialog={() => toggleDialog(true, {})} />
-        <CardItem toggleDialog={() => toggleDialog(true, {})} />
+        {listSource.map((item, index) => {
+          return <CardItem key={index} item={item} toggleDialog={toggleDialog} />
+        })}
       </div>
       <Amis schema={updateDialogSchema} />
     </S.StyledAppCards>

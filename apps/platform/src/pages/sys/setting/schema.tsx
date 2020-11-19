@@ -389,5 +389,3 @@ export const settingSchema = {
     },
   },
 }
-
-export default settingSchema

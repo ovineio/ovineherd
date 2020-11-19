@@ -3,7 +3,6 @@
  */
 
 import { get, map, omitBy } from 'lodash'
-import { stringify } from 'qs'
 
 import { app } from '@core/app'
 import { ReqOption, ReqApiRes } from '@core/utils/request/types'
@@ -139,26 +138,27 @@ export const getApiQuery = (data: any) => {
     }
   })
 
+  const omitInvalidParams = (p: object): any =>
+    omitBy(p, (v) => v === '' || typeof v === 'undefined')
+
   const queryParams = {
     type,
     ...reset,
-    query: getApiConditionStr({
-      ...query,
-      ...queryObj,
-    }),
-    names: getApiConditionStr({
-      ...names,
-      ...namesObj,
-    }),
+    query: getApiConditionStr(
+      omitInvalidParams({
+        ...query,
+        ...queryObj,
+      })
+    ),
+    names: getApiConditionStr(
+      omitInvalidParams({
+        ...names,
+        ...namesObj,
+      })
+    ),
   }
 
-  return omitBy(queryParams, (val) => val === '' || typeof val === 'undefined')
-}
-
-export const getApiQueryStr = (data: any) => {
-  const queryStr = stringify(getApiQuery(data))
-
-  return queryStr
+  return omitInvalidParams(queryParams)
 }
 
 export const getOneItem = (source: any) => {

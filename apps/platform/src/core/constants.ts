@@ -15,6 +15,7 @@ export const storeKey = {
 export const msgKey = {
   updateSelfInfo: 'updateSelfInfoMsg',
   activeUserInfoTab: 'activeUserInfoTabMsg',
+  updateOrgAppList: 'updateOrgAppListMsg',
 }
 
 export const entityType = {
@@ -61,23 +62,22 @@ export const relation = {
     orgRegisterApply: {
       apiType: ApiType.product,
       type: entityType.systemOrgApply,
-      relation1_type: 'user', // 关联 审核人
+      relation1_type: ApiType.user, // 关联 审核人
     },
   },
   org: {
     entity: {
       apiType: ApiType.category,
       type: entityType.org,
-      relation1_type: 'config', // 关联组织配置
-      relation2_type: 'user', // 关联当前组织管理员
+      relation1_type: ApiType.config, // 关联组织配置
+      relation2_type: ApiType.user, // 关联当前组织管理员
       // org 实体只有一级 关系，暂时写死
       path: '1',
       level: '1',
       parent_id: '1',
     },
-
     orgInfo: {
-      apiType: ApiType.config,
+      apiType: ApiType.config, // 该 type 需要拼接 orgId
       type: entityType.org,
     },
     user: {
@@ -91,5 +91,23 @@ export const relation = {
     //   type: entityType.orgUser,
     //   relation1_type: 'user', // 组织管理员 信息
     // },
+  },
+  app: {
+    entity: {
+      apiType: ApiType.product,
+      type: entityType.app,
+      relation1_type: ApiType.config, // 关联配置信息
+      relation2_type: ApiType.user, // 关联管理员---独立应用才需要
+    },
+    appInfo: {
+      apiType: ApiType.config,
+      type: entityType.app,
+    },
+    user: {
+      apiType: ApiType.user,
+      type: entityType.orgUser, // 该 type 需要拼接 appId
+      relation1_type: ApiType.config, // 应用管理员配置 信息
+      relation2_type: ApiType.product, // 应用管理员配置 关联的 应用
+    },
   },
 }

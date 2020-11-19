@@ -21,9 +21,11 @@ export default (props: Props) => {
 
   const { title, logo } = custom
 
+  // console.log('@===>', custom)
+
   return (
-    <S.Header>
-      <nav className="navbar sticky-top navbar-expand-lg navbar-light">
+    <S.Header className="fixed-top">
+      <nav className="navbar  navbar-expand-lg navbar-light">
         <div className="container flex-wrap flex-md-nowrap py-0 px-3">
           {!logo ? (
             <ContentLoader

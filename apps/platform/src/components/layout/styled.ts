@@ -3,7 +3,6 @@ import styled from 'styled-components'
 const HeaderHeight = 60
 
 export const Header = styled.div`
-  position: relative;
   height: ${HeaderHeight}px;
   background-color: #fff;
   box-shadow: 0 1px 4px 0 rgba(0, 21, 41, 0.12);
@@ -46,10 +45,13 @@ export const Header = styled.div`
 `
 
 export const Layout = styled.div`
+  padding-top: 60px;
   background-color: #faf9f8;
 `
 
-export const Body = styled.div``
+export const Body = styled.div`
+  /* padding-top: 60px; */
+`
 
 export const UserItem = styled.div`
   position: relative;
@@ -63,6 +65,9 @@ export const UserItem = styled.div`
     &:hover {
       border-color: #e0e0e0;
     }
+  }
+  img.avatar-img {
+    background-color: #fff;
   }
   .avatar-img {
     width: 40px;
@@ -89,22 +94,25 @@ export const UserItem = styled.div`
     display: none;
     box-sizing: border-box;
     position: absolute;
-    width: 120px;
+    min-width: 120px;
     right: 0;
     top: 50px;
     font-size: 14px;
     box-shadow: 0 1px 4px 0 rgba(0, 21, 41, 0.12);
     margin: 0;
     padding: 0;
+
     &.show {
       display: block;
     }
+
     .info-title {
       padding: 8px 15px;
     }
     li {
       list-style: none;
       background: #fff;
+      white-space: nowrap;
       &:not(.info-title):hover {
         cursor: pointer;
         background-color: rgb(241 241 241);
@@ -121,6 +129,9 @@ export const UserItem = styled.div`
         text-align: center;
         margin-right: 8px;
         font-size: 14px;
+      }
+      span {
+        white-space: nowrap;
       }
     }
   }

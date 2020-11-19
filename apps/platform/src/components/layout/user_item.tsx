@@ -23,7 +23,11 @@ export default () => {
 
   const renderAvatar = () => {
     return info.avatar || !info.real_name ? (
-      <img className="avatar-img text-sm" src={info.avatar} alt="头像" />
+      <img
+        className="avatar-img text-sm"
+        src={info.avatar || 'http://static.igroupes.com/default_avatar.jpg'}
+        alt="头像"
+      />
     ) : (
       <div className="avatar-img">{info.real_name.substr(0, 1)}</div>
     )
@@ -56,7 +60,7 @@ export default () => {
               <ul className="info-action">
                 <li className="info-title">
                   {renderAvatar()}
-                  <span>{info.real_name}</span>
+                  <span>{info.real_name || '未填写姓名'}</span>
                 </li>
                 <li>
                   <Link to={selfInfoLink} onClick={() => publish(msgKey.activeUserInfoTab)}>

@@ -18,8 +18,8 @@ export const schemaDefinitions = {
     reciever: apis.file.upload,
     maxSize: 500 * 1000,
     limit: {
-      maxWidth: 500,
-      maxHeight: 500,
+      maxWidth: 2000,
+      maxHeight: 2000,
     },
     crop: {
       aspectRatio: 1,

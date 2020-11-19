@@ -7,6 +7,15 @@ import { getLink } from '~/core/utils'
 
 import { sysOrgApis } from './api'
 
+const ToOrgLogin = (props) => {
+  const { user = {}, id } = props.data
+  return (
+    <Link to={`${getLink('login', id)}?username=${user.username}`} title="点击进入组织后台">
+      登录组织
+    </Link>
+  )
+}
+
 const orgSchema = {
   type: 'page',
   bodyClassName: 'p-none',
@@ -34,23 +43,10 @@ const orgSchema = {
             {
               name: 'config.name',
               label: '组织名称',
-              type: 'container',
-              body: {
-                component: (props) => {
-                  const { config, user, id } = props.data
-                  return (
-                    <Link
-                      to={`${getLink('login', id)}?username=${user.username}`}
-                      title="点击进入组织后台"
-                    >
-                      {config.name}
-                    </Link>
-                  )
-                },
-              },
+              type: 'text',
             },
             {
-              name: 'config.logo',
+              name: 'logo',
               label: '组织LOGO',
               type: 'image',
               $ref: 'globalImageCell',
@@ -61,9 +57,9 @@ const orgSchema = {
               type: 'tpl',
               tpl: `
                 <% if(data.isolation) {%>
-                  <span class="badge badge-pill badge-primary">独立应用</span>
+                  <span class="badge badge-pill badge-primary">独立组织</span>
                 <% } else { %>
-                  <span class="badge badge-pill badge-info">普通应用</span>
+                  <span class="badge badge-pill badge-info">普通组织</span>
                 <%  } %>
               `,
             },
@@ -92,9 +88,10 @@ const orgSchema = {
             {
               type: 'operation',
               label: '操作',
-              width: 120,
+              width: 170,
               buttons: [
                 '$preset.actions.viewOrg',
+                '$preset.actions.loginOrg',
                 '$preset.actions.editOrg',
                 '$preset.actions.delOrg',
               ],
@@ -194,6 +191,13 @@ const orgSchema = {
           body: '$preset.forms.addOrg',
         },
       },
+      loginOrg: {
+        type: 'container',
+        className: 'cxd-Button cxd-Button--link cxd-Button--sm',
+        body: {
+          component: ToOrgLogin,
+        },
+      },
       viewOrg: {
         type: 'action',
         label: '查看',
@@ -235,7 +239,7 @@ const orgSchema = {
         actionType: 'ajax',
         confirmText:
           // eslint-disable-next-line
-          '[删除确认] 确认要删除该组织: 【${config.name|default:-}】，组织删除后将不可恢复?',
+          '[删除确认] 确认要删除该组织: 【${config.name|default:-}】，组织删除后将不可恢复，请谨慎操作～',
         api: '$preset.apis.delOrg',
       },
       checkOrgApply: {
@@ -290,12 +294,13 @@ const orgSchema = {
                 name: 'logo',
                 label: '组织LOGO',
                 type: 'image',
+                $ref: 'globalImgUpload',
               },
               {
                 $ref: 'globalSwitch',
                 name: 'isolation',
                 label: '是否独立',
-                option: '设置为独立应用，将使用独立体系',
+                option: '设置为独立组织，将使用独立组织体系',
               },
               {
                 name: 'sys_desc', // 用于平台使用的组织描述
@@ -524,12 +529,13 @@ const orgSchema = {
         type: 'form',
         wrapWithPanel: false,
         mode: 'inline',
+        target: 'orgList',
         controls: [
           {
             type: 'text',
-            name: 'q_id',
-            placeholder: '请输入ID',
-            target: 'orgList',
+            name: 'n_name',
+            placeholder: '请输入 组织名称',
+            clearable: true,
             addOn: {
               iconOnly: true,
               icon: 'iconfont icon-ai-search',
@@ -550,7 +556,7 @@ const orgSchema = {
             required: true,
             value: '3',
             descriptionClassName: 'd-block',
-            description: '所有的操作，均由手动处理，此处只是记录一下而已。',
+            description: '所有的操作，均由手动处理，此处只是用作记录',
             options: [
               {
                 label: '已发放',
