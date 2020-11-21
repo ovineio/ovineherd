@@ -1,3 +1,5 @@
+import members from './members'
+
 export const orgRoleSchema = {
   type: 'page',
   bodyClassName: 'p-none',
@@ -10,124 +12,53 @@ export const orgRoleSchema = {
         hash: 'roleList',
         body: {
           type: 'crud',
-          data: {
-            items: [
-              {
-                id: 123,
-              },
-            ],
-          },
-          filterTogglable: false,
-          perPageAvailable: [50, 100, 200],
-          defaultParams: {
-            size: 50,
-          },
-          perPageField: 'size',
-          pageField: 'page',
-          headerToolbar: ['$preset.forms.filter', '$preset.actions.add'],
-          footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
-          columns: [
+          $ref: 'globalCrudCCommon',
+          api: '$preset.apis.listRole',
+          quickSaveItemApi: '$preset.apis.editRole',
+          headerToolbar: [
             {
-              name: 'id',
-              label: 'ID',
-              type: 'text',
-              width: 40,
+              $ref: 'globalTableReloadTool',
+              target: 'roleList',
             },
-            {
-              name: 'name',
-              label: '姓名',
-              type: 'text',
-            },
-            {
-              name: 'email',
-              label: '邮箱',
-              type: 'text',
-            },
-            {
-              name: 'leader',
-              label: '管理员',
-              type: 'text',
-            },
-            {
-              name: 'department',
-              label: '所属部门',
-              type: 'text',
-            },
-            {
-              name: 'desc',
-              label: '成员描述',
-              type: 'text',
-            },
-            {
-              name: 'createTime',
-              label: '添加时间',
-              type: 'datetime',
-              width: 150,
-            },
-            {
-              type: 'operation',
-              label: '操作',
-              width: 80,
-              buttons: ['$preset.actions.edit', '$preset.actions.member', '$preset.actions.remove'],
-            },
+            '$preset.forms.filterRole',
+            '$preset.actions.addRole',
+            '$preset.actions.roleMember',
           ],
-        },
-      },
-      {
-        title: '权限设置',
-        hash: 'limitSetting',
-        body: {
-          type: 'crud',
-          data: {
-            items: [
-              {
-                id: 123,
-              },
-            ],
-          },
-          filterTogglable: false,
-          perPageAvailable: [50, 100, 200],
-          defaultParams: {
-            size: 50,
-          },
-          perPageField: 'size',
-          pageField: 'page',
-          headerToolbar: ['$preset.forms.filter', '$preset.actions.add'],
           footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
+          columnsTogglable: true,
           columns: [
             {
               name: 'id',
-              label: 'ID',
+              label: '权限ID',
               type: 'text',
-              width: 40,
+              toggled: false,
             },
             {
               name: 'name',
-              label: '姓名',
+              label: '角色名称',
               type: 'text',
-            },
-            {
-              name: 'email',
-              label: '邮箱',
-              type: 'text',
-            },
-            {
-              name: 'leader',
-              label: '管理员',
-              type: 'text',
-            },
-            {
-              name: 'department',
-              label: '所属部门',
-              type: 'text',
+              // quickEdit: {
+              //   type: 'textarea',
+              //   placeholder: '修改角色名称',
+              //   saveImmediately: true,
+              // },
             },
             {
               name: 'desc',
-              label: '成员描述',
-              type: 'text',
+              label: '角色描述',
+              // eslint-disable-next-line
+              tpl: '${desc|default:-|truncate:40}',
+              popOver: {
+                body: '$desc',
+              },
+              // quickEdit: {
+              //   type: 'textarea',
+              //   placeholder: '修改角色描述',
+              //   saveImmediately: true,
+              // },
             },
             {
-              name: 'createTime',
+              name: 'created_time',
               label: '添加时间',
               type: 'datetime',
               width: 150,
@@ -135,8 +66,12 @@ export const orgRoleSchema = {
             {
               type: 'operation',
               label: '操作',
-              width: 80,
-              buttons: ['$preset.actions.edit', '$preset.actions.member', '$preset.actions.remove'],
+              width: 150,
+              buttons: [
+                '$preset.actions.editRole',
+                '$preset.actions.setLimit',
+                '$preset.actions.delRole',
+              ],
             },
           ],
         },
@@ -145,42 +80,106 @@ export const orgRoleSchema = {
   },
   preset: {
     actions: {
-      add: {
+      roleMember: {
+        type: 'action',
+        align: 'right',
+        label: '成员管理',
+        level: 'primary',
+        icon: 'fa fa-user pull-left',
+        actionType: 'dialog',
+        dialog: members,
+      },
+      addRole: {
         type: 'action',
         align: 'right',
         label: '添加角色',
         level: 'primary',
-        icon: 'iconfont icon-plus pull-left',
+        icon: 'fa fa-plus pull-left',
+        actionType: 'dialog',
+        dialog: {
+          title: '添加管理员',
+          body: {
+            api: '$preset.apis.addRole',
+            $preset: 'forms.updateRole',
+          },
+        },
       },
-      edit: {
+      editRole: {
         type: 'action',
-        iconOnly: true,
-        tooltip: '编辑',
-        icon: 'iconfont icon-edit',
+        align: 'right',
+        label: '编辑',
+        level: 'link',
+        actionType: 'dialog',
+        dialog: {
+          title: '编辑角色信息',
+          body: {
+            api: '$preset.apis.editRole',
+            $preset: 'forms.updateRole',
+          },
+        },
       },
-      member: {
+
+      setLimit: {
         type: 'action',
-        iconOnly: true,
-        tooltip: '成员管理',
-        icon: 'fa fa-user-o',
+        label: '设置权限',
+        level: 'link',
+        actionType: 'dialog',
+        dialog: {
+          title: '编辑管理员',
+          body: {
+            api: '$preset.apis.editUser',
+            $preset: 'forms.updateRole',
+          },
+        },
       },
-      remove: {
+
+      delRole: {
         type: 'action',
-        iconOnly: true,
-        tooltip: '删除',
-        icon: 'iconfont icon-close text-danger',
+        label: '删除',
+        className: 'text-danger',
+        level: 'link',
+        actionType: 'ajax',
+        confirmText: '[删除确认] 确认要删除该角色: 【$name】 ?',
+        api: '$preset.apis.delRole',
       },
     },
     forms: {
-      filter: {
+      updateRole: {
         type: 'form',
-        wrapWithPanel: false,
-        mode: 'inline',
         controls: [
           {
             type: 'text',
-            name: 'keywords',
-            placeholder: '请输入 ID/名称/邮箱 搜索',
+            name: 'name',
+            label: '角色名称',
+            required: true,
+            placeholder: '请输入角色名称',
+          },
+          {
+            type: 'textarea',
+            name: 'desc',
+            label: '角色描述',
+            placeholder: '请输入角色描述',
+          },
+        ],
+      },
+      filterRole: {
+        type: 'form',
+        wrapWithPanel: false,
+        mode: 'inline',
+        target: 'userList',
+        name: 'userListFilter',
+        controls: [
+          {
+            type: 'hidden',
+            name: 'q_relation3',
+            submitOnChange: true,
+            label: '所属部门',
+          },
+          {
+            type: 'text',
+            name: 'n_name',
+            placeholder: '请输入角色名搜索',
+            clearable: true,
             addOn: {
               iconOnly: true,
               icon: 'iconfont icon-ai-search',
@@ -189,6 +188,27 @@ export const orgRoleSchema = {
           },
         ],
       },
+    },
+  },
+  definitions: {
+    orgTeamIdPicker: {
+      type: 'select',
+      clearable: true,
+      multiple: true,
+      label: '所属部门',
+      placeholder: '请选择所属部门',
+      searchPromptText: '输入部门ID/角色名',
+      source: '$preset.apis.orgTeamOption',
+    },
+    orgRoleIdPicker: {
+      // limits: limitKeys.global.sysRoleIdPicker,
+      type: 'select',
+      clearable: true,
+      multiple: true,
+      label: '角色名',
+      placeholder: '请选择角色',
+      searchPromptText: '输入角色ID/角色名',
+      source: '$preset.apis.orgRoleOption',
     },
   },
 }

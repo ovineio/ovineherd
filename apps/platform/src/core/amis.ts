@@ -5,6 +5,7 @@ export const schemaDefinitions = {
   globalImageCell: {
     className: 'table-cell-image',
     thumbMode: 'cover',
+    type: 'image',
     enlargeAble: true,
   },
   globalFileUpload: {

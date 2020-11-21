@@ -300,7 +300,7 @@ export const settingSchema = {
                 icon: 'fa fa-check pull-left',
                 level: 'primary',
                 descriptionClassName: 'p-l-md',
-                desc: '组织信息修改后，刷新页面才能看到更新后的数据',
+                desc: '组织信息修改后，只有刷新页面才能看到更新后的数据',
               },
             ],
           },

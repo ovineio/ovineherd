@@ -29,7 +29,7 @@ export const entityType = {
   orgUser: 'ovine_org_user', // 组织用户
 
   orgTeam: 'ovine_org_team', // 组织团队
-  orgLimit: 'ovine_org_limit', // 组织权限
+  orgRole: 'ovine_org_role', // 组织权限
 
   app: 'ovine_app', // 应用
   appUser: 'ovine_app_user', // 应用用户
@@ -88,10 +88,20 @@ export const relation = {
       relation1_type: ApiType.config, // 组织管理员 配置信息
       relation2_type: ApiType.category, // 组织管理员 关联的组织
       relation3_type: ApiType.category, // 组织管理员 关联的部门ID
+      relation4_type: ApiType.category, // 组织管理员 关联的角色ID
     },
     team: {
       apiType: ApiType.category,
       type: entityType.orgTeam,
+      relation1_type: ApiType.category, // 关联到组织
+      // 默认值
+      path: '0',
+      level: '0',
+      parent_id: '0',
+    },
+    role: {
+      apiType: ApiType.category,
+      type: entityType.orgRole,
       relation1_type: ApiType.category, // 关联到组织
       // 默认值
       path: '0',

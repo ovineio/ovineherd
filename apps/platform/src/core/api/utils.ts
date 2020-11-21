@@ -130,6 +130,9 @@ export const getApiQuery = (data: any) => {
   const queryObj: any = {}
   const namesObj: any = {}
 
+  const omitInvalidParams = (p: object): any =>
+    omitBy(p, (v) => v === '' || typeof v === 'undefined')
+
   map(reset, (val, key) => {
     if (key.startsWith('q_')) {
       queryObj[key.slice(2)] = val
@@ -137,9 +140,6 @@ export const getApiQuery = (data: any) => {
       namesObj[key.slice(2)] = val
     }
   })
-
-  const omitInvalidParams = (p: object): any =>
-    omitBy(p, (v) => v === '' || typeof v === 'undefined')
 
   const queryParams = {
     type,
