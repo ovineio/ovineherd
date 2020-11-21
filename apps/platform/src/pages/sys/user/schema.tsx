@@ -259,6 +259,7 @@ const orgSchema = {
             type: 'text',
             name: 'n_username',
             placeholder: '请输入登录账号搜索',
+            clearable: true,
             addOn: {
               iconOnly: true,
               icon: 'iconfont icon-ai-search',

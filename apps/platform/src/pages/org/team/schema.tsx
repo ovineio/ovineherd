@@ -1,116 +1,104 @@
+import React from 'react'
+
+import { getUrlParams } from '@core/utils/tool'
+
+import { emptyListHolder } from '~/core/constants'
+
+let tableRef: any = {}
+
+export const getTableRef = (ref) => {
+  tableRef = ref
+}
+
+const changeTableTeam = (teamId: string) => {
+  tableRef.getComponentByName('userList').handleFilterSubmit({ q_relation3: teamId })
+}
+
 export const treeSchema = {
   type: 'form',
-  api: 'https://houtai.baidu.com/api/mock2/form/saveForm',
   wrapWithPanel: false,
+  target: 'userList',
   controls: [
     {
       type: 'tree',
-      name: 'tree1',
-      initiallyOpen: true,
+      name: 'relation3',
+      className: 'team-tree',
       rootCreatable: false,
+      showIcon: false,
+      initiallyOpen: true,
       creatable: true,
       editable: true,
-      showIcon: false,
       removable: true,
       unfoldedLevel: 1,
-      options: [
-        {
-          label: 'A',
-          value: 'a',
-        },
-        {
-          label: 'B',
-          value: 'b',
-          children: [
-            {
-              label: 'B-1',
-              value: 'b-1',
-            },
-            {
-              label: 'B-2',
-              value: 'b-2',
-              children: [
-                {
-                  label: 'B-2-1',
-                  value: 'b-2-1',
-                },
-                {
-                  label: 'B-2-2',
-                  value: 'b-2-2',
-                },
-                {
-                  label: 'B-2-3',
-                  value: 'b-2-3',
-                },
-              ],
-            },
-            {
-              label: 'B-3',
-              value: 'b-3',
-            },
-          ],
-        },
-        {
-          label: 'C',
-          value: 'c',
-        },
-      ],
+      valueField: 'id',
+      // eslint-disable-next-line
+      placeholder: <div dangerouslySetInnerHTML={{ __html: emptyListHolder }} />,
+      addApi: '$preset.apis.addTreeNode',
+      editApi: '$preset.apis.editTreeNode',
+      deleteApi: '$preset.apis.delTreeNode',
+      source: '$preset.apis.teamTreeInfo',
+      onChange: (nodeId: string) => {
+        changeTableTeam(nodeId)
+      },
     },
   ],
 }
 
 export const tableSchema = {
   type: 'crud',
-  data: {
-    items: [
-      {
-        id: 123,
+  $ref: 'globalCrudCCommon',
+  name: 'userList',
+  headerToolbar: [
+    {
+      type: 'button',
+      icon: 'fa fa-refresh',
+      tooltip: '刷新数据',
+      actionType: 'reload',
+      onAction: () => {
+        changeTableTeam('')
       },
-    ],
-  },
-  filterTogglable: false,
-  perPageAvailable: [50, 100, 200],
-  defaultParams: {
-    size: 50,
-  },
-  perPageField: 'size',
-  pageField: 'page',
-  headerToolbar: ['$preset.forms.filter', '$preset.actions.add'],
+    },
+    '$preset.forms.filter',
+    '$preset.actions.add',
+  ],
   footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
+  api: '$preset.apis.listUser',
   columns: [
     {
       name: 'id',
-      label: 'ID',
+      label: '用户ID',
       type: 'text',
-      width: 40,
+      toggled: false,
     },
     {
-      name: 'name',
+      name: 'username',
+      label: '登录账号',
+      type: 'text',
+    },
+    {
+      name: 'real_name',
       label: '姓名',
-      type: 'text',
-    },
-    {
-      name: 'email',
-      label: '邮箱',
       type: 'text',
     },
     {
       name: 'leader',
       label: '管理员',
-      type: 'text',
+      type: 'tpl',
+      tpl: `
+      <% if(data.leader === '1') {%>
+        <span class="badge badge-pill badge-success">是</span>
+      <% } else { %>
+        <span class="badge badge-pill badge-secondary">否</span>
+      <%  } %>
+    `,
     },
     {
-      name: 'department',
+      name: 'team.label',
       label: '所属部门',
       type: 'text',
     },
     {
-      name: 'desc',
-      label: '成员描述',
-      type: 'text',
-    },
-    {
-      name: 'createTime',
+      name: 'created_time',
       label: '添加时间',
       type: 'datetime',
       width: 150,
@@ -118,8 +106,8 @@ export const tableSchema = {
     {
       type: 'operation',
       label: '操作',
-      width: 60,
-      buttons: ['$preset.actions.edit', '$preset.actions.remove'],
+      width: 110,
+      buttons: ['$preset.actions.viewUser', '$preset.actions.editUser', '$preset.actions.delUser'],
     },
   ],
   preset: {
@@ -127,33 +115,228 @@ export const tableSchema = {
       add: {
         type: 'action',
         align: 'right',
-        label: '添加成员',
+        label: '添加管理员',
         level: 'primary',
         icon: 'iconfont icon-plus pull-left',
+        actionType: 'dialog',
+        dialog: {
+          title: '添加管理员',
+          body: {
+            api: '$preset.apis.addUser',
+            initApi: {
+              url: 'fakeUserInfo',
+              onFakeRequest: () => {
+                return {
+                  status: 0,
+                  data: {
+                    relation3: getUrlParams('q_relation3') || '',
+                  },
+                }
+              },
+            },
+            $preset: 'forms.updateUser',
+          },
+        },
       },
-      edit: {
+      viewUser: {
         type: 'action',
-        iconOnly: true,
-        tooltip: '编辑',
-        icon: 'iconfont icon-edit',
+        label: '查看',
+        level: 'link',
+        actionType: 'dialog',
+        dialog: {
+          title: '管理员详细资料',
+          actions: [],
+          closeOnEsc: true,
+          body: {
+            api: '$preset.apis.viewUser',
+            $preset: 'forms.viewUser',
+          },
+        },
       },
-      remove: {
+      editUser: {
         type: 'action',
-        iconOnly: true,
-        tooltip: '删除',
-        icon: 'iconfont icon-close text-danger',
+        label: '编辑',
+        level: 'link',
+        actionType: 'dialog',
+        dialog: {
+          title: '编辑管理员',
+          body: {
+            api: '$preset.apis.editUser',
+            $preset: 'forms.updateUser',
+          },
+        },
+      },
+      delUser: {
+        type: 'action',
+        label: '删除',
+        className: 'text-danger',
+        level: 'link',
+        actionType: 'ajax',
+        confirmText: '[删除确认] 确认要删除该用户: 【$real_name】 ?',
+        hiddenOn: 'data.is_root === "1"',
+        api: '$preset.apis.delUser',
       },
     },
     forms: {
+      viewUser: {
+        type: 'form',
+        controls: [
+          {
+            name: 'id',
+            label: '用户ID',
+            type: 'tpl',
+            tpl: `
+            <span><%= data.id %></span> 
+            <span class="badge badge-pill badge-info m-l-md">创建于: <%= data.created_time%></span>
+          `,
+          },
+          {
+            type: 'grid',
+            mode: 'normal',
+            columns: [
+              {
+                md: 6,
+                mode: 'horizontal',
+                horizontal: {
+                  left: 'col-md-6',
+                  right: 'col-md-6',
+                },
+                controls: [
+                  {
+                    name: 'real_name',
+                    label: '姓名',
+                    type: 'static',
+                  },
+                  {
+                    type: 'static',
+                    name: 'username',
+                    label: '登录账号',
+                  },
+                  {
+                    type: 'static',
+                    name: 'email',
+                    label: '邮箱',
+                  },
+                  {
+                    type: 'static',
+                    name: 'phone',
+                    label: '手机号',
+                  },
+                ],
+              },
+              {
+                md: 6,
+                mode: 'horizontal',
+                horizontal: {
+                  left: 'col-md-3',
+                  right: 'col-md-9',
+                },
+                controls: [
+                  {
+                    name: 'avatar',
+                    type: 'static-image',
+                    label: '头像',
+                    labelClassName: 'text-right',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'static',
+            name: 'desc',
+            label: '描述信息',
+          },
+          {
+            type: 'divider',
+          },
+        ],
+      },
+      updateUser: {
+        type: 'form',
+        controls: [
+          {
+            type: 'text',
+            name: 'username',
+            label: '登录账号',
+            required: true,
+            disabledOn: 'typeof data.id !== "undefined"',
+            placeholder: '请输入登录账号',
+          },
+          {
+            type: 'text',
+            name: 'password',
+            label: '登录密码',
+            requiredOn: 'typeof data.id === "undefined"',
+            placeholder: '请输入登录密码，编辑时为修改密码',
+          },
+          {
+            type: 'text',
+            name: 'real_name',
+            label: '姓名',
+            required: true,
+            placeholder: '请输入登录姓名',
+          },
+          {
+            type: 'tree-select',
+            name: 'relation3',
+            label: '所属部门',
+            required: true,
+            showIcon: false,
+            valueField: 'id',
+            placeholder: '请选择所属部门',
+            source: '$preset.apis.teamTreeInfo',
+          },
+          {
+            name: 'leader',
+            label: '是否为管理员',
+            hiddenOn: 'data.is_root==="1"',
+            $ref: 'globalSwitch',
+          },
+          {
+            type: 'email',
+            name: 'email',
+            label: '邮箱',
+            placeholder: '请输入邮箱',
+          },
+          {
+            type: 'text',
+            name: 'phone',
+            label: '手机号',
+            placeholder: '请输入手机号',
+            validations: {
+              isNumeric: true,
+            },
+            validationErrors: {
+              isNumeric: '手机号格式不正确',
+            },
+          },
+          {
+            type: 'textarea',
+            name: 'desc',
+            label: '描述',
+            placeholder: '请输入描述',
+          },
+        ],
+      },
       filter: {
         type: 'form',
         wrapWithPanel: false,
         mode: 'inline',
+        target: 'userList',
+        name: 'userListFilter',
         controls: [
           {
+            type: 'hidden',
+            name: 'q_relation3',
+            submitOnChange: true,
+            label: '所属部门',
+          },
+          {
             type: 'text',
-            name: 'keywords',
-            placeholder: '请输入 ID/名称/邮箱 搜索',
+            name: 'q_username',
+            placeholder: '请输入登录账号搜索',
+            clearable: true,
             addOn: {
               iconOnly: true,
               icon: 'iconfont icon-ai-search',

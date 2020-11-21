@@ -7,7 +7,7 @@ import { publish } from '@core/utils/message'
 
 import { msgKey } from '~/core/constants'
 
-import { getAppApis } from './api'
+import { getOrgAppApis } from './api'
 import { AppControls } from './schema'
 import * as S from './styled'
 
@@ -102,7 +102,7 @@ const initState = {
 
 export default () => {
   const [state, setState] = useImmer<State>(initState)
-  const appApis = getAppApis()
+  const appApis = getOrgAppApis()
 
   const { showUpdateDialog, activeItemInfo, listSource } = state
   const isEdit = !!activeItemInfo.id

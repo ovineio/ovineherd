@@ -14,7 +14,8 @@ export const getCacheStore = () => dataStore
 export const getSysOrgApis = () => {
   const sysListOrgReqOpt = getReqOption(
     {
-      ...relation.org.entity,
+      apiType: relation.org.entity.apiType,
+      type: relation.org.entity.type,
       apiName: ApiName.list,
       '&': '$$',
     },

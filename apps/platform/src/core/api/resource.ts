@@ -8,7 +8,7 @@ import { setStore } from '@ovine/core/lib/utils/store'
 
 import { relation, storeKey } from '../constants'
 import { ApiName, ApiType } from '../types'
-import { getOrgId, getOrgUniType } from '../utils'
+import { getOrgId, getOrgUniType, isStrTrue } from '../utils'
 import { ApiData, getReqOption, requestApi, requestByOption } from './utils'
 
 // 根据 token 获取用户信息
@@ -91,6 +91,7 @@ export async function sysCreateOrgApi(option: any) {
   const ids = {
     orgAdmUserId: '',
     orgInfoId: '',
+    teamId: '',
     orgId: '',
   }
 
@@ -112,12 +113,26 @@ export async function sysCreateOrgApi(option: any) {
     })
     ids.orgId = `${orgId}`
 
+    // 为组织添加一个团队
+    const { id: teamId } = await requestByOption({
+      ...relation.org.team,
+      apiName: ApiName.add,
+      relation1: orgId,
+      is_root: '1', // 标志是根节点
+      label: rest.name || '团队', // 团队主节点名字
+      removable: '', // 无法删除
+    })
+    ids.teamId = teamId
+
     // 添加一个 组织用户
     const { id: orgAdmUserId } = await requestByOption({
       username,
       password,
       ...relation.org.user,
       type: getOrgUniType('user', ids.orgId),
+      leader: '1',
+      is_root: '1', // 是否该组织的主要管理员
+      relation3: ids.teamId,
       apiName: ApiName.add,
     })
     ids.orgAdmUserId = `${orgAdmUserId}`
@@ -141,6 +156,14 @@ export async function sysCreateOrgApi(option: any) {
       await requestByOption({
         ...relation.org.user,
         id: ids.orgAdmUserId,
+        apiName: ApiName.del,
+      })
+    }
+
+    if (ids.teamId) {
+      await requestByOption({
+        ...relation.org.team,
+        id: ids.teamId,
         apiName: ApiName.del,
       })
     }
@@ -175,7 +198,7 @@ export async function sysCreateAppApi(option: any) {
     appId: '',
   }
 
-  const isIsolation = rest.isolation === '1'
+  const isIsolation = isStrTrue(rest.isolation)
 
   try {
     // 添加一个 应用 对应配置

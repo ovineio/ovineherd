@@ -108,7 +108,7 @@ export const apis = {
 
 type QueryOption = { [key: string]: string | number }
 
-export const getApiConditionStr = (conditions: QueryOption): string => {
+export const getApiConditionStr = (conditions: QueryOption, comma: boolean = false): string => {
   if (!conditions) {
     return ''
   }
@@ -117,7 +117,7 @@ export const getApiConditionStr = (conditions: QueryOption): string => {
 
   map(conditions, (val, key) => {
     if (typeof val !== 'undefined' || val !== '') {
-      str += `${key}:${val},`
+      str += comma ? `"${key}":"${val}",` : `${key}:${val},`
     }
   })
 
@@ -154,7 +154,8 @@ export const getApiQuery = (data: any) => {
       omitInvalidParams({
         ...names,
         ...namesObj,
-      })
+      }),
+      true
     ),
   }
 

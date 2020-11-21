@@ -7,7 +7,7 @@ import { ApiName } from '~/core/types'
 import { getOrgId } from '~/core/utils'
 
 // TODO: 应用使用： 假删除。 添加冻结功能
-export const getAppApis = () => {
+export const getOrgAppApis = () => {
   const editApp = getReqOption(
     {
       ...relation.app.appInfo,

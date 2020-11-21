@@ -56,7 +56,7 @@ const orgSchema = {
               label: '类型',
               type: 'tpl',
               tpl: `
-                <% if(data.isolation) {%>
+                <% if(data.isolation === '1') {%>
                   <span class="badge badge-pill badge-primary">独立组织</span>
                 <% } else { %>
                   <span class="badge badge-pill badge-info">普通组织</span>
