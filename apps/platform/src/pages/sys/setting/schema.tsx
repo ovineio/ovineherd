@@ -1,4 +1,4 @@
-import { sysSettingApis } from './api'
+import { getLink } from '~/core/utils'
 
 export const settingSchema = {
   type: 'page',
@@ -84,7 +84,7 @@ export const settingSchema = {
                           type: 'image',
                           name: 'avatar',
                           label: '头像',
-                          $preset: 'apis.uploadImg',
+                          $ref: 'globalImgUpload',
                         },
                       ],
                     },
@@ -208,7 +208,7 @@ export const settingSchema = {
                           type: 'image',
                           name: 'logo',
                           required: true,
-                          $preset: 'apis.uploadImg',
+                          $ref: 'globalImgUpload',
                           label: '平台logo',
                           descriptionClassName: 'd-block',
                           description: '展示在头部导航最左侧',
@@ -217,7 +217,7 @@ export const settingSchema = {
                           type: 'image',
                           name: 'favicon',
                           required: true,
-                          $preset: 'apis.uploadImg',
+                          $ref: 'globalImgUpload',
                           label: 'favicon',
                           descriptionClassName: 'd-block',
                           description: '浏览器标题图标',
@@ -303,7 +303,7 @@ export const settingSchema = {
                       type: 'image',
                       name: 'login_logo',
                       required: true,
-                      $preset: 'apis.uploadImg',
+                      $ref: 'globalImgUpload',
                       label: '登录logo',
                       descriptionClassName: 'd-block',
                       description: '用于登录页面表单展示',
@@ -312,7 +312,7 @@ export const settingSchema = {
                       type: 'image',
                       name: 'login_bg_img',
                       required: true,
-                      $preset: 'apis.uploadImg',
+                      $ref: 'globalImgUpload',
                       label: '登录背景',
                       descriptionClassName: 'd-block',
                       description: '用于登录背景图片展示',
@@ -321,7 +321,7 @@ export const settingSchema = {
                       type: 'image',
                       name: 'login_intro_img',
                       required: true,
-                      $preset: 'apis.uploadImg',
+                      $ref: 'globalImgUpload',
                       label: '登录小图',
                       descriptionClassName: 'd-block',
                       description: '用于登录表单小图展示',
@@ -345,7 +345,6 @@ export const settingSchema = {
     ],
   },
   preset: {
-    apis: sysSettingApis,
     forms: {
       updatePassword: {
         type: 'form',
@@ -353,7 +352,7 @@ export const settingSchema = {
           saveSuccess: '[密码修改成功] 请使用新密码重新登录',
           saveFailed: '密码修改失败',
         },
-        redirect: '/login',
+        redirect: getLink('login'),
         mode: 'horizontal',
         horizontal: {
           left: 'col-sm-3',

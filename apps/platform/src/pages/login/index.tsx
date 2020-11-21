@@ -14,7 +14,7 @@ import { useAppContext } from '~/components/app/context'
 import { sysUserLoginApi } from '~/core/api/resource'
 import { relation, storeKey } from '~/core/constants'
 import { isOrgUser, setUserInfo } from '~/core/user'
-import { getLink, isStrTrue } from '~/core/utils'
+import { getLink, getOrgUniType, isStrTrue } from '~/core/utils'
 
 import { Login } from './styled'
 
@@ -43,7 +43,7 @@ export default () => {
   const history = useHistory()
   const { custom, appInfo } = useAppContext()
 
-  const { isSysAdmLogin } = appInfo
+  const { isSysAdmLogin, orgId } = appInfo
 
   const [state, setState] = useImmer<State>(initState)
 
@@ -79,7 +79,7 @@ export default () => {
 
     sysUserLoginApi({
       ...inputs,
-      type: isSysAdmLogin ? relation.sys.user.type : relation.org.user.type,
+      type: isSysAdmLogin ? relation.sys.user.type : getOrgUniType('user', orgId),
       onlyData: false,
     }).then((source: any) => {
       setState((d) => {

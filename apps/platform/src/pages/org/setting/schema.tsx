@@ -1,3 +1,5 @@
+import { getLink } from '~/core/utils'
+
 export const settingSchema = {
   type: 'page',
   bodyClassName: 'p-none',
@@ -7,19 +9,20 @@ export const settingSchema = {
     tabs: [
       {
         title: '个人资料',
-        hash: 'tab0',
+        hash: 'userInfo',
         icon: 'fa p-r-xs fa-user-circle',
         body: [
           {
             type: 'panel',
             className: ' ',
-            headerClassName: 'cxd-section-header m-t-sm m-b-md',
+            headerClassName: 'cxd-section-header m-t-md m-b-md',
             bodyClassName: 'p-b-none',
             title: '当前所在组织信息',
             body: {
               type: 'form',
               wrapWithPanel: false,
               mode: 'horizontal',
+              initApi: '$preset.apis.orgCacheInfo',
               controls: [
                 {
                   type: 'grid',
@@ -31,11 +34,8 @@ export const settingSchema = {
                       mode: 'normal',
                       controls: [
                         {
-                          type: 'tpl',
+                          type: 'static-image',
                           name: 'logo',
-                          inputClassName: 'text-center',
-                          tpl:
-                            '<img class="w-xs" src="https://suda.bce.baidu.com/static/static/favicon_fc46c9f.svg" />',
                         },
                       ],
                     },
@@ -52,24 +52,21 @@ export const settingSchema = {
                           name: 'name',
                           size: 'md',
                           className: 'm-b-xs',
-                          label: '组织名称',
-                          value: '王者归来',
+                          label: '组织名称：',
                         },
                         {
                           type: 'static',
-                          name: 'short_name',
+                          name: 'slogan',
                           className: 'm-b-xs',
                           size: 'md',
-                          label: '组织标语',
-                          value: '一起组队打王者，牛币牛逼',
+                          label: '组织标语：',
                         },
                         {
                           type: 'static',
                           name: 'desc',
                           className: 'm-b-xs',
                           size: 'md',
-                          label: '组织介绍',
-                          value: '这是一堆，企业文化文案，没啥用，只是用来展示而已。',
+                          label: '组织介绍：',
                         },
                       ],
                     },
@@ -90,6 +87,8 @@ export const settingSchema = {
               type: 'form',
               wrapWithPanel: false,
               mode: 'horizontal',
+              initApi: '$preset.apis.selfInfo',
+              api: '$preset.apis.editSelf',
               controls: [
                 {
                   type: 'grid',
@@ -104,36 +103,37 @@ export const settingSchema = {
                       },
                       controls: [
                         {
-                          type: 'text',
-                          name: 'name',
-                          required: true,
-                          size: 'md',
-                          placeholder: '请输入用户名',
-                          label: '用户名',
+                          type: 'static',
+                          name: 'id',
+                          label: '系统ID',
                         },
                         {
-                          type: 'text',
-                          name: 'short_name',
-                          required: true,
-                          size: 'md',
-                          placeholder: '请输入昵称',
-                          label: '昵称',
+                          type: 'static',
+                          name: 'username',
+                          label: '登录账号',
                         },
                         {
-                          type: 'text',
-                          name: 'name',
-                          required: true,
-                          size: 'md',
+                          type: 'static',
+                          name: 'real_name',
+                          placeholder: '请输入姓名',
+                          label: '姓名',
+                          quickEdit: true,
+                        },
+                        {
+                          type: 'static',
+                          name: 'email',
                           placeholder: '请输入邮箱地址',
                           label: '邮箱',
+                          quickEdit: {
+                            type: 'email',
+                          },
                         },
                         {
-                          type: 'text',
-                          name: 'name',
-                          required: true,
-                          size: 'md',
+                          type: 'static',
+                          name: 'phone',
                           placeholder: '请输入手机号',
-                          label: '联系方式',
+                          label: '手机号',
+                          quickEdit: true,
                         },
                       ],
                     },
@@ -146,10 +146,9 @@ export const settingSchema = {
                       },
                       controls: [
                         {
+                          $ref: 'globalImgUpload',
                           type: 'image',
-                          name: 'logo',
-                          required: true,
-                          size: 'md',
+                          name: 'avatar',
                           label: '头像',
                         },
                       ],
@@ -163,6 +162,8 @@ export const settingSchema = {
                   label: '保存个人信息',
                   icon: 'fa fa-check pull-left',
                   level: 'primary',
+                  descriptionClassName: 'p-l-md',
+                  desc: '已修改的数据，只有保存后才会生效。不保存将默认放弃修改。',
                 },
               ],
             },
@@ -185,303 +186,233 @@ export const settingSchema = {
                 type: 'action',
                 label: '修改密码',
                 icon: 'fa fa-lock pull-left',
-                size: 'md',
+                level: 'success',
+                actionType: 'dialog',
+                dialog: {
+                  title: '修改密码',
+                  body: '$preset.forms.updatePassword',
+                },
               },
             ],
           },
         ],
       },
       {
-        title: '基本配置',
-        hash: 'tab1',
+        title: '组织信息',
+        hash: 'orgInfo',
         icon: 'fa p-r-xs fa-cog',
         body: {
-          type: 'form',
-          wrapWithPanel: false,
-          className: 'p-md',
-          mode: 'horizontal',
-          controls: [
-            {
-              type: 'grid',
-              mode: 'normal',
-              columns: [
-                {
-                  md: 6,
-                  mode: 'horizontal',
-                  horizontal: {
-                    left: 'col-md-3',
-                    right: 'col-md-9',
+          type: 'panel',
+          className: ' ',
+          headerClassName: 'cxd-section-header m-t-md m-b-md',
+          bodyClassName: 'p-b-none',
+          title: '组织基本信息',
+          body: {
+            type: 'form',
+            wrapWithPanel: false,
+            className: 'p-md',
+            mode: 'horizontal',
+            initApi: '$preset.apis.orgInfo',
+            api: '$preset.apis.orgEditInfo',
+            controls: [
+              {
+                type: 'grid',
+                mode: 'normal',
+                columns: [
+                  {
+                    md: 6,
+                    mode: 'horizontal',
+                    horizontal: {
+                      left: 'col-md-3',
+                      right: 'col-md-9',
+                    },
+                    controls: [
+                      {
+                        type: 'text',
+                        name: 'name',
+                        required: true,
+                        label: '名称',
+                        placeholder: '请输入组织名称',
+                        descriptionClassName: 'd-block',
+                        description: '用于页面浏览器标题展示',
+                      },
+                      {
+                        type: 'text',
+                        name: 'slogan',
+                        required: true,
+                        label: '标语',
+                        placeholder: '请输入组织标语',
+                        descriptionClassName: 'd-block',
+                        description: '用于介绍页面浏览器标题展示',
+                      },
+                      {
+                        type: 'text',
+                        name: 'title',
+                        label: '导航标题',
+                        placeholder: '请输入导航标题',
+                        descriptionClassName: 'd-block',
+                        description: '展示在页面导航处，不填则只展示Logo',
+                      },
+                      {
+                        type: 'textarea',
+                        name: 'desc',
+                        placeholder: '请输入组织介绍',
+                        label: '介绍',
+                      },
+                    ],
                   },
-                  controls: [
-                    {
-                      type: 'text',
-                      name: 'name',
-                      required: true,
-                      size: 'md',
-                      placeholder: '请输入组织名称',
-                      label: '组织名称',
+                  {
+                    md: 6,
+                    mode: 'horizontal',
+                    horizontal: {
+                      left: 'col-md-3',
+                      right: 'col-md-9',
                     },
-                    {
-                      type: 'text',
-                      name: 'short_name',
-                      required: true,
-                      size: 'md',
-                      placeholder: '请输入简称',
-                      label: '组织简称',
-                    },
-                    {
-                      type: 'text',
-                      name: 'short_tag',
-                      required: true,
-                      size: 'md',
-                      placeholder: '请输入标语',
-                      label: '标语',
-                    },
-                    {
-                      type: 'text',
-                      name: 'short_name',
-                      required: true,
-                      size: 'md',
-                      placeholder: '请输入短名字',
-                      label: '短名字',
-                    },
-                    {
-                      type: 'text',
-                      name: 'phone_no',
-                      required: true,
-                      size: 'md',
-                      placeholder: '请输入手机号',
-                      label: '联系方式',
-                    },
-                  ],
-                },
-                {
-                  md: 6,
-                  mode: 'horizontal',
-                  horizontal: {
-                    left: 'col-md-3',
-                    right: 'col-md-9',
+                    controls: [
+                      {
+                        type: 'image',
+                        name: 'logo',
+                        required: true,
+                        $ref: 'globalImgUpload',
+                        label: '组织logo',
+                        descriptionClassName: 'd-block',
+                        description: '展示在头部导航最左侧',
+                      },
+                      {
+                        type: 'image',
+                        name: 'favicon',
+                        required: true,
+                        $ref: 'globalImgUpload',
+                        label: 'favicon',
+                        descriptionClassName: 'd-block',
+                        description: '浏览器标题图标',
+                      },
+                    ],
                   },
-                  controls: [
-                    {
-                      type: 'image',
-                      name: 'logo',
-                      required: true,
-                      size: 'md',
-                      label: '组织LOGO',
-                    },
-                    {
-                      type: 'textarea',
-                      name: 'name',
-                      size: 'md',
-                      placeholder: '请输入组织介绍',
-                      label: '组织介绍',
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'divider',
-            },
-            {
-              type: 'number',
-              name: 'name',
-              required: true,
-              value: 10,
-              size: 'md',
-              label: '部门最高层级',
-            },
-            {
-              type: 'switch',
-              name: 'name',
-              required: true,
-              value: 10,
-              size: 'md',
-              label: '经理创建子部门',
-            },
-            {
-              type: 'divider',
-            },
-            {
-              type: 'submit',
-              mode: 'normal',
-              className: 'm-t-lg',
-              label: '保存设置信息',
-              icon: 'fa fa-check pull-left',
-              level: 'primary',
-            },
-          ],
+                ],
+              },
+
+              {
+                type: 'submit',
+                mode: 'normal',
+                className: 'm-t-lg',
+                label: '保存设置信息',
+                icon: 'fa fa-check pull-left',
+                level: 'primary',
+                descriptionClassName: 'p-l-md',
+                desc: '组织信息修改后，刷新页面才能看到更新后的数据',
+              },
+            ],
+          },
         },
       },
       {
-        title: '应用权限设置',
-        hash: 'tab3',
-        icon: 'fa p-r-xs fa-windows',
+        title: '登录设置',
+        hash: 'orgLogin',
+        icon: 'fa p-r-xs fa-window-maximize',
         body: [
           {
             type: 'panel',
             className: ' ',
-            headerClassName: 'cxd-section-header m-t-sm m-b-sm',
-            title: '应用权限设置',
-            body: [
-              {
-                type: 'alert',
-                body: `
-                  设置本组织内的角色对于，“应用”模块的权限相关内容。
-                `,
-              },
-              {
-                type: 'form',
-                panelClassName: 'panel-primary',
-                mode: 'horizontal',
-                wrapWithPanel: false,
-                controls: [
-                  {
-                    type: 'list',
-                    name: 'add_app',
-                    label: '新增应用',
-                    desc: '可多选',
-                    multiple: true,
-                    options: [
-                      {
-                        label: '选项 A',
-                        value: 1,
+            headerClassName: 'cxd-section-header m-t-md m-b-sm',
+            title: '登录页面设置',
+            body: {
+              type: 'form',
+              wrapWithPanel: false,
+              className: 'p-md',
+              mode: 'horizontal',
+              initApi: '$preset.apis.orgInfo',
+              api: '$preset.apis.orgEditInfo',
+              controls: [
+                {
+                  type: 'grid',
+                  mode: 'normal',
+                  columns: [
+                    {
+                      md: 6,
+                      mode: 'horizontal',
+                      horizontal: {
+                        left: 'col-md-3',
+                        right: 'col-md-9',
                       },
-                    ],
-                  },
-                  {
-                    type: 'list',
-                    name: 'add_app',
-                    label: '编辑应用',
-                    desc: '可多选',
-                    multiple: true,
-                    options: [
-                      {
-                        label: '选项 A',
-                        value: 1,
-                      },
-                    ],
-                  },
-                  {
-                    type: 'list',
-                    name: 'add_app',
-                    label: '删除应用',
-                    desc: '可多选',
-                    multiple: true,
-                    options: [
-                      {
-                        label: '选项 A',
-                        value: 1,
-                      },
-                    ],
-                  },
-                  {
-                    type: 'list',
-                    name: 'add_app',
-                    label: '发布应用',
-                    desc: '可多选',
-                    multiple: true,
-                    options: [
-                      {
-                        label: '选项 A',
-                        value: 1,
-                      },
-                    ],
-                  },
-                  {
-                    type: 'list',
-                    name: 'add_app',
-                    label: '设计应用',
-                    desc: '可多选',
-                    multiple: true,
-                    options: [
-                      {
-                        label: '选项 A',
-                        value: 1,
-                      },
-                    ],
-                  },
-                  {
-                    type: 'submit',
-                    mode: 'normal',
-                    className: 'm-t-lg m-b-none',
-                    label: '保存权限',
-                    icon: 'fa fa-check pull-left',
-                    level: 'primary',
-                  },
-                ],
-              },
-            ],
+                      controls: [
+                        {
+                          type: 'text',
+                          name: 'login_title',
+                          required: true,
+                          label: '登录标题',
+                          placeholder: '请输入组织登录标题',
+                          descriptionClassName: 'd-block',
+                          description: '登录页面展示标题',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'divider',
+                },
+                {
+                  type: 'group',
+                  mode: 'normal',
+                  controls: [
+                    {
+                      type: 'image',
+                      name: 'login_logo',
+                      required: true,
+                      $ref: 'globalImgUpload',
+                      label: '登录logo',
+                      descriptionClassName: 'd-block',
+                      description: '用于登录页面表单展示',
+                    },
+                    {
+                      type: 'image',
+                      name: 'login_bg_img',
+                      required: true,
+                      $ref: 'globalImgUpload',
+                      label: '登录背景',
+                      descriptionClassName: 'd-block',
+                      description: '用于登录背景图片展示',
+                    },
+                    {
+                      type: 'image',
+                      name: 'login_intro_img',
+                      required: true,
+                      $ref: 'globalImgUpload',
+                      label: '登录小图',
+                      descriptionClassName: 'd-block',
+                      description: '用于登录表单小图展示',
+                    },
+                  ],
+                },
+
+                {
+                  type: 'submit',
+                  mode: 'normal',
+                  className: 'm-t-lg',
+                  label: '保存登录设置',
+                  icon: 'fa fa-check pull-left',
+                  level: 'primary',
+                },
+              ],
+            },
           },
         ],
       },
       {
-        title: '团队权限设置',
-        hash: 'tab4',
-        icon: 'fa p-r-xs fa-users',
-        body: {
-          type: 'form',
-          panelClassName: 'panel-primary',
-          wrapWithPanel: false,
-          mode: 'horizontal',
-          controls: [
-            {
-              type: 'list',
-              name: 'add_app',
-              label: '新增应用',
-              desc: '可多选',
-              multiple: true,
-              options: [
-                {
-                  label: '选项 A',
-                  value: 1,
-                },
-              ],
-            },
-          ],
-        },
-      },
-      {
-        title: '角色权限设置',
-        hash: 'tab5',
-        icon: 'fa p-r-xs fa-gavel',
-        body: {
-          type: 'form',
-          panelClassName: 'panel-primary',
-          wrapWithPanel: false,
-          mode: 'horizontal',
-          controls: [
-            {
-              type: 'list',
-              name: 'add_app',
-              label: '新增应用',
-              desc: '可多选',
-              multiple: true,
-              options: [
-                {
-                  label: '选项 A',
-                  value: 1,
-                },
-              ],
-            },
-          ],
-        },
-      },
-      {
         title: '危险操作',
-        hash: 'tab6',
+        hash: 'danger',
         icon: 'fa p-r-xs fa-power-off',
         body: [
           {
             type: 'panel',
             className: ' ',
-            headerClassName: 'cxd-section-header m-t-sm m-b-sm',
+            headerClassName: 'cxd-section-header m-t-md m-b-sm',
             title: '退出组织',
             body: [
               {
                 type: 'alert',
-                body: '退出组织，您将无法再次登陆到系统中',
+                body: '退出组织，您将无法再次登录到系统中',
                 level: 'info',
               },
               {
@@ -502,7 +433,16 @@ export const settingSchema = {
             body: [
               {
                 type: 'alert',
-                body: '您有未删除的应用，无法删除组织',
+                body: {
+                  type: 'html',
+                  html: `
+                    <h6 class="p-t-sm">删除须知</h6>
+                    <ul>
+                      <li>只有将应用全部删除成功后，才能删除组织</li>
+                      <li>组织删除后，所有组织成员将不能使用本系统</li>
+                    </ul>
+                  `,
+                },
                 level: 'info',
               },
               {
@@ -526,11 +466,10 @@ export const settingSchema = {
                 body: {
                   type: 'html',
                   html: `
-                    <h6>转移须知</h6>
+                    <h6 class="p-t-sm">转移须知</h6>
                     <ul>
-                      <li>只能转移给企业成员，转移后该成员将拥有企业的最高权限</li>
-                      <li>勾选移除自己，您将会在转移成功后被移出企业</li>
-                      <li>接收方需绑定手机号码后才可接收企业  </li>
+                      <li>只能转移给组织成员，转移后该成员将拥有企业的最高权限</li>
+                      <li>您将会在转移成功后被，移出本组织</li>
                     </ul>
                   `,
                 },
@@ -545,6 +484,203 @@ export const settingSchema = {
           },
         ],
       },
+      // {
+      //   title: '应用权限设置',
+      //   hash: 'tab3',
+      //   icon: 'fa p-r-xs fa-windows',
+      //   body: [
+      //     {
+      //       type: 'panel',
+      //       className: ' ',
+      //       headerClassName: 'cxd-section-header m-t-sm m-b-sm',
+      //       title: '应用权限设置',
+      //       body: [
+      //         {
+      //           type: 'alert',
+      //           body: `
+      //             设置本组织内的角色对于，“应用”模块的权限相关内容。
+      //           `,
+      //         },
+      //         {
+      //           type: 'form',
+      //           panelClassName: 'panel-primary',
+      //           mode: 'horizontal',
+      //           wrapWithPanel: false,
+      //           controls: [
+      //             {
+      //               type: 'list',
+      //               name: 'add_app',
+      //               label: '新增应用',
+      //               desc: '可多选',
+      //               multiple: true,
+      //               options: [
+      //                 {
+      //                   label: '选项 A',
+      //                   value: 1,
+      //                 },
+      //               ],
+      //             },
+      //             {
+      //               type: 'list',
+      //               name: 'add_app',
+      //               label: '编辑应用',
+      //               desc: '可多选',
+      //               multiple: true,
+      //               options: [
+      //                 {
+      //                   label: '选项 A',
+      //                   value: 1,
+      //                 },
+      //               ],
+      //             },
+      //             {
+      //               type: 'list',
+      //               name: 'add_app',
+      //               label: '删除应用',
+      //               desc: '可多选',
+      //               multiple: true,
+      //               options: [
+      //                 {
+      //                   label: '选项 A',
+      //                   value: 1,
+      //                 },
+      //               ],
+      //             },
+      //             {
+      //               type: 'list',
+      //               name: 'add_app',
+      //               label: '发布应用',
+      //               desc: '可多选',
+      //               multiple: true,
+      //               options: [
+      //                 {
+      //                   label: '选项 A',
+      //                   value: 1,
+      //                 },
+      //               ],
+      //             },
+      //             {
+      //               type: 'list',
+      //               name: 'add_app',
+      //               label: '设计应用',
+      //               desc: '可多选',
+      //               multiple: true,
+      //               options: [
+      //                 {
+      //                   label: '选项 A',
+      //                   value: 1,
+      //                 },
+      //               ],
+      //             },
+      //             {
+      //               type: 'submit',
+      //               mode: 'normal',
+      //               className: 'm-t-lg m-b-none',
+      //               label: '保存权限',
+      //               icon: 'fa fa-check pull-left',
+      //               level: 'primary',
+      //             },
+      //           ],
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: '团队权限设置',
+      //   hash: 'tab4',
+      //   icon: 'fa p-r-xs fa-users',
+      //   body: {
+      //     type: 'form',
+      //     panelClassName: 'panel-primary',
+      //     wrapWithPanel: false,
+      //     mode: 'horizontal',
+      //     controls: [
+      //       {
+      //         type: 'list',
+      //         name: 'add_app',
+      //         label: '新增应用',
+      //         desc: '可多选',
+      //         multiple: true,
+      //         options: [
+      //           {
+      //             label: '选项 A',
+      //             value: 1,
+      //           },
+      //         ],
+      //       },
+      //     ],
+      //   },
+      // },
+      // {
+      //   title: '角色权限设置',
+      //   hash: 'tab5',
+      //   icon: 'fa p-r-xs fa-gavel',
+      //   body: {
+      //     type: 'form',
+      //     panelClassName: 'panel-primary',
+      //     wrapWithPanel: false,
+      //     mode: 'horizontal',
+      //     controls: [
+      //       {
+      //         type: 'list',
+      //         name: 'add_app',
+      //         label: '新增应用',
+      //         desc: '可多选',
+      //         multiple: true,
+      //         options: [
+      //           {
+      //             label: '选项 A',
+      //             value: 1,
+      //           },
+      //         ],
+      //       },
+      //     ],
+      //   },
+      // },
     ],
+  },
+  preset: {
+    forms: {
+      updatePassword: {
+        type: 'form',
+        messages: {
+          saveSuccess: '[密码修改成功] 请使用新密码重新登录',
+          saveFailed: '密码修改失败',
+        },
+        redirect: getLink('login'),
+        mode: 'horizontal',
+        horizontal: {
+          left: 'col-sm-3',
+          right: 'col-sm-9',
+        },
+        controls: [
+          {
+            type: 'password',
+            required: true,
+            name: 'oldPassword',
+            label: '旧密码',
+          },
+          {
+            type: 'password',
+            name: 'password',
+            required: true,
+            label: '新密码',
+          },
+          {
+            type: 'password',
+            name: 'confirmPassword',
+            required: true,
+            label: '重复密码',
+            validationErrors: {
+              equalsField: '两次密码输入不一致',
+            },
+            validations: {
+              equalsField: 'password',
+            },
+          },
+        ],
+      },
+    },
   },
 }

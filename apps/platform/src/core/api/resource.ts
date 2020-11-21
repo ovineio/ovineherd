@@ -4,9 +4,11 @@
  */
 
 import { ReqOption } from '@core/utils/request/types'
+import { setStore } from '@ovine/core/lib/utils/store'
 
-import { relation } from '../constants'
+import { relation, storeKey } from '../constants'
 import { ApiName, ApiType } from '../types'
+import { getOrgId, getOrgUniType } from '../utils'
 import { ApiData, getReqOption, requestApi, requestByOption } from './utils'
 
 // 根据 token 获取用户信息
@@ -58,6 +60,9 @@ export function sysConfigApi() {
     onlyOne: true,
     apiName: ApiName.list,
     ...relation.sys.sysInfo,
+  }).then((sysInfo) => {
+    setStore(storeKey.sysInfo, sysInfo)
+    return sysInfo
   })
 }
 
@@ -68,7 +73,9 @@ export function orgConfigApi(option: { orgId: string }) {
     apiName: ApiName.one,
     id: option.orgId,
   }).then((source) => {
-    return source.relation1_data
+    const orgInfo = source.relation1_data
+    setStore(storeKey.orgInfo, orgInfo)
+    return orgInfo
   })
 }
 
@@ -110,7 +117,7 @@ export async function sysCreateOrgApi(option: any) {
       username,
       password,
       ...relation.org.user,
-      type: `${relation.org.user.type}_${ids.orgId}`,
+      type: getOrgUniType('user', ids.orgId),
       apiName: ApiName.add,
     })
     ids.orgAdmUserId = `${orgAdmUserId}`
@@ -184,7 +191,7 @@ export async function sysCreateAppApi(option: any) {
       ...relation.app.entity,
       apiName: ApiName.add,
       relation1: ids.appInfoId,
-      // relation2: ids.appAdminId,
+      relation2: getOrgId(),
     })
     ids.appId = `${appId}`
 
@@ -208,7 +215,7 @@ export async function sysCreateAppApi(option: any) {
       // 将 管理员 关联到 该应用
       await requestApi(relation.app.entity.apiType, ApiName.edit, {
         id: ids.appId,
-        relation2: ids.appAdminId,
+        relation3: ids.appAdminId,
       })
     }
 

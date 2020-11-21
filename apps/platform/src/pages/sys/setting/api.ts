@@ -1,21 +1,19 @@
 import { publish } from '@core/utils/message'
 
 import { userSelfInfoReqOpt } from '~/core/api/resource'
-import { apis, getOneItem, getReqOption } from '~/core/api/utils'
+import { getOneItem, getReqOption } from '~/core/api/utils'
 import { msgKey, relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 import { getUserId } from '~/core/user'
 
-// 登录 管理员 获取自己信息
-export function sysUserSelfInfoReqOpt() {
-  return userSelfInfoReqOpt({
+export const getSysSettingApis = () => {
+  // 登录 管理员 获取自己信息
+  const sysUserSelfInfoReqOpt = userSelfInfoReqOpt({
     id: getUserId(),
   })
-}
 
-// 登录 管理员 修改自己信息
-export function sysUserEditSelfReqOpt() {
-  const reqOption = getReqOption(
+  // 登录 管理员 修改自己信息
+  const sysUserEditSelfReqOpt = getReqOption(
     {
       ...relation.sys.user,
       id: getUserId(),
@@ -30,11 +28,7 @@ export function sysUserEditSelfReqOpt() {
     }
   )
 
-  return reqOption
-}
-
-function sysInfoReqOpt() {
-  const reqOption = getReqOption(
+  const sysInfoReqOpt = getReqOption(
     {
       ...relation.sys.sysInfo,
       apiName: ApiName.list,
@@ -47,11 +41,7 @@ function sysInfoReqOpt() {
     }
   )
 
-  return reqOption
-}
-
-function sysEditInfoReqOpt() {
-  const reqOption = getReqOption(
+  const sysEditInfoReqOpt = getReqOption(
     {
       ...relation.sys.sysInfo,
       apiName: ApiName.edit,
@@ -65,25 +55,10 @@ function sysEditInfoReqOpt() {
     }
   )
 
-  return reqOption
-}
-
-export const sysSettingApis = {
-  uploadImg: {
-    maxSize: 500 * 1000,
-    limit: {
-      maxWidth: 500,
-      maxHeight: 500,
-    },
-    crop: {
-      aspectRatio: 1,
-      scalable: true,
-      rotatable: true,
-    },
-    reciever: apis.file.upload,
-  },
-  selfInfo: sysUserSelfInfoReqOpt(),
-  editSelf: sysUserEditSelfReqOpt(),
-  sysInfo: sysInfoReqOpt(),
-  sysEditInfo: sysEditInfoReqOpt(),
+  return {
+    selfInfo: sysUserSelfInfoReqOpt,
+    editSelf: sysUserEditSelfReqOpt,
+    sysInfo: sysInfoReqOpt,
+    sysEditInfo: sysEditInfoReqOpt,
+  }
 }

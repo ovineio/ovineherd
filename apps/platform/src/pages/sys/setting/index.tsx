@@ -1,28 +1,21 @@
-import { uuid } from 'amis/lib/utils/helper'
 import React from 'react'
 
-import { Amis } from '@core/components/amis/schema'
-import { useImmer, useSubscriber } from '@ovine/core/lib/utils/hooks'
+import { useActiveUserTab, useSchema } from '~/core/hooks'
 
-import { msgKey } from '~/core/constants'
-
-import settingSchema from './schema'
+import { getSysSettingApis } from './api'
+import { settingSchema } from './schema'
 import * as S from './styled'
 
 export default () => {
-  const [state, setState] = useImmer({
-    refreshKey: '',
-  })
+  const activeKey = useActiveUserTab()
 
-  useSubscriber(msgKey.activeUserInfoTab, () => {
-    setState((d) => {
-      d.refreshKey = uuid()
-    })
-  })
-
-  return (
-    <S.StyledSetting className="container">
-      <Amis key={state.refreshKey} schema={settingSchema} />
-    </S.StyledSetting>
+  const schema = useSchema(
+    {
+      schema: settingSchema,
+      getApis: getSysSettingApis,
+    },
+    [activeKey]
   )
+
+  return <S.StyledSetting className="container">{schema}</S.StyledSetting>
 }

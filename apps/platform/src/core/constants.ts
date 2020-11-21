@@ -9,6 +9,8 @@ export const storeKey = {
   auth: 'authStore',
   userInfo: 'userInfoStore',
   siteCustom: 'siteCustomStore',
+  sysInfo: 'sysInfoStore',
+  orgInfo: 'orgInfoStore',
 }
 
 // 用于消息通知的key
@@ -96,8 +98,9 @@ export const relation = {
     entity: {
       apiType: ApiType.product,
       type: entityType.app,
-      relation1_type: ApiType.config, // 关联配置信息
-      relation2_type: ApiType.user, // 关联管理员---独立应用才需要
+      relation1_type: ApiType.config, // 关联 配置信息
+      relation2_type: ApiType.category, // 关联 组织信息
+      relation3_type: ApiType.user, // 关联管理员---独立应用才需要
     },
     appInfo: {
       apiType: ApiType.config,

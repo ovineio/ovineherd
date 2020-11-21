@@ -5,8 +5,6 @@
  * 请求模块: https://ovine.igroupes.com/org/docs/modules/request
  */
 
-// import { get } from 'lodash'
-
 import logger from '@core/utils/logger'
 import { Request } from '@core/utils/request'
 import { getStore } from '@core/utils/store'
@@ -23,6 +21,12 @@ const appRequestIns = new Request()
 appRequestIns.onPreRequest = (option) => {
   option.mock = false // 全局控制是否开启 mock， 必须在 ovine cli --mock 选项开启的情况下，才有效
   const { method, data = {} } = option
+
+  Object.keys(data).forEach((key) => {
+    if (/relation._data/.test(key)) {
+      delete option.data[key]
+    }
+  })
 
   if (method === 'GET') {
     // 添加 GET 请求参数逻辑

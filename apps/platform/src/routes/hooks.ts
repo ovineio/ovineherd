@@ -127,6 +127,7 @@ export function useUserInfo(option: { isLogin: boolean }) {
 
   const fetchInfo = () => {
     fetchUserInfo().then((userInfo: any) => {
+      // console.log('@===>',userInfo)
       setContext((d) => {
         d.userInfo = userInfo
       })

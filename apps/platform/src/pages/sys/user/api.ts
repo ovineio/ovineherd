@@ -5,59 +5,43 @@ import { relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 
 // 平台管理员 查询 平台用户 列表
-export function sysListUserReqOpt() {
-  const reqOption = getReqOption({
-    ...relation.sys.user,
-    apiName: ApiName.list,
-    '&': '$$',
-  })
-
-  return reqOption
-}
+const sysListUserReqOpt = getReqOption({
+  ...relation.sys.user,
+  apiName: ApiName.list,
+  '&': '$$',
+})
 
 // 平台管理员 添加 平台用户
-export function sysAddUserReqOpt() {
-  const reqOption = getReqOption({
-    ...relation.sys.user,
-    apiName: ApiName.add,
-    '&': '$$',
-  })
-
-  return reqOption
-}
+const sysAddUserReqOpt = getReqOption({
+  ...relation.sys.user,
+  apiName: ApiName.add,
+  '&': '$$',
+})
 
 // 平台管理员 编辑 平台用户
-export function sysEditUserReqOpt() {
-  const reqOption = getReqOption(
-    {
-      ...relation.sys.user,
-      apiName: ApiName.edit,
-      '&': '$$',
+const sysEditUserReqOpt = getReqOption(
+  {
+    ...relation.sys.user,
+    apiName: ApiName.edit,
+    '&': '$$',
+  },
+  {
+    onPreRequest: (option) => {
+      option.data = omit(option.data, ['username'])
+      return option
     },
-    {
-      onPreRequest: (option) => {
-        option.data = omit(option.data, ['username'])
-        return option
-      },
-    }
-  )
-
-  return reqOption
-}
+  }
+)
 
 // 平台管理员 删除 平台用户
-export function sysDelUserReqOpt() {
-  const reqOption = getReqOption({
-    ...relation.sys.user,
-    apiName: ApiName.del,
-  })
-
-  return reqOption
-}
+const sysDelUserReqOpt = getReqOption({
+  ...relation.sys.user,
+  apiName: ApiName.del,
+})
 
 export const sysUserApis = {
-  listUser: sysListUserReqOpt(),
-  addUser: sysAddUserReqOpt(),
-  editUser: sysEditUserReqOpt(),
-  delUser: sysDelUserReqOpt(),
+  editUser: sysEditUserReqOpt,
+  listUser: sysListUserReqOpt,
+  delUser: sysDelUserReqOpt,
+  addUser: sysAddUserReqOpt,
 }

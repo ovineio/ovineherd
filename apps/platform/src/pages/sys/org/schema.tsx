@@ -5,7 +5,7 @@ import { app } from '@core/app'
 
 import { getLink } from '~/core/utils'
 
-import { sysOrgApis } from './api'
+import { getCacheStore } from './api'
 
 const ToOrgLogin = (props) => {
   const { user = {}, id } = props.data
@@ -46,7 +46,7 @@ const orgSchema = {
               type: 'text',
             },
             {
-              name: 'logo',
+              name: 'config.logo',
               label: '组织LOGO',
               type: 'image',
               $ref: 'globalImageCell',
@@ -66,7 +66,7 @@ const orgSchema = {
             {
               name: 'config.sys_desc',
               label: '备注信息',
-              remark: '对该组织备注信息信息',
+              remark: '对该组织备注信息',
               type: 'text',
               // eslint-disable-next-line
               tpl: '${config.sys_desc|default:-|truncate:10}',
@@ -174,7 +174,6 @@ const orgSchema = {
     ],
   },
   preset: {
-    apis: sysOrgApis,
     actions: {
       addOrg: {
         type: 'action',
@@ -332,7 +331,7 @@ const orgSchema = {
                 type: 'action',
                 label: '立即登录该组织',
                 onAction: () => {
-                  app.routerHistory.push(`/org/${sysOrgApis.store.addOrgId}/login`)
+                  app.routerHistory.push(`/org/${getCacheStore().addOrgId}/login`)
                 },
               },
               {

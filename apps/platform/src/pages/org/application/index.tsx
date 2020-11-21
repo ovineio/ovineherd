@@ -7,7 +7,7 @@ import { publish } from '@core/utils/message'
 
 import { msgKey } from '~/core/constants'
 
-import { appApis } from './api'
+import { getAppApis } from './api'
 import { AppControls } from './schema'
 import * as S from './styled'
 
@@ -17,10 +17,11 @@ const defIcon = 'https://cp.greennode.info/favicon.ico'
 
 type ItemProps = {
   item: any
+  appApis: any
   toggleDialog: (toggle: boolean, info: any) => void
 }
 const CardItem = (props: ItemProps) => {
-  const { toggleDialog, item = {} } = props
+  const { toggleDialog, appApis, item = {} } = props
 
   const { id, config = {}, user = {} } = item
 
@@ -101,9 +102,9 @@ const initState = {
 
 export default () => {
   const [state, setState] = useImmer<State>(initState)
+  const appApis = getAppApis()
 
   const { showUpdateDialog, activeItemInfo, listSource } = state
-
   const isEdit = !!activeItemInfo.id
 
   const toggleDialog = (toggle, info = {}) => {
@@ -155,7 +156,7 @@ export default () => {
           </div>
         </div>
         {listSource.map((item, index) => {
-          return <CardItem key={index} item={item} toggleDialog={toggleDialog} />
+          return <CardItem key={index} item={item} appApis={appApis} toggleDialog={toggleDialog} />
         })}
       </div>
       <Amis schema={updateDialogSchema} />

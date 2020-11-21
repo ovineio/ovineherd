@@ -7,10 +7,6 @@ import { relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 import { getLink } from '~/core/utils'
 
-const store = {
-  addOrgId: '',
-}
-
 function sysRegisterReqOpt() {
   const reqOption = getReqOption(
     {
@@ -40,6 +36,5 @@ function sysRegisterReqOpt() {
 }
 
 export const registerApis = {
-  store,
   registerOrg: sysRegisterReqOpt(),
 }

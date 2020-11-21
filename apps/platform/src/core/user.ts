@@ -15,7 +15,8 @@ let userInfo: any = getStore(storeKey.userInfo) || {}
 
 // 根据 token 获取用户信息
 export async function fetchUserInfo() {
-  return userSelfInfoApi({ id: getToken() }).then((source) => {
+  // console.log('@===>', getUserId())
+  return userSelfInfoApi({ id: getUserId() }).then((source) => {
     setUserInfo(source)
     return source
   })
@@ -34,7 +35,6 @@ export function getUserInfo() {
 // 判断用户是否是登陆状态
 export function isLogin(type?: AppType, isolation: boolean = false) {
   const withAuth = !!getStore(storeKey.auth)
-
   // debugger
   if (!withAuth) {
     return false
@@ -70,5 +70,5 @@ export function isSysUser(info = userInfo) {
 
 // 是否是 组织用户
 export function isOrgUser(info = userInfo) {
-  return info.type === entityType.orgUser
+  return info.type.indexOf(entityType.orgUser) === 0
 }

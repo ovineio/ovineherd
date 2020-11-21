@@ -3,12 +3,16 @@ import { getReqOption } from '~/core/api/utils'
 import { relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 
-const store = {
+// TODO: 组织使用： 假删除。 添加冻结功能
+
+const dataStore = {
   addOrgId: '',
 }
 
-function sysListOrgReqOpt() {
-  const reqOption = getReqOption(
+export const getCacheStore = () => dataStore
+
+export const getSysOrgApis = () => {
+  const sysListOrgReqOpt = getReqOption(
     {
       ...relation.org.entity,
       apiName: ApiName.list,
@@ -29,68 +33,47 @@ function sysListOrgReqOpt() {
     }
   )
 
-  return reqOption
-}
-
-function sysAddOrgReqOpt() {
-  return {
+  const sysAddOrgReqOpt = {
     url: 'fakeAddOrg',
     onFakeRequest: async (option) => {
       option.data.title = option.data.name
       const { orgId } = await sysCreateOrgApi(option.data)
-      store.addOrgId = orgId
+      dataStore.addOrgId = orgId
       return {
         status: 0,
       }
     },
   }
-}
 
-function sysEditOrgReqOpt() {
-  const reqOption = getReqOption({
+  const sysEditOrgReqOpt = getReqOption({
     ...relation.org.orgInfo,
     apiName: ApiName.edit,
     '&': '$$',
   })
 
-  return reqOption
-}
-
-function sysListApplyReqOpt() {
-  const reqOption = getReqOption({
+  const sysListApplyReqOpt = getReqOption({
     ...relation.sys.orgRegisterApply,
     apiName: ApiName.list,
     '&': '$$',
   })
 
-  return reqOption
-}
-
-function sysCheckOrgApplyReqOpt() {
-  const reqOption = getReqOption({
+  const sysCheckOrgApplyReqOpt = getReqOption({
     ...relation.sys.orgRegisterApply,
     apiName: ApiName.edit,
     '&': '$$',
   })
 
-  return reqOption
-}
-
-export function sysDelOrgReqOpt() {
-  const reqOption = getReqOption({
+  const sysDelOrgReqOpt = getReqOption({
     ...relation.org.entity,
     apiName: ApiName.del,
   })
 
-  return reqOption
-}
-
-export const sysOrgApis = {
-  store,
-  listOrg: sysListOrgReqOpt(),
-  listOrgApply: sysListApplyReqOpt(),
-  checkOrgApply: sysCheckOrgApplyReqOpt(),
-  delOrg: sysDelOrgReqOpt(),
-  addOrg: sysAddOrgReqOpt(),
-  editOrg: sysEditOrgReqOpt(),
+  return {
+    listOrg: sysListOrgReqOpt,
+    listOrgApply: sysListApplyReqOpt,
+    checkOrgApply: sysCheckOrgApplyReqOpt,
+    delOrg: sysDelOrgReqOpt,
+    addOrg: sysAddOrgReqOpt,
+    editOrg: sysEditOrgReqOpt,
+  }
 }

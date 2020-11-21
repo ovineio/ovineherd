@@ -2,7 +2,7 @@
  * 定义需要的 api
  */
 
-import { get, map, omitBy } from 'lodash'
+import { get, isEmpty, map, omitBy } from 'lodash'
 
 import { app } from '@core/app'
 import { ReqOption, ReqApiRes } from '@core/utils/request/types'
@@ -190,8 +190,12 @@ export const getReqOption = (
   const { apiType, apiName, ...data } = apiOption
   const apiInfo = get(apis, `${apiType}.${apiName}`)
 
+  if (apiName === ApiName.one && data.id) {
+    apiInfo.url = apiInfo.url.replace('$id', data.id)
+  }
+
   return {
-    data,
+    data: isEmpty(data) ? undefined : data,
     ...apiInfo,
     ...option,
   }

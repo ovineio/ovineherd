@@ -4,40 +4,11 @@ import { sysCreateAppApi } from '~/core/api/resource'
 import { getReqOption, requestByOption } from '~/core/api/utils'
 import { msgKey, relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
+import { getOrgId } from '~/core/utils'
 
-function orgListAppApi() {
-  return requestByOption({
-    ...relation.app.entity,
-    apiName: ApiName.list,
-  }).then((source) => {
-    const items = source.items.map((data) => {
-      const { relation1_data: config, relation2_data: user = {}, ...rest } = data
-      return {
-        config,
-        user,
-        ...rest,
-      }
-    })
-    return items
-  })
-}
-
-function orgAddAppReqOpt() {
-  return {
-    url: 'fakeAddApp',
-    onFakeRequest: async (option) => {
-      option.data.title = option.data.name
-      await sysCreateAppApi(option.data)
-      publish(msgKey.updateOrgAppList)
-      return {
-        status: 0,
-      }
-    },
-  }
-}
-
-function orgEditAppReqOpt() {
-  const reqOption = getReqOption(
+// TODO: 应用使用： 假删除。 添加冻结功能
+export const getAppApis = () => {
+  const editApp = getReqOption(
     {
       ...relation.app.appInfo,
       apiName: ApiName.edit,
@@ -69,22 +40,45 @@ function orgEditAppReqOpt() {
     }
   )
 
-  return reqOption
-}
+  const orgListAppApi = () =>
+    requestByOption({
+      ...relation.app.entity,
+      apiName: ApiName.list,
+      q_relation2: getOrgId(),
+    }).then((source) => {
+      const items = source.items.map((data) => {
+        const { relation1_data: config, relation2_data: user = {}, ...rest } = data
+        return {
+          config,
+          user,
+          ...rest,
+        }
+      })
+      return items
+    })
 
-function orgDelAppApi(id: string) {
-  const reqOption = requestByOption({
-    id,
-    ...relation.app.entity,
-    apiName: ApiName.del,
-  })
+  return {
+    editApp,
+    orgListAppApi,
+    orgDelAppApi: (id: string) => {
+      const reqOption = requestByOption({
+        id,
+        apiType: relation.app.entity.apiType,
+        apiName: ApiName.del,
+      })
 
-  return reqOption
-}
-
-export const appApis = {
-  orgListAppApi,
-  orgDelAppApi,
-  addApp: orgAddAppReqOpt(),
-  editApp: orgEditAppReqOpt(),
+      return reqOption
+    },
+    addApp: {
+      url: 'fakeAddApp',
+      onFakeRequest: async (option) => {
+        option.data.title = option.data.name
+        await sysCreateAppApi(option.data)
+        publish(msgKey.updateOrgAppList)
+        return {
+          status: 0,
+        }
+      },
+    },
+  }
 }

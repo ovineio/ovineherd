@@ -1,14 +1,21 @@
 import React from 'react'
 
-import { Amis } from '@core/components/amis/schema'
+import { useActiveUserTab, useSchema } from '~/core/hooks'
 
+import { getOrgSettingApis } from './api'
 import { settingSchema } from './schema'
 import * as S from './styled'
 
 export default () => {
-  return (
-    <S.StyledSetting className="container">
-      <Amis schema={settingSchema} />
-    </S.StyledSetting>
+  const activeKey = useActiveUserTab()
+
+  const schema = useSchema(
+    {
+      schema: settingSchema,
+      getApis: getOrgSettingApis,
+    },
+    [activeKey]
   )
+
+  return <S.StyledSetting className="container">{schema}</S.StyledSetting>
 }

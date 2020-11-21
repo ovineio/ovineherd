@@ -59,7 +59,7 @@ export const AppControls = [
       url: 'POST /v1/file?has_domain=yes&t=2',
     },
     $ref: 'globalImgUpload',
-    required: true,
+    // required: true,
   },
   {
     type: 'image',

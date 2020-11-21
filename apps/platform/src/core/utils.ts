@@ -6,6 +6,7 @@ import { get } from 'lodash'
 
 import { app } from '@core/app'
 
+import { relation } from './constants'
 import { AppType } from './types'
 
 // app类型检测
@@ -60,4 +61,13 @@ export function getTextWidth(text: string = '') {
 
 export function isStrTrue(str: string) {
   return str === '1'
+}
+
+export function getOrgUniType(type: 'user', orgId = getOrgId()) {
+  switch (type) {
+    case 'user':
+      return `${relation.org.user.type}_${orgId}`
+    default:
+      return ''
+  }
 }
