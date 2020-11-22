@@ -149,7 +149,7 @@ export default () => {
           />
           <span className="tip-text">{tips.error}</span>
           <span className="register-text">
-            {!isSysAdmLogin && isStrTrue(custom.enable_register_org) && (
+            {!isSysAdmLogin && !orgId && isStrTrue(custom.enable_register_org) && (
               <Link to="/sys/register" className="pull-right">
                 立即申请组织
               </Link>

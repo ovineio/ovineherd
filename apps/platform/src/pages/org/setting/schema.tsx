@@ -417,7 +417,38 @@ export const settingSchema = {
               },
               {
                 type: 'action',
-                label: '删除组织',
+                label: '退出组织',
+                level: 'danger',
+              },
+            ],
+          },
+          {
+            type: 'divider',
+          },
+
+          {
+            type: 'panel',
+            title: '转移组织',
+            className: ' ',
+            headerClassName: 'cxd-section-header m-t-md m-b-sm',
+            body: [
+              {
+                type: 'alert',
+                body: {
+                  type: 'html',
+                  html: `
+                    <h6 class="p-t-sm">转移须知</h6>
+                    <ul>
+                      <li>只能转移给组织成员，转移后该成员将拥有该组织的最高权限</li>
+                      <li>您将会在转移成功后被，移出本组织</li>
+                    </ul>
+                  `,
+                },
+                level: 'info',
+              },
+              {
+                type: 'action',
+                label: '转移组织',
                 level: 'danger',
               },
             ],
@@ -438,8 +469,8 @@ export const settingSchema = {
                   html: `
                     <h6 class="p-t-sm">删除须知</h6>
                     <ul>
-                      <li>只有将应用全部删除成功后，才能删除组织</li>
-                      <li>组织删除后，所有组织成员将不能使用本系统</li>
+                      <li>删除组织前请转移相关数据，删除后将不再保存相关数据</li>
+                      <li>组织删除后，所有组织成员将不能再使用本系统，请谨慎操作</li>
                     </ul>
                   `,
                 },
@@ -448,36 +479,6 @@ export const settingSchema = {
               {
                 type: 'action',
                 label: '删除组织',
-                level: 'danger',
-              },
-            ],
-          },
-          {
-            type: 'divider',
-          },
-          {
-            type: 'panel',
-            title: '转移组织',
-            className: ' ',
-            headerClassName: 'cxd-section-header m-t-md m-b-sm',
-            body: [
-              {
-                type: 'alert',
-                body: {
-                  type: 'html',
-                  html: `
-                    <h6 class="p-t-sm">转移须知</h6>
-                    <ul>
-                      <li>只能转移给组织成员，转移后该成员将拥有企业的最高权限</li>
-                      <li>您将会在转移成功后被，移出本组织</li>
-                    </ul>
-                  `,
-                },
-                level: 'info',
-              },
-              {
-                type: 'action',
-                label: '转移组织',
                 level: 'danger',
               },
             ],

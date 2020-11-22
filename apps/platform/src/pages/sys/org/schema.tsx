@@ -106,7 +106,12 @@ const orgSchema = {
           type: 'crud',
           $ref: 'globalCrudCCommon',
           api: '$preset.apis.listOrgApply',
-          headerToolbar: [],
+          hash: 'orgApplyList',
+          headerToolbar: [
+            {
+              $ref: 'globalTableReloadTool',
+            },
+          ],
           footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
           columns: [
             {
@@ -114,6 +119,12 @@ const orgSchema = {
               label: 'ID',
               type: 'text',
               toggled: false,
+            },
+            {
+              name: 'created_time',
+              label: '申请时间',
+              type: 'datetime',
+              width: 150,
             },
             {
               name: 'username',
@@ -156,12 +167,7 @@ const orgSchema = {
                 body: '$desc',
               },
             },
-            {
-              name: 'created_time',
-              label: '申请时间',
-              type: 'datetime',
-              width: 150,
-            },
+
             {
               type: 'operation',
               label: '操作',

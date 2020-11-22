@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
 export const StyledAppCards = styled.div`
+  .cxd-Spinner {
+    top: 200px;
+  }
+
   .new-item {
     display: flex;
     flex-direction: column;
@@ -29,9 +33,12 @@ export const StyledCardItem = styled.div`
   &:hover {
     .item-info {
       p {
-        max-height: 42px;
+        max-height: 62px;
         margin-top: 5px;
       }
+    }
+    .app-mark {
+      top: -1px;
     }
     .item-mask {
       background: rgba(0, 0, 0, 0.5);
@@ -42,6 +49,32 @@ export const StyledCardItem = styled.div`
     }
     .item-actions {
       opacity: 1;
+    }
+  }
+
+  .app-mark {
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    left: -4px;
+    width: 80px;
+    height: 25px;
+    span {
+      position: absolute;
+      width: 100%;
+      top: 1px;
+      left: 0;
+      text-align: center;
+      text-indent: -2px;
+      font-size: 12px;
+      color: #fff;
+    }
+    .icon-leftTopMark {
+      width: 100%;
+      height: 100%;
+      path {
+        fill: rgb(45, 160, 253);
+      }
     }
   }
 
@@ -105,7 +138,7 @@ export const StyledCardItem = styled.div`
       max-height: 0;
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
       overflow: hidden;
       transition: all 0.3s cubic-bezier(0.44, 0.9, 0.6, 0.94);
     }

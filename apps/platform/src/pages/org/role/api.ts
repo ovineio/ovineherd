@@ -88,26 +88,25 @@ export const getOrgRoleApi = () => {
       '&': '$$',
     },
     {
-      onPreRequest: (option) => {
-        const { teamIds = '', roleIds = '', ...rest } = option.data
-        const catIds = !roleIds ? teamIds : `${teamIds},${roleIds}`
-        option.data = rest
-        option.data.category_ids = catIds
-        return option
-      },
+      // onPreRequest: (option) => {
+      //   const { teamIds = '', roleIds = '', ...rest } = option.data
+      //   const catIds = !roleIds ? teamIds : `${teamIds},${roleIds}`
+      //   option.data = rest
+      //   option.data.category_ids = catIds
+      //   return option
+      // },
       onSuccess: (source) => {
         source.data.items = source.data.items.map((data) => {
           const {
             // eslint-disable-next-line
             password,
-            relation4,
             relation3_data: team = {},
             relation4_data: role = {},
             ...rest
           } = data
           return {
             team,
-            role: relation4 ? role : {},
+            role,
             ...rest,
           }
         })
@@ -129,7 +128,6 @@ export const getOrgRoleApi = () => {
               apiName: ApiName.edit,
               id: uid,
               relation4: newRoleId,
-              relation4_type: 'category',
             })
           })
         )
@@ -145,8 +143,42 @@ export const getOrgRoleApi = () => {
     apiType: relation.org.user.apiType,
     apiName: ApiName.edit,
     id: '$id',
-    relation4: '',
+    relation4: '0',
   })
+
+  // 此处所设置权限，如何对应后端接口
+  const setLimit = {
+    url: 'fakeSetLimit',
+    onFakeRequest: () => {
+      // const limitData = option.data
+
+      return {
+        status: 0,
+        msg: '保存成功',
+      }
+    },
+  }
+
+  const appListOpts = getReqOption(
+    {
+      ...relation.app.entity,
+      apiName: ApiName.list,
+      q_relation2: orgId,
+    },
+    {
+      expired: 30 * 1000,
+      onSuccess: (source) => {
+        const options = source.data.items.map((item) => {
+          return {
+            value: item.id,
+            label: item.relation1_data.name,
+          }
+        })
+        source.data = { options }
+        return source
+      },
+    }
+  )
 
   return {
     orgTeamOption,
@@ -158,5 +190,7 @@ export const getOrgRoleApi = () => {
     listMember,
     batchSetRole,
     rmUserRole,
+    setLimit,
+    appListOpts,
   }
 }

@@ -10,7 +10,7 @@ export const AppControls = [
     $ref: 'globalSwitch',
     name: 'isolation',
     label: '是否独立',
-    option: '设置为独立应用，将使用独立用户体系',
+    option: '独立应用将使用独立用户体系，创建后不可更改',
     hiddenOn: 'data.id',
   },
   {
@@ -22,7 +22,7 @@ export const AppControls = [
     visibleOn: 'data.isolation === "1"',
     requiredOn: 'data.isolation === "1"',
     descriptionClassName: 'd-block',
-    description: '该账号将用于登录应用，一旦填写了将无法变更',
+    description: '该账号将用于登录应用，由创建时分配',
   },
   {
     type: 'text',

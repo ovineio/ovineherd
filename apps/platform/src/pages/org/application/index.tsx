@@ -1,4 +1,5 @@
-import { confirm, toast } from 'amis'
+import { confirm, toast, Spinner } from 'amis'
+import { Icon } from 'amis/lib/components/icons'
 import React, { useEffect } from 'react'
 
 import { Amis } from '@core/components/amis/schema'
@@ -6,6 +7,7 @@ import { useImmer, useSubscriber } from '@core/utils/hooks'
 import { publish } from '@core/utils/message'
 
 import { msgKey } from '~/core/constants'
+import { isStrTrue } from '~/core/utils'
 
 import { getOrgAppApis } from './api'
 import { AppControls } from './schema'
@@ -24,6 +26,7 @@ const CardItem = (props: ItemProps) => {
   const { toggleDialog, appApis, item = {} } = props
 
   const { id, config = {}, user = {} } = item
+  const isolation = isStrTrue(config.isolation)
 
   const itemBgStyle = {
     backgroundImage: `url(${config.org_app_bg || defBg})`,
@@ -54,6 +57,12 @@ const CardItem = (props: ItemProps) => {
   return (
     <S.StyledCardItem className="col-lg-3">
       <div className="item-content">
+        {isolation && (
+          <div className="app-mark">
+            <Icon icon="leftTopMark" />
+            <span>独立应用</span>
+          </div>
+        )}
         <div className="item-cover" style={itemBgStyle} />
         <div className="item-mask" />
         <ul className="item-actions">
@@ -92,19 +101,21 @@ type State = {
   showUpdateDialog: boolean
   activeItemInfo: any
   listSource: any[]
+  isLoading: boolean
 }
 
 const initState = {
   showUpdateDialog: false,
   activeItemInfo: {},
   listSource: [],
+  isLoading: true,
 }
 
 export default () => {
   const [state, setState] = useImmer<State>(initState)
   const appApis = getOrgAppApis()
 
-  const { showUpdateDialog, activeItemInfo, listSource } = state
+  const { isLoading, showUpdateDialog, activeItemInfo, listSource } = state
   const isEdit = !!activeItemInfo.id
 
   const toggleDialog = (toggle, info = {}) => {
@@ -115,9 +126,13 @@ export default () => {
   }
 
   const fetchList = () => {
+    setState((d) => {
+      d.isLoading = true
+    })
     appApis.orgListAppApi().then((source) => {
       setState((d) => {
         d.listSource = source
+        d.isLoading = false
       })
     })
   }
@@ -144,7 +159,7 @@ export default () => {
     toggleDialog(false)
     fetchList()
   })
-
+  // TODO: 添加拖拽排序
   return (
     <S.StyledAppCards className="container">
       <h5 className="m-b-md">我的应用</h5>
@@ -155,6 +170,7 @@ export default () => {
             <span>添加一个新应用</span>
           </div>
         </div>
+        <Spinner overlay theme="cxd" size="lg" show={isLoading} />
         {listSource.map((item, index) => {
           return <CardItem key={index} item={item} appApis={appApis} toggleDialog={toggleDialog} />
         })}

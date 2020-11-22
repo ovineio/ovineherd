@@ -58,7 +58,7 @@ export const useAppConfig = () => {
   }
 
   const getOrgConfig = () => {
-    orgConfigApi({ orgId }).then((source: any) => {
+    orgConfigApi({ orgId }).then((source: any = {}) => {
       setState((d) => {
         source.isLoad = true
         d.org = source

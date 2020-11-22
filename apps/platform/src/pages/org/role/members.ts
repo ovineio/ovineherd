@@ -38,11 +38,11 @@ const members = {
       controls: [
         {
           $ref: 'orgTeamIdPicker',
-          name: 'teamIds',
+          name: 'q_relation3',
         },
         {
           $ref: 'orgRoleIdPicker',
-          name: 'roleIds',
+          name: 'q_relation4',
         },
         {
           type: 'text',
@@ -76,6 +76,23 @@ const members = {
                 name: 'ids',
               },
               {
+                type: 'tpl',
+                label: '已选成员',
+                inputClassName: 'container',
+                tpl: `
+                  <div class="row padder-v-xs m-b-xs" style="background-color: #f6f7fb;">
+                    <div class="col-sm-6">成员姓名</div>
+                    <div class="col-sm-6">角色名</div>
+                  </div>
+                  <div class="row">
+                    <% for(var i=0; i < data.items.length; i++) { var item=data.items[i]; %>
+                      <div class="col-sm-6 m-b-xs"><%= item.real_name %> </div>
+                      <div class="col-sm-6 m-b-xs"><%= item.role.name || '无角色' %> </div>
+                    <% } %>
+                  </div>
+                `,
+              },
+              {
                 $ref: 'orgRoleIdPicker',
                 required: true,
                 multiple: false,
@@ -83,22 +100,10 @@ const members = {
                 label: '变更角色',
               },
               {
-                type: 'tpl',
-                label: '已选成员',
-                inputClassName: 'container',
-                tpl: `
-                  <div class="row">
-                    <% for(var i=0; i < data.items.length; i++) { var item=data.items[i]; %>
-                      <div class="col-sm-6 m-b-xs"><%= item.real_name %> (<%= item.role.name || '无角色' %>)</div>
-                    <% } %>
-                  </div>
-                `,
-              },
-              {
                 type: 'checkbox',
                 name: 'confirmAction',
                 label: '确认操作',
-                option: '请谨慎操作，必须确认后才可提交。',
+                option: '请谨慎操作，必须确认后才可提交',
               },
             ],
           },
@@ -129,8 +134,22 @@ const members = {
       {
         name: 'real_name',
         label: '姓名',
-        type: 'text',
-        sortable: true,
+        type: 'container',
+        body: {
+          type: 'action',
+          level: 'link',
+          label: '$real_name',
+          actionType: 'dialog',
+          dialog: {
+            title: '管理员详细资料',
+            actions: [],
+            closeOnEsc: true,
+            body: {
+              type: 'lib-renderer',
+              renderer: 'viewUserInfoForm',
+            },
+          },
+        },
       },
       // {
       //   name: 'avatar',

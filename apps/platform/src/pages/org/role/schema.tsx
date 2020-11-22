@@ -1,4 +1,5 @@
 import members from './members'
+import { limitSetting } from './tpl'
 
 export const orgRoleSchema = {
   type: 'page',
@@ -14,6 +15,7 @@ export const orgRoleSchema = {
           type: 'crud',
           $ref: 'globalCrudCCommon',
           api: '$preset.apis.listRole',
+          name: 'roleList',
           quickSaveItemApi: '$preset.apis.editRole',
           headerToolbar: [
             {
@@ -118,21 +120,17 @@ export const orgRoleSchema = {
           },
         },
       },
-
       setLimit: {
         type: 'action',
         label: '设置权限',
         level: 'link',
         actionType: 'dialog',
         dialog: {
-          title: '编辑管理员',
-          body: {
-            api: '$preset.apis.editUser',
-            $preset: 'forms.updateRole',
-          },
+          size: 'lg',
+          title: '设置 【$name】 权限',
+          body: limitSetting,
         },
       },
-
       delRole: {
         type: 'action',
         label: '删除',
@@ -145,6 +143,7 @@ export const orgRoleSchema = {
     },
     forms: {
       updateRole: {
+        api: '$preset.apis.editUser',
         type: 'form',
         controls: [
           {
@@ -166,15 +165,8 @@ export const orgRoleSchema = {
         type: 'form',
         wrapWithPanel: false,
         mode: 'inline',
-        target: 'userList',
-        name: 'userListFilter',
+        target: 'roleList',
         controls: [
-          {
-            type: 'hidden',
-            name: 'q_relation3',
-            submitOnChange: true,
-            label: '所属部门',
-          },
           {
             type: 'text',
             name: 'n_name',
@@ -201,7 +193,6 @@ export const orgRoleSchema = {
       source: '$preset.apis.orgTeamOption',
     },
     orgRoleIdPicker: {
-      // limits: limitKeys.global.sysRoleIdPicker,
       type: 'select',
       clearable: true,
       multiple: true,

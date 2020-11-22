@@ -32,4 +32,9 @@ export const StyledSetting = styled.div`
   .cxd-Tabs-links {
     width: 240px;
   }
+
+  .cxd-Spinner {
+    width: 40px;
+    height: 40px;
+  }
 `

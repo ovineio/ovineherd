@@ -8,6 +8,8 @@ import { getOrgId } from '~/core/utils'
 
 // TODO: 应用使用： 假删除。 添加冻结功能
 export const getOrgAppApis = () => {
+  const orgId = getOrgId()
+
   const editApp = getReqOption(
     {
       ...relation.app.appInfo,
@@ -44,10 +46,10 @@ export const getOrgAppApis = () => {
     requestByOption({
       ...relation.app.entity,
       apiName: ApiName.list,
-      q_relation2: getOrgId(),
+      q_relation2: orgId,
     }).then((source) => {
       const items = source.items.map((data) => {
-        const { relation1_data: config, relation2_data: user = {}, ...rest } = data
+        const { relation1_data: config, relation3_data: user = {}, ...rest } = data
         return {
           config,
           user,
