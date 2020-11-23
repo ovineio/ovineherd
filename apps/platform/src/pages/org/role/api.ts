@@ -1,4 +1,4 @@
-import { chunk } from 'lodash'
+import { chunk, map } from 'lodash'
 
 import { getReqOption, requestByOption } from '~/core/api/utils'
 import { relation } from '~/core/constants'
@@ -56,7 +56,7 @@ export const getOrgRoleApi = () => {
   const listRole = getReqOption({
     apiType: relation.org.role.apiType,
     type: relation.org.role.type,
-    relation1: orgId,
+    q_relation1: orgId,
     apiName: ApiName.list,
     '&': '$$',
   })
@@ -149,8 +149,49 @@ export const getOrgRoleApi = () => {
   // 此处所设置权限，如何对应后端接口
   const setLimit = {
     url: 'fakeSetLimit',
-    onFakeRequest: () => {
-      // const limitData = option.data
+    onFakeRequest: async (option) => {
+      const { id: roleId, limitId = '', appLimit = [], ...rest } = option.data
+      const limit_raw = JSON.stringify(option.data)
+      const limit_data: any = []
+
+      const setLimitStr = (prefix, str) => {
+        const valArr = str.split(',')
+        valArr.forEach((v) => {
+          limit_data.push(`${prefix}/${v}`)
+        })
+      }
+
+      map(rest, (val, key) => {
+        setLimitStr(key, val)
+      })
+
+      appLimit.forEach(({ id, limit }) => {
+        setLimitStr(`app/${id}`, limit)
+      })
+
+      const limitInfo = { limit_raw, limit_data }
+
+      if (limitId) {
+        await requestByOption({
+          apiType: relation.org.limit.apiType,
+          apiName: ApiName.edit,
+          id: limitId,
+          ...limitInfo,
+        })
+      } else {
+        const { id: addLimitId } = await requestByOption({
+          ...relation.org.limit,
+          ...limitInfo,
+          apiName: ApiName.add,
+        })
+        await requestByOption({
+          apiType: relation.org.role.apiType,
+          relation2_type: relation.org.role.relation2_type,
+          apiName: ApiName.edit,
+          id: roleId,
+          relation2: addLimitId,
+        })
+      }
 
       return {
         status: 0,
@@ -158,6 +199,25 @@ export const getOrgRoleApi = () => {
       }
     },
   }
+
+  const getLimit = getReqOption(
+    {
+      apiType: relation.org.limit.apiType,
+      apiName: ApiName.one,
+      sendOn: '',
+      id: '$relation2',
+    },
+    {
+      onSuccess: (source) => {
+        try {
+          source.data = JSON.parse(source.data.limit_raw)
+        } catch (e) {
+          //
+        }
+        return source
+      },
+    }
+  )
 
   const appListOpts = getReqOption(
     {
@@ -191,6 +251,7 @@ export const getOrgRoleApi = () => {
     batchSetRole,
     rmUserRole,
     setLimit,
+    getLimit,
     appListOpts,
   }
 }

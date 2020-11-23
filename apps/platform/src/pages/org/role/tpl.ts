@@ -5,7 +5,11 @@ export const limitSetting: any = {
     mode: 'normal',
     wrapWithPanel: false,
     api: '$preset.apis.setLimit',
+    initApi: '$preset.apis.getLimit',
+    initFetchOn: 'data.relation2',
     controls: [
+      { type: 'hidden', name: 'id' },
+      { type: 'hidden', name: 'relation2' },
       {
         type: 'checkboxes',
         name: 'orgTeam',

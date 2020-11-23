@@ -108,7 +108,6 @@ export const orgRoleSchema = {
       },
       editRole: {
         type: 'action',
-        align: 'right',
         label: '编辑',
         level: 'link',
         actionType: 'dialog',
@@ -143,7 +142,6 @@ export const orgRoleSchema = {
     },
     forms: {
       updateRole: {
-        api: '$preset.apis.editUser',
         type: 'form',
         controls: [
           {

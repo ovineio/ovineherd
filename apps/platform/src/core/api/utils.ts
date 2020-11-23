@@ -209,7 +209,7 @@ export type ApiData = {
   [key: string]: any
 }
 
-// 增加参数提示
+// 增加参数提示 --> TODO: 移除该方法
 export function requestApi<T = {}>(
   apiType: ApiType,
   apiName: ApiName,
