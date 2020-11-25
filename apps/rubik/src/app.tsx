@@ -10,20 +10,18 @@ import { AppConfig } from '@core/app/types'
 import { initLogger } from '@core/utils/logger'
 import { DeepPartial } from '@core/utils/types'
 
-import App from './components/app'
-import { schemaDefinitions } from './core/amis'
-import appEnv from './core/env'
-import appRequestIns from './core/request'
+// import App from './components/app'
+// import appEnv from './core/env'
+// import appRequestIns from './core/request'
 
-import './icons'
+// import './icons'
 
 const appRootId = '#app-root'
 
 const appConfig: DeepPartial<AppConfig> = {
-  request: appRequestIns,
-  env: appEnv,
+  // request: appRequestIns,
+  // env: appEnv,
   amis: {
-    definitions: schemaDefinitions,
     affixOffsetTop: 60,
   },
 }
@@ -33,7 +31,7 @@ function render(props) {
     const { container } = props
     initLogger(app.env.logger)
     ReactDOM.render(
-      <App />,
+      <div>123</div>,
       container ? container.querySelector(appRootId) : document.querySelector(appRootId)
     )
   })
@@ -71,12 +69,4 @@ export async function unmount(props) {
   ReactDOM.unmountComponentAtNode(
     container ? container.querySelector(appRootId) : document.querySelector(appRootId)
   )
-}
-
-const { hot } = module as any
-if (hot) {
-  hot.accept((err: Error) => {
-    // eslint-disable-next-line
-    console.error('An error occurred when hot reload.', err)
-  })
 }

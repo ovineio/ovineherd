@@ -9,11 +9,18 @@ import { setStore } from '@ovine/core/lib/utils/store'
 import { relation, storeKey } from '../constants'
 import { ApiName, ApiType } from '../types'
 import { getOrgId, getOrgUniType, isStrTrue } from '../utils'
-import { ApiData, getReqOption, requestApi, requestByOption } from './utils'
+import { ApiData, getReqOption, requestByOption } from './utils'
 
 // 根据 token 获取用户信息
 export function userSelfInfoApi(data: ApiData, option?: ReqOption) {
-  return requestApi(ApiType.user, ApiName.one, data, option)
+  return requestByOption(
+    {
+      apiType: ApiType.user,
+      apiName: ApiName.one,
+      ...data,
+    },
+    option
+  )
 }
 
 export function userSelfInfoReqOpt(data: ApiData, option?: ReqOption) {
@@ -31,12 +38,12 @@ export function userSelfInfoReqOpt(data: ApiData, option?: ReqOption) {
 
 // 系统用户登录
 export function sysUserLoginApi(option: ApiData) {
-  return requestApi(
-    ApiType.user,
-    ApiName.login,
+  return requestByOption(
     {
-      ...option,
+      apiType: ApiType.user,
+      apiName: ApiName.login,
       onlyData: false,
+      ...option,
     },
     {
       // 不提示错误信息
@@ -77,11 +84,6 @@ export function orgConfigApi(option: { orgId: string }) {
     setStore(storeKey.orgInfo, orgInfo)
     return orgInfo
   })
-}
-
-// 注册一个 组织，提交到 平台管理员审核列表
-export function orgRegisterApi() {
-  //
 }
 
 // 平台管理员 添加一个组织
@@ -138,13 +140,17 @@ export async function sysCreateOrgApi(option: any) {
     ids.orgAdmUserId = `${orgAdmUserId}`
 
     // 将创建的 组织 关联到该组织用户
-    await requestApi(relation.org.user.apiType, ApiName.edit, {
+    await requestByOption({
+      apiType: relation.org.user.apiType,
+      apiName: ApiName.edit,
       id: ids.orgAdmUserId,
       relation2: ids.orgId,
     })
 
     // 将 管理员 关联到 该组织
-    await requestApi(relation.org.entity.apiType, ApiName.edit, {
+    await requestByOption({
+      apiType: relation.org.entity.apiType,
+      apiName: ApiName.edit,
       id: ids.orgId,
       relation2: ids.orgAdmUserId,
     })
@@ -230,13 +236,17 @@ export async function sysCreateAppApi(option: any) {
       ids.appAdminId = `${appAdminId}`
 
       // 将创建的 应用 关联到该应用管理员
-      await requestApi(relation.app.user.apiType, ApiName.edit, {
+      await requestByOption({
+        apiType: relation.app.user.apiType,
+        apiName: ApiName.edit,
         id: ids.appAdminId,
         relation2: ids.appId,
       })
 
       // 将 管理员 关联到 该应用
-      await requestApi(relation.app.entity.apiType, ApiName.edit, {
+      await requestByOption({
+        apiType: relation.app.entity.apiType,
+        apiName: ApiName.edit,
         id: ids.appId,
         relation3: ids.appAdminId,
       })
@@ -271,37 +281,4 @@ export async function sysCreateAppApi(option: any) {
 
     throw Error('创建组织失败')
   }
-}
-
-// 平台管理员 查询 组织申请 列表
-export function sysListOrgApplyReqOpt() {
-  const reqOption = getReqOption({
-    ...relation.sys.orgRegisterApply,
-    apiName: ApiName.list,
-    '&': '$$',
-  })
-
-  return reqOption
-}
-
-// 平台管理员 组织申请 审核 列表
-export function sysListOrgApplyCheckReqOpt() {
-  const reqOption = getReqOption({
-    ...relation.sys.orgRegisterApply,
-    apiName: ApiName.list,
-    '&': '$$',
-  })
-
-  return reqOption
-}
-
-// 平台管理员 修改平台 信息
-export function sysEditInfoReqOpt() {
-  const reqOption = getReqOption({
-    ...relation.sys.sysInfo,
-    apiName: ApiName.edit,
-    '&': '$$',
-  })
-
-  return reqOption
 }

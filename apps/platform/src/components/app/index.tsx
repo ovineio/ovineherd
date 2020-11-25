@@ -1,7 +1,7 @@
 import { AlertComponent, ToastComponent, ContextMenu } from 'amis'
 import React from 'react'
 import { Switch, Router, Route } from 'react-router-dom'
-
+import { hot } from 'react-hot-loader/root'
 import { ThemeProvider } from 'styled-components'
 
 import { app } from '@core/app'
@@ -20,7 +20,7 @@ export type State = Omit<AppContextState, 'setContext'> & {
   theme: string
 }
 
-export default () => {
+export default hot(() => {
   const [state, setState] = useImmer<State>({
     ...initState,
     theme: app.theme.getName(),
@@ -61,4 +61,4 @@ export default () => {
       </ThemeProvider>
     </Router>
   )
-}
+})

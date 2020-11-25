@@ -17,6 +17,7 @@ let userInfo: any = getStore(storeKey.userInfo) || {}
 export async function fetchUserInfo() {
   // console.log('@===>', getUserId())
   return userSelfInfoApi({ id: getUserId() }).then((source) => {
+    // TODO: 获取权限信息,设置到用户信息上
     setUserInfo(source)
     return source
   })

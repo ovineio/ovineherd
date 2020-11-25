@@ -11,10 +11,6 @@ export const AppStyle = createGlobalStyle`
         font-size: 10px;
     }
 
-    .cxd-ImageControl-pasteTip {
-        z-index: 2;
-    }
-
     .table-cell-image {
         .cxd-Image {
             width: 50px;
@@ -26,6 +22,16 @@ export const AppStyle = createGlobalStyle`
             }
         }
     }
+
+    .cxd-Spinner {
+        background: url(${require('@generated/styles/themes/spinner-default.svg')}) !important;
+    }
+
+    .cxd-ImageControl-pasteTip {
+        z-index: 2;
+    }
+
+    .cxdp
 
     .cxd-Page-main{
         background-color: transparent;

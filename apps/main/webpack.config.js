@@ -1,4 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+// 不支持 webpack5
+// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
+// 【hotReload】(https://github.com/umijs/qiankun/issues/395)
 
 module.exports = {
   mode: 'development',
@@ -6,6 +9,7 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     port: 7060,
+    hot: true,
     clientLogLevel: 'warning',
     disableHostCheck: true,
     compress: true,
@@ -16,11 +20,13 @@ module.exports = {
     overlay: { warnings: false, errors: true },
   },
   output: {
+    filename: '[name]_[hash:6]_bundle.js',
     publicPath: '/',
   },
   resolve: {
     extensions: ['.js'],
   },
+  stats: 'errors-only',
   module: {
     rules: [
       {

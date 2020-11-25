@@ -42,7 +42,6 @@ appRequestIns.onRequest = (option) => {
   // 开启携带 cookies 信息
   option.fetchOptions.credentials = 'include'
 
-  // demo api 携带用户鉴权信息，具体鉴权需自行实现
   if (key) {
     option.headers[key] = token
   }
@@ -52,19 +51,6 @@ appRequestIns.onRequest = (option) => {
 
 // 接收到请求正常结果 回调
 appRequestIns.onSuccess = (source) => {
-  // const { code = 0, msg, message } = source
-  // const { api } = option
-
-  // // 退出接口，不处理
-  // if (api !== apis.selfLogout.url) {
-  //   // token 异常 code 处理
-  //   if (code === 10023 || code === 10022) {
-  //     logout({
-  //       tip: '当前用户登录过期，请重新登录',
-  //     })
-  //   }
-  // }
-
   return source
 }
 

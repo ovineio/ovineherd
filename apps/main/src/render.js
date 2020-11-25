@@ -5,7 +5,7 @@ const renderSubApp = (props) => {
 
   const renderLoading = () => (!loading ? '' : '<h4 class="app-loading">loading....</h4>')
 
-  if (container.innerHTML) {
+  if (!container.innerHTML) {
     container.querySelector('.app-loading').outerHTML = renderLoading()
   } else {
     container.innerHTML = `

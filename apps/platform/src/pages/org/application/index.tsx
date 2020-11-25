@@ -7,7 +7,7 @@ import { useImmer, useSubscriber } from '@core/utils/hooks'
 import { publish } from '@core/utils/message'
 
 import { msgKey } from '~/core/constants'
-import { isStrTrue } from '~/core/utils'
+import { getLink, isStrTrue } from '~/core/utils'
 
 import { getOrgAppApis } from './api'
 import { AppControls } from './schema'
@@ -15,7 +15,7 @@ import * as S from './styled'
 
 const defBg =
   'https://striker.teambition.net/thumbnail/110icf34e88844ff7d5a862d8373b2a7f2e6/w/600/h/300'
-const defIcon = 'https://cp.greennode.info/favicon.ico'
+const defIcon = 'https://ovine.igroupes.com/demo/static/images/favicon.ico'
 
 type ItemProps = {
   item: any
@@ -35,13 +35,15 @@ const CardItem = (props: ItemProps) => {
     backgroundImage: `url(${config.logo || defIcon})`,
   }
 
-  const onEditClick = () => {
+  const onEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
     config.username = user.username
     config.user_id = user.id
     toggleDialog(true, config)
   }
 
-  const onDelClick = () => {
+  const onDelClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
     confirm(
       `确认是否删除该应用 【${config.name}】,删除应用后将不可恢复！请谨慎操作～`,
       '删除确认'
@@ -54,8 +56,12 @@ const CardItem = (props: ItemProps) => {
     })
   }
 
+  const onCardClick = () => {
+    window.history.pushState({}, config.name, getLink('app', undefined, id))
+  }
+
   return (
-    <S.StyledCardItem className="col-lg-3">
+    <S.StyledCardItem className="col-lg-3" onClick={onCardClick}>
       <div className="item-content">
         {isolation && (
           <div className="app-mark">

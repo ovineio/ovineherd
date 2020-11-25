@@ -14,9 +14,9 @@ import './index.less'
 /**
  * Step1 初始化应用（可选）
  */
-render({ loading: true })
+// render({ loading: true })
 
-const loader = (loading) => render({ loading })
+// const loader = (loading) => render({ loading })
 
 /**
  * Step2 注册子应用
@@ -27,9 +27,14 @@ registerMicroApps(
     {
       name: 'platform',
       entry: '//localhost:7061',
-      container: '#main-viewport',
+      container: '#main-container',
       activeRule: '/platform',
-      loader,
+    },
+    {
+      name: 'app',
+      entry: '//localhost:7062',
+      container: '#main-container',
+      activeRule: ['/org/:orgId/app', '/app'],
     },
   ],
   {
@@ -73,10 +78,11 @@ setDefaultMountApp('/platform')
  * Step4 启动应用
  */
 start({
-  excludeAssetFilter: (assetUrl) => {
-    console.log('assetUrl----->', assetUrl)
-    return true
-  },
+  // sandbox: false,
+  // excludeAssetFilter: (assetUrl) => {
+  //   console.log('assetUrl----->', assetUrl)
+  //   return true
+  // },
 })
 
 runAfterFirstMounted(() => {

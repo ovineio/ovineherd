@@ -99,7 +99,7 @@ export const orgRoleSchema = {
         icon: 'fa fa-plus pull-left',
         actionType: 'dialog',
         dialog: {
-          title: '添加管理员',
+          title: '添加角色',
           body: {
             api: '$preset.apis.addRole',
             $preset: 'forms.updateRole',
