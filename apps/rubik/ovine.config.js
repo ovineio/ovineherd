@@ -16,7 +16,7 @@ module.exports = (option) => {
   }
 
   const config = {
-    routePrefix: '/app/', //
+    pathPrefix: '/app/', //
     publicPath: publicPathMap[env], // 静态资源公共路径
     favicon: '/static/images/favicon.ico',
     title: 'OvineHerd', // 页面标题

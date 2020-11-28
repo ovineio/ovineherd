@@ -19,7 +19,7 @@ function useAppInfo() {
   const { pathname } = location
 
   const appInfo: AppInfo = useMemo(() => {
-    const type = getAppType(`${app.constants.baseUrl}${pathname.slice(1)}`)
+    const type = getAppType(`${app.constants.pathPrefix}${pathname.slice(1)}`)
 
     const isOrg = type === 'org'
     const orgId = isOrg ? getOrgId() : ''

@@ -32,8 +32,8 @@ export const getAppType = (pathName?: string): AppType =>
   checkAppType('org', undefined, pathName) ? 'org' : 'sys'
 
 // 获取组织ID
-export const getOrgId = (): string =>
-  get(window.location.pathname.match(/\/org\/((\w)+)\//), '1') || ''
+export const getAppId = (): string =>
+  get(window.location.pathname.match(/\/app\/(\w*)\//), '1') || ''
 
 type LinkType = 'home' | 'login' | 'selfInfo' | 'app'
 export const getLink = (type: LinkType, orgId: string = getOrgId(), extra?: any): string => {
@@ -65,7 +65,7 @@ export function isStrTrue(str: string) {
   return str === '1'
 }
 
-export function getOrgUniType(type: 'user', orgId = getOrgId()) {
+export function getAppUniType(type: 'user', orgId = getAppId()) {
   switch (type) {
     case 'user':
       return `${relation.org.user.type}_${orgId}`
