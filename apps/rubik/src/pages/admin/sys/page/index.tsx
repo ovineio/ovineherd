@@ -1,3 +1,4 @@
+import { app } from '@ovine/core/lib/app'
 import adminPageApi from './api'
 
 export const schema = {
@@ -24,11 +25,18 @@ export const schema = {
         type: 'text',
         remark: '该页面对应菜单的展示名称',
       },
-      // {
-      //   name: 'type',
-      //   label: '类型',
-      //   type: 'text',
-      // },
+      {
+        name: 'page_type',
+        label: '类型',
+        type: 'tpl',
+        tpl: `
+          <% if(data.page_type === '2') {%>
+            文件夹
+          <% } else { %>
+            普通页面
+          <%  } %>
+        `,
+      },
       {
         name: 'desc',
         label: '备注信息',
@@ -54,9 +62,10 @@ export const schema = {
       {
         type: 'operation',
         label: '操作',
-        width: 170,
+        width: 200,
         buttons: [
           '$preset.actions.editNav',
+          '$preset.actions.editLimit',
           '$preset.actions.designPage',
           '$preset.actions.delNav',
         ],
@@ -78,7 +87,7 @@ export const schema = {
           title: '添加新页面',
           body: {
             api: '$preset.apis.addNav',
-            $preset: 'forms.addNav',
+            $preset: 'forms.updateNav',
           },
         },
       },
@@ -91,7 +100,7 @@ export const schema = {
           title: '修改页面信息',
           body: {
             api: '$preset.apis.editNav',
-            $preset: 'forms.addNav',
+            $preset: 'forms.updateNav',
           },
         },
       },
@@ -99,6 +108,23 @@ export const schema = {
         type: 'action',
         label: '设计页面',
         level: 'link',
+        hiddenOn: 'data.page_type === "2"',
+        actionType: 'link',
+        link: '/admin/sys/design/$page_id?label=$label',
+      },
+      editLimit: {
+        type: 'action',
+        label: '编辑权限',
+        hiddenOn: 'data.page_type === "2"',
+        level: 'link',
+        actionType: 'dialog',
+        dialog: {
+          title: '修改页面信息',
+          body: {
+            api: '$preset.apis.editNav',
+            $preset: 'forms.updateNav',
+          },
+        },
       },
       delNav: {
         type: 'action',
@@ -111,19 +137,9 @@ export const schema = {
           '[删除确认] 确认该页面: 【${label|default:-}】，组织页面后将不可恢复，请谨慎操作～',
         api: '$preset.apis.delNav',
       },
-      checkOrgApply: {
-        type: 'action',
-        label: '处理',
-        level: 'link',
-        actionType: 'dialog',
-        dialog: {
-          title: '处理组织申请',
-          body: '$preset.forms.checkOrgApply',
-        },
-      },
     },
     forms: {
-      addNav: {
+      updateNav: {
         type: 'form',
         controls: [
           {
@@ -132,6 +148,22 @@ export const schema = {
             label: '菜单名称',
             required: true,
             desc: '该页面对应菜单的展示名称',
+          },
+          {
+            type: 'button-group',
+            name: 'page_type',
+            label: '页面类型',
+            value: '1',
+            options: [
+              {
+                label: '普通页面',
+                value: '1',
+              },
+              {
+                label: '文件夹',
+                value: '2',
+              },
+            ],
           },
           {
             name: 'desc',
@@ -159,34 +191,7 @@ export const schema = {
           },
         ],
       },
-      editNav: {
-        type: 'form',
-        mode: 'horizontal',
-        controls: [
-          {
-            name: 'name',
-            label: '组织名称',
-            type: 'text',
-            placeholder: '请输入组织名称',
-            required: true,
-            validations: {
-              minLength: 2,
-            },
-          },
-          {
-            name: 'logo',
-            label: '组织LOGO',
-            type: 'image',
-            $ref: 'globalImgUpload',
-          },
-          {
-            name: 'sys_desc', // 用于平台使用的组织描述
-            label: '备注信息',
-            placeholder: '请输入备注信息',
-            type: 'textarea',
-          },
-        ],
-      },
+
       filterNav: {
         type: 'form',
         wrapWithPanel: false,

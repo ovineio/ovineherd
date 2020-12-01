@@ -1,4 +1,4 @@
-import { app } from '@ovine/core/lib/app'
+import { filterTree } from 'amis/lib/utils/helper'
 import { get } from 'lodash'
 import { getReqOption, requestByOption } from '~/core/api/utils'
 import { relation } from '~/core/constants'
@@ -26,17 +26,19 @@ const navParent = {
   data: {
     type: relation.app.nav.type,
     q_relation1: appId,
-    '&': '$$',
+    nav_id: '$id',
   },
-  onSuccess: (source) => {
-    const { option } = source.data
-    const options = get(option, '0.items') || []
+
+  onSuccess: (source, option) => {
+    const { nav_id } = option.data
+    const { option: resOpt } = source.data
+    const options = get(resOpt, '0.items') || []
     options.unshift({
       label: '主目录',
       id: '0',
     })
     source.data = {
-      options,
+      options: !nav_id ? options : filterTree(options, (i) => i.id !== nav_id),
     }
     return source
   },

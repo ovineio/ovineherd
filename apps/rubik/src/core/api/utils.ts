@@ -104,6 +104,11 @@ export const apis = {
       url: 'DELETE /v1/authorization/$id',
     },
   },
+  other: {
+    catOpts: {
+      url: 'GET /v1/option/category',
+    },
+  },
 }
 
 type QueryOption = { [key: string]: string | number }

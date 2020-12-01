@@ -1,7 +1,7 @@
 import { AlertComponent, ToastComponent, ContextMenu } from 'amis'
 import React from 'react'
-import { Switch, Router, Route } from 'react-router-dom'
 import { hot } from 'react-hot-loader/root'
+import { Switch, Router, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
 import { app } from '@core/app'

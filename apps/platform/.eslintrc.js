@@ -51,7 +51,7 @@ module.exports = {
     'import/extensions': OFF,
     'import/prefer-default-export': OFF,
     'react-hooks/rules-of-hooks': ERROR,
-    'import/no-unresolved': [ERROR, { ignore: ['^@/*', '^~/*', '_', '__'] }], // Ignore certain webpack alias because it can't be resolved
+    'import/no-unresolved': [ERROR, { ignore: ['^@/*', '^~/*', '_', '__', './*', '../*'] }], // Ignore certain webpack alias because it can't be resolved
     'import/no-extraneous-dependencies': OFF,
     'import/order': [
       // sort import groups

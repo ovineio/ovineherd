@@ -1,12 +1,18 @@
+import produce from 'immer'
+
+import { message } from '@core/constants'
+import { publish } from '@ovine/core/lib/utils/message'
+import { cloneDeep } from 'lodash'
 import { css, DefaultTheme } from 'styled-components'
 
 import routes from './routes'
+import { isSysAdminRoute } from './utils'
+import { getAppNav } from './api/resource'
 
-const layout = {
-  routes,
-  type: 'aside-layout', // 侧边栏布局
+const layoutState: any = {
+  resetRoute: false,
   routeTabs: {
-    enable: false,
+    enable: true,
     storage: true,
   },
   header: {
@@ -21,12 +27,7 @@ const layout = {
     },
     // 头部 工具项
     items: [
-      {
-        type: 'head-item',
-        icon: 'fa fa-pencil',
-        tip: '设计应用',
-        href: '/admin/page',
-      },
+      {},
       // {
       //   type: 'item-search-menu', // 搜索侧边栏
       // },
@@ -98,6 +99,54 @@ const layout = {
         `,
       },
     ],
+  },
+}
+
+const getModeBtn = (designMode: boolean) => {
+  const modeInfo = !designMode
+    ? {
+        icon: 'fa fa-pencil pull-left',
+        label: '设计应用',
+      }
+    : {
+        icon: 'fa fa-eye pull-left',
+        label: '预览应用',
+      }
+
+  return {
+    ...modeInfo,
+    type: 'action',
+    onAction: () => {
+      publish(message.asideLayoutCtrl.msg, {
+        key: message.asideLayoutCtrl.reload,
+        data: { designMode: !designMode },
+      })
+    },
+  }
+}
+
+const layout = {
+  type: 'aside-layout', // 侧边栏布局
+  api: {
+    url: 'fakeLayoutApi',
+    onFakeRequest: async (option) => {
+      const { designMode } = option.data
+      const isMounted = typeof designMode !== 'undefined'
+      const mode = !isMounted ? isSysAdminRoute() : designMode
+      const nextState = produce(layoutState, async (d) => {
+        d.resetRoute = !isMounted ? false : true
+        d.header.items[0] = getModeBtn(mode)
+        if (mode) {
+          d.routes = routes
+          d.routeTabs.rootRoute = '/admin/sys/page'
+        } else {
+          const routes = await getAppNav()
+          d.routeTabs.rootRoute = '/wzfy0iirlkw/wzg92i8cq9s'
+          d.routes = routes
+        }
+      })
+      return nextState
+    },
   },
 }
 

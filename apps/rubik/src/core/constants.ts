@@ -2,6 +2,7 @@ import { ApiType } from './types'
 
 export const appRootId = 'app-root'
 export const appRootSelector = `#${appRootId}`
+export const sysAdminRoute = '/admin/sys/'
 
 // 用于存储的key
 export const storeKey = {
@@ -145,7 +146,7 @@ export const relation = {
       parent_id: '0',
     },
     page: {
-      apiType: ApiType.config,
+      apiType: ApiType.product,
       type: entityType.appPage,
     },
   },

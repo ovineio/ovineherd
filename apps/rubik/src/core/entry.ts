@@ -11,11 +11,27 @@ import layout from './layout'
 
 const entry = [
   {
+    type: 'preset-route', // 路由组件
+    path: '/login',
+    pathToComponent: true,
+  },
+  {
     type: 'private-route', // 鉴权路由
     path: '/',
     redirect: '/login',
-    children: layout,
     onAuth: () => true, // 每次页面鉴权 需要调用的认证方法
+    children: {
+      type: 'switch-route',
+      children: [
+        {
+          type: 'preset-route',
+          path: '/admin/sys/design/:pageId',
+          pathToComponent: '/admin/sys/design',
+          exact: true,
+        },
+        layout,
+      ],
+    },
   },
 ]
 
