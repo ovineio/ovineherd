@@ -3,17 +3,12 @@ import adminPageApi from './api'
 export const schema = {
   type: 'page',
   title: '应用发布管理',
-  css: `
-    .cxd-Table {
-      border: 0;
-    }
-  `,
   bodyClassName: 'p-t-none',
   body: {
     type: 'crud',
-    toolbarClassName: 'p-l-none p-r-none padder-v-md',
     name: 'pageList',
     $ref: 'globalCrudCCommon',
+    className: 'g-no-border-table',
     // api: '$preset.apis.listNav',
     headerToolbar: [
       {

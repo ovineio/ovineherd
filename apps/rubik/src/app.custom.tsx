@@ -11,6 +11,8 @@ import { appRootSelector } from '~/core/constants'
 
 import renderOvineApp from './ovine'
 
+import '~/components/renderer'
+
 function storeTest(props) {
   props.onGlobalStateChange(
     (value, prev) => console.log(`[onGlobalStateChange - ${props.name}]:`, value, prev),

@@ -1,14 +1,18 @@
 import { app } from '@ovine/core/lib/app'
 import adminPageApi from './api'
+import AppPageCss from './styled'
 
 export const schema = {
+  css: AppPageCss,
   type: 'page',
   title: '应用页面管理',
+  bodyClassName: 'p-t-none',
   body: {
     type: 'crud',
     name: 'pageList',
     $ref: 'globalCrudCCommon',
     api: '$preset.apis.listNav',
+    className: 'g-no-border-table',
     headerToolbar: [
       {
         $ref: 'globalTableReloadTool',
@@ -18,6 +22,9 @@ export const schema = {
       '$preset.actions.addNav',
     ],
     footerToolbar: [],
+    footable: {
+      expand: 'all',
+    },
     columns: [
       {
         name: 'label',
@@ -35,6 +42,9 @@ export const schema = {
           <% } else { %>
             普通页面
           <%  } %>
+          <% if(data.side_visible !== '1') { %>
+            <i class="fa fa-eye-slash cursor-p m-l-sm" data-tooltip="侧边栏菜单不可见" />
+          <% } %>
         `,
       },
       {
@@ -91,6 +101,7 @@ export const schema = {
           },
         },
       },
+
       editNav: {
         type: 'action',
         label: '编辑',
@@ -166,6 +177,14 @@ export const schema = {
             ],
           },
           {
+            type: 'app-icon-selector',
+            label: '选择图标',
+            placeholder: '请输入图标',
+            clearable: true,
+            size: 'md',
+            name: 'icon',
+          },
+          {
             name: 'desc',
             label: '备注信息',
             type: 'textarea',
@@ -176,6 +195,14 @@ export const schema = {
             ref: 'globalSwitch',
             type: 'switch',
             value: '1',
+          },
+          {
+            name: 'is_home',
+            label: '设为首页',
+            ref: 'globalSwitch',
+            type: 'switch',
+            value: '0',
+            option: '设置该页面为首页，将取消原首页',
           },
           {
             type: 'tree-select',
@@ -196,18 +223,25 @@ export const schema = {
         type: 'form',
         wrapWithPanel: false,
         mode: 'inline',
-        target: 'orgList',
+        target: 'pageList',
+        className: 'filter-form',
         controls: [
           {
-            type: 'text',
-            name: 'n_label',
-            placeholder: '请输入页面名称',
+            type: 'action',
+            icon: 'fa fa-search',
+            iconOnly: true,
+          },
+          {
+            type: 'tree-select',
+            name: 'n_page_id',
             clearable: true,
-            addOn: {
-              iconOnly: true,
-              icon: 'iconfont icon-ai-search',
-              type: 'submit',
-            },
+            multiple: false,
+            showIcon: false,
+            searchable: true,
+            submitOnChange: true,
+            valueField: 'id',
+            placeholder: '搜索页面',
+            source: '$preset.apis.navParent',
           },
         ],
       },

@@ -13,11 +13,15 @@ import { appRootSelector } from '~/core/constants'
 import env from '~/core/env'
 import entry from '~/core/entry'
 import appRequestIns from '~/core/request'
+import globalStyle from '~/styled/global'
 
 const appConfig: DeepPartial<AppConfig> = {
   request: appRequestIns,
   entry,
   env: env,
+  styled: {
+    globalStyle,
+  },
   constants: {
     pathPrefix: () => {
       // 动态 pathPrefix

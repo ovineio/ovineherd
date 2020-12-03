@@ -12,6 +12,7 @@ import { relation, storeKey } from '../constants'
 import { ApiName, ApiType } from '../types'
 import { getAppId, isStrTrue } from '../utils'
 import { ApiData, getReqOption, request, requestByOption } from './utils'
+import { userAdmRoutes } from '../routes'
 
 // 根据 token 获取用户信息
 export function userSelfInfoApi(data: ApiData, option?: ReqOption) {
@@ -88,6 +89,18 @@ export function orgConfigApi(option: { orgId: string }) {
   })
 }
 
+// 初始化 APP 信息
+/**
+ * 1. 如果APP是 独立应用，则使用独立数据
+ * 2. 非独应用，使用 组织信息/平台信息
+ * ----
+ * 1. 独立医应用，需要渲染额外的  用户列表/角色列表
+ */
+export function initAppInfo() {
+  //
+}
+
+// 获取导航
 export function getAppNav() {
   return request(
     'other.catOpts',
@@ -121,7 +134,7 @@ export function getAppNav() {
             routeItem.pathToComponent = `api://v1/product/${page_id}`
           }
           return routeItem
-        })
+        }).concat(userAdmRoutes)
 
         source.data = [
           {

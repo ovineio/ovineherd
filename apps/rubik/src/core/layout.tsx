@@ -2,10 +2,9 @@ import produce from 'immer'
 
 import { message } from '@core/constants'
 import { publish } from '@ovine/core/lib/utils/message'
-import { cloneDeep } from 'lodash'
 import { css, DefaultTheme } from 'styled-components'
 
-import routes from './routes'
+import { sysAdmRoutes, userAdmRoutes } from './routes'
 import { isSysAdminRoute } from './utils'
 import { getAppNav } from './api/resource'
 
@@ -60,7 +59,7 @@ const layoutState: any = {
                 icon: 'fa fa-edit',
                 label: '个人中心',
                 actionType: 'link',
-                link: '/admin/setting/self',
+                link: '/admin/self',
               },
               {
                 type: 'button',
@@ -137,11 +136,12 @@ const layout = {
         d.resetRoute = !isMounted ? false : true
         d.header.items[0] = getModeBtn(mode)
         if (mode) {
-          d.routes = routes
+          d.routes = sysAdmRoutes
           d.routeTabs.rootRoute = '/admin/sys/page'
         } else {
           const routes = await getAppNav()
-          d.routeTabs.rootRoute = '/wzfy0iirlkw/wzg92i8cq9s'
+          // 动态获取
+          d.routeTabs.rootRoute = '/'
           d.routes = routes
         }
       })

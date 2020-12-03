@@ -7,12 +7,17 @@ import { getAppId } from '~/core/utils'
 
 const appId = getAppId()
 
+const setHome = () => {
+  //
+}
+
 const listNav = {
   url: 'GET /v1/option/category',
   data: {
     type: relation.app.nav.type,
     parent_id: 0,
     q_relation1: appId,
+    '&': '$$',
   },
   onSuccess: (source) => {
     const { option } = source.data

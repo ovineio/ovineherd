@@ -8,8 +8,18 @@ import { DefaultTheme, css } from 'styled-components'
 
 // 全局样式, 这里和 scss 类似支持嵌套，与styled变量，
 // 以下用作举例：
-export default (theme: DefaultTheme) => css`
-  .${theme.ns}Layout {
-    background-color: transparent;
+const globalStyle = (theme: DefaultTheme) => css`
+  .cursor-p {
+    cursor: pointer;
+  }
+  .g-no-border-table {
+    .cxd-Table {
+      border: 0;
+    }
+    .cxd-Table-toolbar {
+      padding: 15px 0;
+    }
   }
 `
+
+export default globalStyle
