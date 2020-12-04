@@ -45,12 +45,12 @@ export const userAdmRoutes = [
       {
         label: '用户列表',
         nodePath: 'user',
-        pathToComponent: 'admin/sys/page',
+        // pathToComponent: 'admin/sys/page',
       },
       {
         label: '角色列表',
         nodePath: 'role',
-        pathToComponent: 'admin/sys/page',
+        // pathToComponent: 'admin/sys/page',
       },
       {
         label: '个人中心',

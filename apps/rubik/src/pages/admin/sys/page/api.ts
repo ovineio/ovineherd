@@ -1,4 +1,5 @@
 import { filterTree } from 'amis/lib/utils/helper'
+import produce from 'immer'
 import { get } from 'lodash'
 import { getReqOption, requestByOption } from '~/core/api/utils'
 import { relation } from '~/core/constants'
@@ -7,9 +8,7 @@ import { getAppId } from '~/core/utils'
 
 const appId = getAppId()
 
-const setHome = () => {
-  //
-}
+let cacheListNav = []
 
 const listNav = {
   url: 'GET /v1/option/category',
@@ -22,32 +21,34 @@ const listNav = {
   onSuccess: (source) => {
     const { option } = source.data
     source.data = get(option, '0') || { items: [] }
+    cacheListNav = source.data.items
     return source
   },
 }
 
 const navParent = {
   url: 'GET /v1/option/category',
+  cache: 1000,
   data: {
-    type: relation.app.nav.type,
-    q_relation1: appId,
     nav_id: '$id',
   },
-
-  onSuccess: (source, option) => {
+  onFakeRequest: (option) => {
     const { nav_id } = option.data
-    const { option: resOpt } = source.data
-    const options = get(resOpt, '0.items') || []
-    options.unshift({
-      label: '主目录',
-      id: '0',
+    const options = produce(cacheListNav, (d) => {
+      d.unshift({
+        label: '主目录',
+        id: '0',
+      })
     })
-    source.data = {
-      options: !nav_id ? options : filterTree(options, (i) => i.id !== nav_id),
+    return {
+      status: 0,
+      data: {
+        options: !nav_id ? options : filterTree(options, (i) => i.id !== nav_id),
+      },
     }
-    return source
   },
 }
+
 const addNav = getReqOption(
   {
     ...relation.app.nav,

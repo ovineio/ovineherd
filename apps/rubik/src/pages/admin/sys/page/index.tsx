@@ -1,4 +1,9 @@
-import { app } from '@ovine/core/lib/app'
+/**
+ * TODO: 添加排序功能
+ * BUG: 页面被初始化被渲染了两次。应该是 core 的问题
+ */
+
+import React, { useEffect } from 'react'
 import adminPageApi from './api'
 import AppPageCss from './styled'
 
@@ -13,11 +18,19 @@ export const schema = {
     $ref: 'globalCrudCCommon',
     api: '$preset.apis.listNav',
     className: 'g-no-border-table',
+    saveOrderApi: 'http://asd',
+    // filter: '$preset.forms.filterNav',
+    draggable: true,
     headerToolbar: [
+      {
+        type: 'drag-toggler',
+        align: 'left',
+      },
       {
         $ref: 'globalTableReloadTool',
         target: 'pageList',
       },
+      // 表单放在 toolbar 有数据请求时，会异请求多次
       '$preset.forms.filterNav',
       '$preset.actions.addNav',
     ],
@@ -29,8 +42,14 @@ export const schema = {
       {
         name: 'label',
         label: '名称',
-        type: 'text',
         remark: '该页面对应菜单的展示名称',
+        type: 'tpl',
+        tpl: `
+          <% if(!!data.icon) { %>
+            <i class="<%= data.icon %> cursor-p" data-tooltip="菜单图标" data-position="bottom" ></i>
+          <% } %>
+          <%= data.label %>
+        `,
       },
       {
         name: 'page_type',
@@ -43,7 +62,7 @@ export const schema = {
             普通页面
           <%  } %>
           <% if(data.side_visible !== '1') { %>
-            <i class="fa fa-eye-slash cursor-p m-l-sm" data-tooltip="侧边栏菜单不可见" />
+            <i class="fa fa-eye-slash cursor-p m-l-sm" data-tooltip="侧边栏菜单不可见" data-position="bottom" />
           <% } %>
         `,
       },
@@ -154,16 +173,10 @@ export const schema = {
         type: 'form',
         controls: [
           {
-            name: 'label',
-            type: 'text',
-            label: '菜单名称',
-            required: true,
-            desc: '该页面对应菜单的展示名称',
-          },
-          {
             type: 'button-group',
             name: 'page_type',
             label: '页面类型',
+            required: true,
             value: '1',
             options: [
               {
@@ -177,18 +190,32 @@ export const schema = {
             ],
           },
           {
+            type: 'tree-select',
+            name: 'parent_id',
+            clearable: true,
+            multiple: false,
+            valueField: 'id',
+            showIcon: false,
+            label: '父级页面',
+            placeholder: '请选择父级页面',
+            value: '0',
+            source: '$preset.apis.navParent',
+          },
+          {
+            name: 'label',
+            type: 'text',
+            label: '菜单名称',
+            required: true,
+            desc: '该页面对应菜单的展示名称',
+          },
+          {
             type: 'app-icon-selector',
             label: '选择图标',
             placeholder: '请输入图标',
             clearable: true,
-            size: 'md',
             name: 'icon',
           },
-          {
-            name: 'desc',
-            label: '备注信息',
-            type: 'textarea',
-          },
+
           {
             name: 'side_visible',
             label: '是否菜单可见',
@@ -204,17 +231,11 @@ export const schema = {
             value: '0',
             option: '设置该页面为首页，将取消原首页',
           },
+
           {
-            type: 'tree-select',
-            name: 'parent_id',
-            clearable: true,
-            multiple: false,
-            valueField: 'id',
-            showIcon: false,
-            label: '父级页面',
-            placeholder: '请选择父级页面',
-            value: '0',
-            source: '$preset.apis.navParent',
+            name: 'desc',
+            label: '备注信息',
+            type: 'textarea',
           },
         ],
       },
@@ -222,8 +243,8 @@ export const schema = {
       filterNav: {
         type: 'form',
         wrapWithPanel: false,
-        mode: 'inline',
         target: 'pageList',
+        mode: 'inline',
         className: 'filter-form',
         controls: [
           {
@@ -232,14 +253,17 @@ export const schema = {
             iconOnly: true,
           },
           {
+            // TODO: 解决报错
             type: 'tree-select',
             name: 'n_page_id',
+            size: 'full',
             clearable: true,
             multiple: false,
             showIcon: false,
             searchable: true,
             submitOnChange: true,
             valueField: 'id',
+            value: '',
             placeholder: '搜索页面',
             source: '$preset.apis.navParent',
           },

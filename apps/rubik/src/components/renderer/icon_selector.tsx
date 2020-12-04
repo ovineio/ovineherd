@@ -2,8 +2,20 @@ import * as React from 'react'
 import { OptionsControl } from 'amis'
 import TextControl from 'amis/lib/renderers/Form/Text'
 
-import { faArr } from '~/assets/fa'
+import { faArr, iconArr } from '~/assets/fa'
 import styled from 'styled-components'
+
+const iconConfig = [
+  // 只有CXD 主题才有这些图标
+  {
+    prefix: 'iconfont icon-',
+    icons: iconArr,
+  },
+  {
+    prefix: 'fa fa-',
+    icons: faArr,
+  },
+]
 
 // TODO: 1. 添加搜索功能 2. 添加分类 3. 添加更多 优秀的图标
 
@@ -17,17 +29,21 @@ const StyledIconItems = styled.div`
   }
   li {
     list-style: none;
-    width: 30px;
+    min-width: 30px;
     height: 30px;
     line-height: 30px;
     cursor: pointer;
     text-align: center;
+    transition: transform 100ms ease-in;
     &:hover {
       background-color: #ddd;
+      transform: scale(2.5);
+      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      cursor: pointer;
     }
   }
   .active {
-    background-color: #128cee;
+    background-color: rgb(187 225 255);
   }
 `
 
@@ -40,21 +56,30 @@ class IconSelector extends React.Component<any, any> {
       onChange(icon)
     }
 
-    const renderIcons = () => {
+    const renderIcons = (option, index) => {
+      const { icons, prefix } = option
+
       return (
-        <StyledIconItems>
-          <ul>
-            {faArr.map((fa) => {
-              const icon = `fa fa-${fa}`
+        <>
+          <ul key={index}>
+            {icons.map((ic) => {
+              const icon = `${prefix}${ic}`
               return (
-                <li onClick={() => onIconClick(icon)}>
-                  <i className={`${icon} ${value === icon ? 'active' : ''}`} />
+                <li className={value === icon ? 'active' : ''} onClick={() => onIconClick(icon)}>
+                  <i className={`${icon}`} />
                 </li>
               )
             })}
           </ul>
-        </StyledIconItems>
+          {index !== iconConfig.length - 1 && (
+            <div className="cxd-Divider cxd-Divider--dashed"></div>
+          )}
+        </>
       )
+    }
+
+    const renderIconList = () => {
+      return <StyledIconItems>{iconConfig.map(renderIcons)}</StyledIconItems>
     }
 
     const props: any = {
@@ -70,10 +95,10 @@ class IconSelector extends React.Component<any, any> {
           title: '选择图标',
           position: 'top',
           closeOnOutside: true,
-          size: 'sm',
+          size: 'md',
           actions: [],
           body: {
-            component: renderIcons,
+            component: renderIconList,
           },
         },
       },

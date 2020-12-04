@@ -9,6 +9,7 @@ import { isSysAdminRoute } from './utils'
 import { getAppNav } from './api/resource'
 
 const layoutState: any = {
+  routes: sysAdmRoutes,
   resetRoute: false,
   routeTabs: {
     enable: true,
@@ -26,7 +27,7 @@ const layoutState: any = {
     },
     // 头部 工具项
     items: [
-      {},
+      // {},
       // {
       //   type: 'item-search-menu', // 搜索侧边栏
       // },
@@ -137,11 +138,11 @@ const layout = {
         d.header.items[0] = getModeBtn(mode)
         if (mode) {
           d.routes = sysAdmRoutes
-          d.routeTabs.rootRoute = '/admin/sys/page'
+          d.rootRoute = '/admin/sys/page'
         } else {
           const routes = await getAppNav()
           // 动态获取
-          d.routeTabs.rootRoute = '/'
+          d.rootRoute = '/'
           d.routes = routes
         }
       })
