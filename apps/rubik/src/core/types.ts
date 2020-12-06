@@ -1,4 +1,4 @@
-export type AppType = 'sys' | 'org'
+export type SiteEnvType = 'dev' | 'pre' | 'prd'
 export type UrlParams = {
   orgId: string
 }

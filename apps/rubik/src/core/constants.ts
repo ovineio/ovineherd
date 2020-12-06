@@ -2,22 +2,25 @@ import { ApiType } from './types'
 
 export const appRootId = 'app-root'
 export const appRootSelector = `#${appRootId}`
-export const sysAdminRoute = '/admin/sys/'
+export const sysAdmRoutePrefix = '/system/admin/'
+export const loginRoute = '/system/login'
+export const selfInfoRoute = '/system/self'
 
 // 用于存储的key
 export const storeKey = {
-  auth: 'authStore',
-  userInfo: 'userInfoStore',
-  siteCustom: 'siteCustomStore',
-  sysInfo: 'sysInfoStore',
+  orgAuth: 'authStore', // 平台的登录情况
+  orgUserInfo: 'userInfoStore', // 平台的登录情况
+  auth: 'appAuthStore', // 应用登录情况
+  userInfo: 'appUserInfoStore',
+  siteCustom: 'appSiteCustomStore',
   orgInfo: 'orgInfoStore',
+  appInfo: 'appInfoStore',
 }
 
 // 用于消息通知的key
 export const msgKey = {
   updateSelfInfo: 'updateSelfInfoMsg',
-  activeUserInfoTab: 'activeUserInfoTabMsg',
-  updateOrgAppList: 'updateOrgAppListMsg',
+  updateAppCustom: 'uupdateAppCustomMsg',
 }
 
 export const entityType = {

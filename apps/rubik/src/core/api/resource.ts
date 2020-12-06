@@ -3,12 +3,14 @@
  * 因此将页面所有要调的接口，全部封装在这里
  */
 
+import { get } from 'lodash'
+
 import { mapTree } from 'amis/lib/utils/helper'
 import { ReqOption } from '@core/utils/request/types'
 import { setStore } from '@core/utils/store'
-import { get } from 'lodash'
+import { publish } from '@core/utils/message'
 
-import { relation, storeKey } from '../constants'
+import { msgKey, relation, storeKey } from '../constants'
 import { ApiName, ApiType } from '../types'
 import { getAppId, isStrTrue } from '../utils'
 import { ApiData, getReqOption, request, requestByOption } from './utils'
@@ -59,23 +61,6 @@ export function sysUserLoginApi(option: ApiData) {
   )
 }
 
-export function sysUserLogoutApi() {
-  //
-}
-
-// 获取 平台配置
-export function sysConfigApi() {
-  // 平台配置由系统 初始化生成
-  return requestByOption({
-    onlyOne: true,
-    apiName: ApiName.list,
-    ...relation.sys.sysInfo,
-  }).then((sysInfo) => {
-    setStore(storeKey.sysInfo, sysInfo)
-    return sysInfo
-  })
-}
-
 // 获取 组织配置
 export function orgConfigApi(option: { orgId: string }) {
   return requestByOption({
@@ -96,8 +81,53 @@ export function orgConfigApi(option: { orgId: string }) {
  * ----
  * 1. 独立医应用，需要渲染额外的  用户列表/角色列表
  */
-export function initAppInfo() {
-  //
+
+function fetchOrgInfo(orgInfoId: string) {
+  return requestByOption({
+    ...relation.org.entity,
+    apiName: ApiName.one,
+    id: orgInfoId,
+    onlyData: true,
+  }).then((source) => {
+    setStore(storeKey.orgInfo, source)
+    return source
+  })
+}
+
+function fetchAppInfo(appId: string = getAppId()) {
+  return requestByOption({
+    ...relation.app.entity,
+    apiName: ApiName.one,
+    id: appId,
+    onlyData: true,
+  }).then((source) => {
+    const { relation1_data: appInfo, relation2_data: orgInfo = {} } = source
+    const { relation1: orgInfoId } = orgInfo
+
+    setStore(storeKey.appInfo, appInfo)
+    if (!appInfo.isolation && orgInfoId) {
+      return fetchOrgInfo(orgInfoId).then((orgInfoSource) => {
+        return { appInfo, orgInfo: orgInfoSource }
+      })
+    }
+
+    return { appInfo, orgInfo: {} }
+  })
+}
+
+export function initAppInfoApi() {
+  fetchAppInfo().then((source) => {
+    const { appInfo, orgInfo } = source
+    // 合并 组织与应用的设置信息
+    const info = appInfo.isolation
+      ? {
+          ...orgInfo,
+          ...appInfo,
+        }
+      : orgInfo
+    setStore(storeKey.siteCustom, info)
+    publish(msgKey.updateAppCustom)
+  })
 }
 
 // 获取导航

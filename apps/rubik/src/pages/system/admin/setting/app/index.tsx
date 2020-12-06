@@ -1,6 +1,5 @@
 export const schema = {
   type: 'page',
-  bodyClassName: 'p-t-none p-l-none p-r-none',
   title: '应用设置',
   body: {
     type: 'form',
@@ -15,11 +14,11 @@ export const schema = {
         mode: 'normal',
         columns: [
           {
-            md: 6,
+            md: 5,
             mode: 'horizontal',
             horizontal: {
-              left: 'col-md-3',
-              right: 'col-md-9',
+              left: 'col-md-2',
+              right: 'col-md-10',
             },
             controls: [
               {
@@ -27,7 +26,7 @@ export const schema = {
                 name: 'name',
                 required: true,
                 label: '名称',
-                placeholder: '请输入组织名称',
+                placeholder: '请输入应用名称',
                 descriptionClassName: 'd-block',
                 description: '用于页面浏览器标题展示',
               },
@@ -36,7 +35,7 @@ export const schema = {
                 name: 'slogan',
                 required: true,
                 label: '标语',
-                placeholder: '请输入组织标语',
+                placeholder: '请输入应用标语',
                 descriptionClassName: 'd-block',
                 description: '用于介绍页面浏览器标题展示',
               },
@@ -51,14 +50,15 @@ export const schema = {
               {
                 type: 'textarea',
                 name: 'desc',
-                placeholder: '请输入组织介绍',
+                placeholder: '请输入应用介绍',
                 label: '介绍',
               },
             ],
           },
           {
-            md: 6,
+            md: 5,
             mode: 'horizontal',
+            columnClassName: 'm-l-md',
             horizontal: {
               left: 'col-md-3',
               right: 'col-md-9',
@@ -69,7 +69,7 @@ export const schema = {
                 name: 'logo',
                 required: true,
                 $ref: 'globalImgUpload',
-                label: '组织logo',
+                label: '应用logo',
                 descriptionClassName: 'd-block',
                 description: '展示在头部导航最左侧',
               },
@@ -86,60 +86,21 @@ export const schema = {
           },
         ],
       },
-
       {
-        type: 'submit',
-        mode: 'normal',
+        type: 'container',
+        label: ' ',
         className: 'm-t-lg',
-        label: '保存设置信息',
-        icon: 'fa fa-check pull-left',
-        level: 'primary',
+        inputClassName: 'd-inline-block',
         descriptionClassName: 'p-l-md',
-        desc: '组织信息修改后，只有刷新页面才能看到更新后的数据',
+        desc: '应用信息修改后，刷新页面才能看到更新后的数据',
+        body: {
+          type: 'submit',
+          mode: 'normal',
+          label: '保存设置信息',
+          icon: 'fa fa-check pull-left',
+          level: 'primary',
+        },
       },
     ],
-  },
-  preset: {
-    forms: {
-      updatePassword: {
-        type: 'form',
-        messages: {
-          saveSuccess: '[密码修改成功] 请使用新密码重新登录',
-          saveFailed: '密码修改失败',
-        },
-        // redirect: getLink('login'),
-        mode: 'horizontal',
-        horizontal: {
-          left: 'col-sm-3',
-          right: 'col-sm-9',
-        },
-        controls: [
-          {
-            type: 'password',
-            required: true,
-            name: 'oldPassword',
-            label: '旧密码',
-          },
-          {
-            type: 'password',
-            name: 'password',
-            required: true,
-            label: '新密码',
-          },
-          {
-            type: 'password',
-            name: 'confirmPassword',
-            required: true,
-            label: '重复密码',
-            validationErrors: {
-              equalsField: '两次密码输入不一致',
-            },
-            validations: {
-              equalsField: 'password',
-            },
-          },
-        ],
-      },
-    },
   },
 }

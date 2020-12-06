@@ -1,8 +1,6 @@
 export const schema = {
   type: 'page',
   title: '登录设置',
-  hash: 'orgLogin',
-  icon: 'fa p-r-xs fa-window-maximize',
   body: {
     type: 'form',
     wrapWithPanel: false,
@@ -16,11 +14,11 @@ export const schema = {
         mode: 'normal',
         columns: [
           {
-            md: 6,
+            md: 5,
             mode: 'horizontal',
             horizontal: {
-              left: 'col-md-3',
-              right: 'col-md-9',
+              left: 'col-md-2',
+              right: 'col-md-10',
             },
             controls: [
               {
@@ -28,7 +26,7 @@ export const schema = {
                 name: 'login_title',
                 required: true,
                 label: '登录标题',
-                placeholder: '请输入组织登录标题',
+                placeholder: '请输入应用登录标题',
                 descriptionClassName: 'd-block',
                 description: '登录页面展示标题',
               },
@@ -80,6 +78,8 @@ export const schema = {
         label: '保存登录设置',
         icon: 'fa fa-check pull-left',
         level: 'primary',
+        descriptionClassName: 'p-l-md',
+        desc: '修改表单信息后，请点击保存才能生效',
       },
     ],
   },

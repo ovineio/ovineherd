@@ -1,5 +1,8 @@
+import selfPageCss from './styled'
+
 export const schema = {
   type: 'page',
+  css: selfPageCss,
   body: {
     type: 'tabs',
     mode: 'line',
@@ -203,11 +206,11 @@ export const schema = {
             type: 'panel',
             className: ' ',
             headerClassName: 'cxd-section-header m-t-md m-b-sm',
-            title: '退出组织',
+            title: '退出应用',
             body: [
               {
                 type: 'alert',
-                body: '退出组织，您将无法再次登录到系统中',
+                body: '退出应用，您将无法再次登录到系统中',
                 level: 'info',
               },
               {
@@ -223,7 +226,7 @@ export const schema = {
 
           {
             type: 'panel',
-            title: '转移组织',
+            title: '转移应用',
             className: ' ',
             headerClassName: 'cxd-section-header m-t-md m-b-sm',
             body: [
@@ -234,8 +237,8 @@ export const schema = {
                   html: `
                     <h6 class="p-t-sm">转移须知</h6>
                     <ul>
-                      <li>只能转移给组织成员，转移后该成员将拥有该组织的最高权限</li>
-                      <li>您将会在转移成功后被，移出本组织</li>
+                      <li>只能转移给组织成员，转移后该成员将拥有该应用的最高权限</li>
+                      <li>您将会在转移成功后被，移出本应用</li>
                     </ul>
                   `,
                 },
@@ -243,7 +246,7 @@ export const schema = {
               },
               {
                 type: 'action',
-                label: '转移组织',
+                label: '转移应用',
                 level: 'danger',
               },
             ],
@@ -255,7 +258,7 @@ export const schema = {
             type: 'panel',
             className: ' ',
             headerClassName: 'cxd-section-header m-t-sm m-b-sm',
-            title: '删除组织',
+            title: '删除应用',
             body: [
               {
                 type: 'alert',
@@ -264,8 +267,8 @@ export const schema = {
                   html: `
                     <h6 class="p-t-sm">删除须知</h6>
                     <ul>
-                      <li>删除组织前请转移相关数据，删除后将不再保存相关数据</li>
-                      <li>组织删除后，所有组织成员将不能再使用本系统，请谨慎操作</li>
+                      <li>删除应用前请转移相关数据，删除后将不再保存相关数据</li>
+                      <li>应用删除后，所有应用成员将不能再使用本系统，请谨慎操作</li>
                     </ul>
                   `,
                 },
@@ -273,7 +276,7 @@ export const schema = {
               },
               {
                 type: 'action',
-                label: '删除组织',
+                label: '删除应用',
                 level: 'danger',
               },
             ],

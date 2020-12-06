@@ -45,7 +45,7 @@ export const getLink = (type: LinkType, orgId: string = getOrgId(), extra?: any)
     case 'home':
       return orgId ? `/org/${orgId}/` : '/sys/'
     case 'app':
-      return orgId ? `/org/${orgId}/app/${extra}` : `/app/${extra}`
+      return `/app/${extra}`
     default:
       return '/'
   }

@@ -6,36 +6,14 @@ import { get } from 'lodash'
 
 import { app } from '@core/app'
 
-import { relation, sysAdminRoute } from './constants'
-import { AppType } from './types'
-
-// app类型检测
-const checkAppType = (appType: AppType, type?: AppType, pathName?: string) => {
-  if (type) {
-    return type === appType
-  }
-  const pathname = pathName || window.location.pathname
-  const path = `${app.constants.pathPrefix}${appType}`
-  return pathname.startsWith(`${path}/`) || pathname === path
-}
-
-// 平台检测
-export const isSys = (type?: AppType) => checkAppType('sys', type)
-
-// 组织检测
-export const isOrg = (type?: AppType) => checkAppType('org', type)
-
-export const isSysAdmLogin = (path: string = window.location.pathname) =>
-  path.indexOf('/sys/admin') > -1
-
-export const getAppType = (pathName?: string): AppType =>
-  checkAppType('org', undefined, pathName) ? 'org' : 'sys'
+import { loginRoute, relation, sysAdmRoutePrefix } from './constants'
+import { getOrgId } from './common'
 
 // 获取组织ID
-export const getOrgId = (): string =>
-  get(window.location.pathname.match(/\/org\/((\w)+)\//), '1') || ''
+export const getAppId = (pathname: string = window.location.pathname): string =>
+  get(pathname.match(/\/app\/(\w*)\//), '1') || ''
 
-export function getOrgUniType(type: 'user', orgId = getOrgId()) {
+export function getOrgUniType(type: 'user', orgId: string) {
   switch (type) {
     case 'user':
       return `${relation.org.user.type}_${orgId}`
@@ -44,19 +22,29 @@ export function getOrgUniType(type: 'user', orgId = getOrgId()) {
   }
 }
 
-// 获取组织ID
-export const getAppId = (): string =>
-  get(window.location.pathname.match(/\/app\/(\w*)\//), '1') || ''
+// TODO: 处理多环境问题
+export function getSiteEnv(pathname: string = window.location.pathname) {
+  get(pathname.match(/\/app\/(\w*)\/([dev|pre|prd])\//), '2') || 'prd'
+}
+
+export function getAppUniType(type: 'user', orgId = getAppId()) {
+  switch (type) {
+    case 'user':
+      return `${relation.org.user.type}_${orgId}`
+    default:
+      return ''
+  }
+}
 
 export const isSysAdminRoute = (pathname: string = window.location.pathname): boolean => {
-  return pathname.startsWith(`${app.constants.pathPrefix.slice(0, -1)}${sysAdminRoute}`)
+  return pathname.startsWith(`${app.constants.pathPrefix.slice(0, -1)}${sysAdmRoutePrefix}`)
 }
 
 type LinkType = 'home' | 'login' | 'selfInfo' | 'app'
-export const getLink = (type: LinkType, orgId: string = getOrgId(), extra?: any): string => {
+export const getLink = (type: LinkType, orgId?: string, extra?: any): string => {
   switch (type) {
     case 'login':
-      return orgId ? `/org/${orgId}/login` : isSys() ? '/sys/admin' : '/sys/login'
+      return orgId ? `/org/${orgId}/login` : loginRoute
     case 'selfInfo':
       return orgId ? `/org/${orgId}/setting?t=1#userInfo` : '/sys/setting?t=1#userInfo'
     case 'home':
@@ -82,11 +70,6 @@ export function isStrTrue(str: string) {
   return str === '1'
 }
 
-export function getAppUniType(type: 'user', orgId = getAppId()) {
-  switch (type) {
-    case 'user':
-      return `${relation.org.user.type}_${orgId}`
-    default:
-      return ''
-  }
+export function runWithQianKun() {
+  return !!window.__POWERED_BY_QIANKUN__
 }

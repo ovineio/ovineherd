@@ -3,12 +3,11 @@
  * BUG: 页面被初始化被渲染了两次。应该是 core 的问题
  */
 
-import React, { useEffect } from 'react'
 import adminPageApi from './api'
-import AppPageCss from './styled'
+import appPageCss from './styled'
 
 export const schema = {
-  css: AppPageCss,
+  css: appPageCss,
   type: 'page',
   title: '应用页面管理',
   bodyClassName: 'p-t-none',

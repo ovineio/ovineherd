@@ -107,8 +107,8 @@ export const useAppConfig = () => {
     }
 
     setContext((d) => {
-      // 暂时先忽略 slogan 配置
-      // const conf = org.slogan ? org : sys
+      // 暂时先忽略 isolation 配置
+      // const conf = org.isolation ? org : sys
       const info = {
         ...initState.custom,
         ...sys,

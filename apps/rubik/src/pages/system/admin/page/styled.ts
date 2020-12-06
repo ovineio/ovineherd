@@ -1,6 +1,6 @@
 import { css } from 'styled-components'
 
-const AppPageCss = () => css`
+const appPageCss = () => css`
   .filter-form {
     .cxd-Button {
       position: absolute;
@@ -15,4 +15,4 @@ const AppPageCss = () => css`
   }
 `
 
-export default AppPageCss
+export default appPageCss
