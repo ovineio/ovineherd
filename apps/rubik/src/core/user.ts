@@ -2,16 +2,13 @@
  * 用户模块
  */
 
-// import { toast } from 'amis'
-
 import { toast } from 'amis'
 import { getStore, setStore } from '@core/utils/store'
-import { app } from '@core/app'
 
-import { initAppInfoApi, userSelfInfoApi } from './api/resource'
-import { getOrgId, isAppIsolation } from './common'
-import { entityType, storeKey } from './constants'
-import { getAppId, getLink } from './utils'
+import { fetchAppInfo, userSelfInfoApi } from './api/resource'
+import { getOrgId, isAppIsolation, setAppCustom } from './common'
+import { entityType, loginRoute, storeKey } from './constants'
+import { getAppId, getLink, linkTo } from './utils'
 
 let orgUserInfo: any = getStore(storeKey.orgUserInfo) || {}
 let userInfo: any = getStore(storeKey.userInfo) || {}
@@ -27,14 +24,17 @@ let userInfo: any = getStore(storeKey.userInfo) || {}
  *      2. 已登录，可以通用多个非独立应用登录
  */
 export async function onAuth() {
-  app.constants.loginRoute = getLink('login')
   try {
-    await initAppInfoApi()
+    const source = await fetchAppInfo()
+    setAppCustom(source)
+
     if (isAppIsolation()) {
       await fetchUserInfo()
       // 用户 APPID 与 路径上的 APPID 不匹配
-      if (!userInfo.id || userInfo.relation2 !== getAppId()) {
-        toast.error('登录错误', '当前登录信息有误请重新登录')
+      if (!userInfo.id || (isAppUser() && userInfo.relation2 !== getAppId())) {
+        if (window.location.pathname.indexOf(loginRoute) !== -1) {
+          toast.error('登录错误', '当前登录信息有误请重新登录')
+        }
         return false
       }
     }
@@ -45,9 +45,9 @@ export async function onAuth() {
 
   // 独立应用 并且没有的登录 跳转到 app/login
   if (!isLogin()) {
+    // 跳转到组织登录页面
     if (!isAppIsolation()) {
-      // 跳转到组织登录页面
-      window.history.pushState({}, undefined, getLink('login', getOrgId()))
+      linkTo(getLink('login', getOrgId()))
     }
     return false
   }
@@ -58,8 +58,12 @@ export async function onAuth() {
 
 // 根据 token 获取用户信息
 export async function fetchUserInfo() {
-  // console.log('@===>', getUserId())
-  return userSelfInfoApi({ id: getUserId() }).then((source) => {
+  const userId = getUserId()
+  if (!userId) {
+    return {}
+  }
+
+  return userSelfInfoApi({ id: userId }).then((source) => {
     // TODO: 获取权限信息,设置到用户信息上
     setUserInfo(source)
     return source
@@ -74,9 +78,9 @@ export function setUserInfo(info: any) {
 // 获取缓存的用户信息
 export function getUserInfo() {
   if (isAppIsolation()) {
-    return userInfo || getStore(storeKey.userInfo) || {}
+    return userInfo || {}
   }
-  return orgUserInfo || getStore(storeKey.orgInfo) || {}
+  return orgUserInfo || {}
 }
 
 export function isLogin() {
@@ -100,6 +104,10 @@ export function getUserId() {
 }
 
 // 是否是 组织用户
-export function isOrgUser(info = orgUserInfo) {
+export function isOrgUser(info = userInfo) {
   return info.type.indexOf(entityType.orgUser) === 0
+}
+
+export function isAppUser(info = userInfo) {
+  return info.type.indexOf(entityType.appUser) === 0
 }

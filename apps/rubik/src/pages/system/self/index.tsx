@@ -6,6 +6,7 @@ export const schema = {
   body: {
     type: 'tabs',
     mode: 'line',
+    className: 'g-normal-spinner',
     tabs: [
       {
         title: '个人资料',

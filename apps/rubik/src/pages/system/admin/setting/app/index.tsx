@@ -1,13 +1,15 @@
+const isolation = 'data.isolation !== "1"'
+
 export const schema = {
   type: 'page',
   title: '应用设置',
   body: {
     type: 'form',
     wrapWithPanel: false,
-    className: 'p-md',
+    className: 'p-md g-normal-spinner',
     mode: 'horizontal',
-    initApi: '$preset.apis.orgInfo',
-    api: '$preset.apis.orgEditInfo',
+    initApi: '$preset.apis.appInfo',
+    api: '$preset.apis.editAppInfo',
     controls: [
       {
         type: 'grid',
@@ -22,6 +24,7 @@ export const schema = {
             },
             controls: [
               {
+                hiddenOn: isolation,
                 type: 'text',
                 name: 'name',
                 required: true,
@@ -31,6 +34,7 @@ export const schema = {
                 description: '用于页面浏览器标题展示',
               },
               {
+                hiddenOn: isolation,
                 type: 'text',
                 name: 'slogan',
                 required: true,
@@ -51,7 +55,7 @@ export const schema = {
                 type: 'textarea',
                 name: 'desc',
                 placeholder: '请输入应用介绍',
-                label: '介绍',
+                label: '应用介绍',
               },
             ],
           },
@@ -71,9 +75,10 @@ export const schema = {
                 $ref: 'globalImgUpload',
                 label: '应用logo',
                 descriptionClassName: 'd-block',
-                description: '展示在头部导航最左侧',
+                description: '展示在侧边栏上方',
               },
               {
+                hiddenOn: isolation,
                 type: 'image',
                 name: 'favicon',
                 required: true,
@@ -92,7 +97,7 @@ export const schema = {
         className: 'm-t-lg',
         inputClassName: 'd-inline-block',
         descriptionClassName: 'p-l-md',
-        desc: '应用信息修改后，刷新页面才能看到更新后的数据',
+        desc: '应用信息修改后，刷新页面后才能看到效果',
         body: {
           type: 'submit',
           mode: 'normal',

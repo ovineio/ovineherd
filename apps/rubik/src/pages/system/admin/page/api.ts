@@ -27,25 +27,28 @@ const listNav = {
 }
 
 const navParent = {
-  url: 'GET /v1/option/category',
+  url: 'fakeNavParent',
   cache: 1000,
   data: {
     nav_id: '$id',
   },
   onFakeRequest: (option) => {
     const { nav_id } = option.data
-    const options = produce(cacheListNav, (d) => {
+    const appNav = produce(cacheListNav, (d) => {
       d.unshift({
         label: '主目录',
         id: '0',
       })
     })
-    return {
+    const options = !nav_id ? appNav : filterTree(appNav, (i) => i.id !== nav_id)
+    const source = {
       status: 0,
       data: {
-        options: !nav_id ? options : filterTree(options, (i) => i.id !== nav_id),
+        options,
       },
     }
+
+    return source
   },
 }
 

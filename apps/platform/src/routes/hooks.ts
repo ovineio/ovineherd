@@ -81,9 +81,9 @@ export const useAppConfig = () => {
 
   // 设置自定义信息
   useEffect(() => {
-    const { title, favicon } = custom
-    if (title) {
-      document.title = title
+    const { name, favicon } = custom
+    if (name) {
+      document.title = name
       $('link[rel="shortcut icon"]').attr('href', favicon)
     }
   }, [custom])

@@ -3,6 +3,7 @@
  * BUG: 页面被初始化被渲染了两次。应该是 core 的问题
  */
 
+import { getLink } from '~/core/utils'
 import adminPageApi from './api'
 import appPageCss from './styled'
 
@@ -47,7 +48,7 @@ export const schema = {
           <% if(!!data.icon) { %>
             <i class="<%= data.icon %> cursor-p" data-tooltip="菜单图标" data-position="bottom" ></i>
           <% } %>
-          <%= data.label %>
+          <span><%= data.label %></span>
         `,
       },
       {
@@ -139,7 +140,7 @@ export const schema = {
         level: 'link',
         hiddenOn: 'data.page_type === "2"',
         actionType: 'link',
-        link: '/admin/sys/design/$page_id?label=$label',
+        link: getLink('appSystem', 'design/$page_id?label=$label'),
       },
       editLimit: {
         type: 'action',

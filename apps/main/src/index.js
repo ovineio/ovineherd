@@ -1,3 +1,7 @@
+/**
+ * TODO: 优化加载 LOADING 动画
+ */
+
 /* eslint-disable no-console */
 import {
   start,
@@ -6,8 +10,6 @@ import {
   setDefaultMountApp,
   initGlobalState,
 } from 'qiankun'
-
-import render from './render'
 
 import './index.less'
 
@@ -77,13 +79,7 @@ setDefaultMountApp('/platform')
 /**
  * Step4 启动应用
  */
-start({
-  // sandbox: false,
-  // excludeAssetFilter: (assetUrl) => {
-  //   console.log('assetUrl----->', assetUrl)
-  //   return true
-  // },
-})
+start()
 
 runAfterFirstMounted(() => {
   document.querySelector('.loading-screen').style.display = 'none'

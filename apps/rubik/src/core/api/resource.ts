@@ -5,16 +5,16 @@
 
 import { get } from 'lodash'
 
-import { mapTree } from 'amis/lib/utils/helper'
 import { ReqOption } from '@core/utils/request/types'
 import { setStore } from '@core/utils/store'
-import { publish } from '@core/utils/message'
 
-import { msgKey, relation, storeKey } from '../constants'
+import { relation, storeKey } from '../constants'
 import { ApiName, ApiType } from '../types'
 import { getAppId, isStrTrue } from '../utils'
-import { ApiData, getReqOption, request, requestByOption } from './utils'
 import { userAdmRoutes } from '../routes'
+
+import { ApiData, getReqOption, request, requestByOption } from './utils'
+import { isAppIsolation } from '../common'
 
 // 根据 token 获取用户信息
 export function userSelfInfoApi(data: ApiData, option?: ReqOption) {
@@ -94,20 +94,20 @@ function fetchOrgInfo(orgInfoId: string) {
   })
 }
 
-function fetchAppInfo(appId: string = getAppId()) {
+export function fetchAppInfo(appId: string = getAppId()) {
   return requestByOption({
     ...relation.app.entity,
     apiName: ApiName.one,
     id: appId,
     onlyData: true,
   }).then((source) => {
-    const { relation1_data: appInfo, relation2_data: orgInfo = {} } = source
-    const { relation1: orgInfoId } = orgInfo
+    const { relation1_data: appInfo, relation2_data: org = {} } = source
+    const { id: orgId } = org
 
     setStore(storeKey.appInfo, appInfo)
-    if (!appInfo.isolation && orgInfoId) {
-      return fetchOrgInfo(orgInfoId).then((orgInfoSource) => {
-        return { appInfo, orgInfo: orgInfoSource }
+    if (orgId) {
+      return fetchOrgInfo(orgId).then((orgSource) => {
+        return { appInfo, orgInfo: orgSource.relation1_data }
       })
     }
 
@@ -115,68 +115,13 @@ function fetchAppInfo(appId: string = getAppId()) {
   })
 }
 
-export function initAppInfoApi() {
-  fetchAppInfo().then((source) => {
-    const { appInfo, orgInfo } = source
-    // 合并 组织与应用的设置信息
-    const info = appInfo.isolation
-      ? {
-          ...orgInfo,
-          ...appInfo,
-        }
-      : orgInfo
-    setStore(storeKey.siteCustom, info)
-    publish(msgKey.updateAppCustom)
-  })
-}
-
 // 获取导航
-export function getAppNav() {
-  return request(
-    'other.catOpts',
-    {
-      type: relation.app.nav.type,
-      parent_id: 0,
-      q_relation1: getAppId(),
-    },
-    {
-      onSuccess: (source) => {
-        const { option } = source.data
-        const items = get(option, '0.items') || []
-
-        const routes = mapTree(items, (item: any) => {
-          const { label, icon, children, page_type, page_id, side_visible } = item
-          const withChildren = !!children?.length
-          const routeItem: any = {
-            nodePath: parseInt(page_id, 10).toString(36),
-            label,
-            icon,
-            sideVisible: isStrTrue(side_visible),
-            children: withChildren ? children : undefined,
-          }
-          // 普通页面
-          if (page_type === '1') {
-            // 父节点页面
-            if (withChildren) {
-              routeItem.exact = true
-            }
-            // 页面接口
-            routeItem.pathToComponent = `api://v1/product/${page_id}`
-          }
-          return routeItem
-        }).concat(userAdmRoutes)
-
-        source.data = [
-          {
-            nodePath: '/',
-            label: '',
-            limitLabel: '侧边栏目录',
-            children: routes,
-          },
-        ]
-
-        return source
-      },
-    }
-  )
+export function getAppRouteItems() {
+  return request('other.catOpts', {
+    type: relation.app.nav.type,
+    parent_id: 0,
+    q_relation1: getAppId(),
+  }).then((source) => {
+    return get(source, 'option.0.items') || []
+  })
 }

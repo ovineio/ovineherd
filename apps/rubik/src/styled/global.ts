@@ -12,12 +12,21 @@ const globalStyle = (theme: DefaultTheme) => css`
   .cursor-p {
     cursor: pointer;
   }
+  .cxd-TextareaControl {
+    color: #666;
+  }
   .g-no-border-table {
     .cxd-Table {
       border: 0;
     }
     .cxd-Table-toolbar {
       padding: 15px 0;
+    }
+  }
+  .g-normal-spinner {
+    .cxd-Spinner {
+      width: 40px;
+      height: 40px;
     }
   }
 `

@@ -23,10 +23,6 @@ const selfPageCss = () => css`
     border-bottom: 0;
     font-weight: 400;
   }
-  .cxd-Spinner {
-    width: 40px;
-    height: 40px;
-  }
 `
 
 export default selfPageCss

@@ -13,6 +13,9 @@ const appPageCss = () => css`
       padding-left: 30px;
     }
   }
+  .cxd-Table-content {
+    overflow: visible;
+  }
 `
 
 export default appPageCss

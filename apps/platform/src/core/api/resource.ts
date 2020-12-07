@@ -106,7 +106,7 @@ export async function sysCreateOrgApi(option: any) {
     })
     ids.orgInfoId = `${orgInfoId}`
 
-    // 创建一个组织， 并将 配置/用户 关联到该组织
+    // 创建一个组织， 并将 配置 关联到该组织
     const { id: orgId } = await requestByOption({
       ...relation.org.entity,
       apiName: ApiName.add,

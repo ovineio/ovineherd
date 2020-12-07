@@ -1,11 +1,11 @@
 export type SiteEnvType = 'dev' | 'pre' | 'prd'
+export type StringBool = '0' | '1'
 export type UrlParams = {
   orgId: string
 }
 
 export type CustomType = {
   desc: string
-  enable_register_org: '0' | '1'
   favicon: string
   login_bg_img: string
   login_intro_img: string
@@ -16,7 +16,8 @@ export type CustomType = {
   slogan: string // 用于 浏览器标题展示
   title: string // 导航L标题
   type: string // 类型
-  isolation: boolean // 是否独立
+  isolation: StringBool // 是否独立
+  app_root_route: string // 首页
 }
 
 export type AppInfo = {

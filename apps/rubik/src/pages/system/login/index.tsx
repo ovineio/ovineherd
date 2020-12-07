@@ -10,13 +10,11 @@ import { useImmer } from '@core/utils/hooks'
 import { setStore } from '@core/utils/store'
 
 import { Login } from './styled'
-import { getAppUniType } from '~/core/utils'
+import { getAppUniType, getOrgUniType } from '~/core/utils'
 import { storeKey } from '~/core/constants'
 import { setUserInfo } from '~/core/user'
 import { sysUserLoginApi } from '~/core/api/resource'
-import { getAppCustom } from '~/core/common'
-
-const imgSrc = 'https://static.igroupes.com/ovine_bg_cxd.jpeg'
+import { getAppCustom, isAppIsolation } from '~/core/common'
 
 type State = {
   inputs: {
@@ -75,7 +73,7 @@ export default () => {
 
     sysUserLoginApi({
       ...inputs,
-      type: getAppUniType('user'),
+      type: isAppIsolation(true) ? getAppUniType('user') : getOrgUniType('user'),
       onlyData: false,
     }).then((source: any) => {
       setState((d) => {
@@ -89,13 +87,13 @@ export default () => {
       setStore(storeKey.auth, data.id)
       setUserInfo(data)
 
-      history.replace(custom.app_root_route || '/')
+      history.replace(custom.app_root_route)
     })
   }
 
   return (
     <Login>
-      <img src={custom.login_bg_img || imgSrc} alt="back-img" className="img-bk" />
+      <img src={custom.login_bg_img} alt="back-img" className="img-bk" />
       <div className="login-card">
         <div className="side login-form">
           {!custom.login_logo ? (
@@ -118,32 +116,34 @@ export default () => {
               <span>{custom.login_title}</span>
             </div>
           )}
+          <form>
+            <span>账号</span>
+            <input
+              type="text"
+              name="username"
+              value={inputs.username || ''}
+              onChange={onInputChange}
+              placeholder="请输入账号"
+            />
 
-          <span>账号</span>
-          <input
-            type="text"
-            name="username"
-            value={inputs.username || ''}
-            onChange={onInputChange}
-            placeholder="请输入账号"
-          />
-
-          <span>密码</span>
-          <input
-            type="password"
-            name="password"
-            value={inputs.password || ''}
-            onChange={onInputChange}
-            placeholder="请输入密码"
-          />
-          <span className="tip-text">{tips.error}</span>
-          <button type="button" className="btn-submit" onClick={onSubmit}>
-            {loading && <i className="fa fa-circle-o-notch fa-spin" />}
-            <span>登录</span>
-          </button>
+            <span>密码</span>
+            <input
+              autoComplete="off"
+              type="password"
+              name="password"
+              value={inputs.password || ''}
+              onChange={onInputChange}
+              placeholder="请输入密码"
+            />
+            <span className="tip-text">{tips.error}</span>
+            <button type="button" className="btn-submit" onClick={onSubmit}>
+              {loading && <i className="fa fa-circle-o-notch fa-spin" />}
+              <span>登录</span>
+            </button>
+          </form>
         </div>
         <div className="side login-picture">
-          <img src={custom.login_intro_img || imgSrc} alt="intro-img" />
+          <img src={custom.login_intro_img} alt="intro-img" />
         </div>
       </div>
     </Login>

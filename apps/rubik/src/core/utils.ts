@@ -6,14 +6,14 @@ import { get } from 'lodash'
 
 import { app } from '@core/app'
 
-import { loginRoute, relation, sysAdmRoutePrefix } from './constants'
-import { getOrgId } from './common'
+import { loginRoute, orgPathPrefix, relation, sysAdmRoutePrefix } from './constants'
+import { getAppCustom, getOrgId } from './common'
 
 // 获取组织ID
 export const getAppId = (pathname: string = window.location.pathname): string =>
   get(pathname.match(/\/app\/(\w*)\//), '1') || ''
 
-export function getOrgUniType(type: 'user', orgId: string) {
+export function getOrgUniType(type: 'user', orgId: string = getOrgId()) {
   switch (type) {
     case 'user':
       return `${relation.org.user.type}_${orgId}`
@@ -27,10 +27,10 @@ export function getSiteEnv(pathname: string = window.location.pathname) {
   get(pathname.match(/\/app\/(\w*)\/([dev|pre|prd])\//), '2') || 'prd'
 }
 
-export function getAppUniType(type: 'user', orgId = getAppId()) {
+export function getAppUniType(type: 'user', appId = getAppId()) {
   switch (type) {
     case 'user':
-      return `${relation.org.user.type}_${orgId}`
+      return `${relation.org.user.type}_${appId}`
     default:
       return ''
   }
@@ -40,20 +40,29 @@ export const isSysAdminRoute = (pathname: string = window.location.pathname): bo
   return pathname.startsWith(`${app.constants.pathPrefix.slice(0, -1)}${sysAdmRoutePrefix}`)
 }
 
-type LinkType = 'home' | 'login' | 'selfInfo' | 'app'
+type LinkType = 'home' | 'login' | 'selfInfo' | 'appSystem'
 export const getLink = (type: LinkType, orgId?: string, extra?: any): string => {
   switch (type) {
     case 'login':
-      return orgId ? `/org/${orgId}/login` : loginRoute
+      return orgId ? `${orgPathPrefix}${orgId}/login` : loginRoute
     case 'selfInfo':
-      return orgId ? `/org/${orgId}/setting?t=1#userInfo` : '/sys/setting?t=1#userInfo'
+      return orgId ? `${orgPathPrefix}${orgId}/setting?#userInfo` : '/system/self?#userInfo'
     case 'home':
-      return orgId ? `/org/${orgId}/` : '/sys/'
-    case 'app':
-      return orgId ? `/org/${orgId}/app/${extra}` : `/app/${extra}`
+      return orgId ? `${orgPathPrefix}${orgId}/application` : getAppCustom().app_root_route
+    case 'appSystem':
+      // 共用参数第二参数
+      return `${sysAdmRoutePrefix}${extra || orgId}`
     default:
       return '/'
   }
+}
+
+export const linkTo = (link: string) => {
+  if (link.startsWith(orgPathPrefix)) {
+    window.history.pushState({}, undefined, link)
+    return
+  }
+  app.routerHistory.push(link)
 }
 
 export function getTextWidth(text: string = '') {

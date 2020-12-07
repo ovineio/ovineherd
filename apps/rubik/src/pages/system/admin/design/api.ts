@@ -19,10 +19,7 @@ const getDesignPageApi = (pageId) => {
     {
       onSuccess: (source) => {
         const { schema } = source.data
-
         source.data = deserialize(schema) || defaultSchema
-
-        console.log('@===>', source)
         return source
       },
     }

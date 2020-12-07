@@ -4,10 +4,10 @@ export const schema = {
   body: {
     type: 'form',
     wrapWithPanel: false,
-    className: 'p-md',
+    className: 'p-md g-normal-spinner',
     mode: 'horizontal',
-    initApi: '$preset.apis.orgInfo',
-    api: '$preset.apis.orgEditInfo',
+    initApi: '$preset.apis.appInfo',
+    api: '$preset.apis.editAppInfo',
     controls: [
       {
         type: 'grid',
