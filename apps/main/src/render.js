@@ -13,6 +13,11 @@ const renderSubApp = (props) => {
       <div id="main-viewport" ></div>
     `
   }
+
+  if (!loading) {
+    const div = document.createElement('div')
+    div.id = ''
+  }
 }
 
 export default renderSubApp

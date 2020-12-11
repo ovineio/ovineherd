@@ -1,9 +1,10 @@
-import * as React from 'react'
 import { OptionsControl } from 'amis'
 import TextControl from 'amis/lib/renderers/Form/Text'
+import * as React from 'react'
+
+import styled from 'styled-components'
 
 import { faArr, iconArr } from '~/assets/fa'
-import styled from 'styled-components'
 
 const iconConfig = [
   // 只有CXD 主题才有这些图标
@@ -47,6 +48,7 @@ const StyledIconItems = styled.div`
   }
 `
 
+// eslint-disable-next-line
 class IconSelector extends React.Component<any, any> {
   render() {
     const { value, onChange, ...reset } = this.props
@@ -71,9 +73,7 @@ class IconSelector extends React.Component<any, any> {
               )
             })}
           </ul>
-          {index !== iconConfig.length - 1 && (
-            <div className="cxd-Divider cxd-Divider--dashed"></div>
-          )}
+          {index !== iconConfig.length - 1 && <div className="cxd-Divider cxd-Divider--dashed" />}
         </>
       )
     }

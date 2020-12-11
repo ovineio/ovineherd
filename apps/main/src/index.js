@@ -1,5 +1,6 @@
 /**
  * TODO: 优化加载 LOADING 动画
+ * https://github.com/umijs/qiankun/issues/400#issuecomment-676947927
  */
 
 /* eslint-disable no-console */
@@ -24,19 +25,47 @@ import './index.less'
  * Step2 注册子应用
  */
 
+const presetConfig = {
+  localhost: {
+    entry: {
+      center: '//localhost:7061',
+      app: '//localhost:7062',
+    },
+  },
+  staging: {
+    entry: {
+      center: '/platform/apps_center/',
+      app: '/platform/apps_app/',
+    },
+  },
+  production: {
+    entry: {
+      center: '/platform/apps_center/',
+      app: '/platform/apps_app/',
+    },
+  },
+}
+
+const config = presetConfig[process.env.ENV]
+
+// platform/        --- platform/
+// platform/apps_center  --- platform/center
+// platform/apps_app     --- platform/app
 registerMicroApps(
   [
     {
-      name: 'platform',
-      entry: '//localhost:7061',
+      name: 'center',
+      entry: config.entry.center,
       container: '#main-container',
-      activeRule: '/platform',
+      activeRule: '/platform/center', // baseurl
+      // render: loader,
     },
     {
       name: 'app',
-      entry: '//localhost:7062',
+      entry: config.entry.app,
       container: '#main-container',
-      activeRule: ['/org/:orgId/app', '/app'],
+      activeRule: '/platform/app', // baseurl
+      // render: loader,
     },
   ],
   {
@@ -74,12 +103,14 @@ setGlobalState({
 /**
  * Step3 设置默认进入的子应用
  */
-setDefaultMountApp('/platform')
+setDefaultMountApp('/platform/center')
 
 /**
  * Step4 启动应用
  */
-start()
+start({
+  sandbox: false,
+})
 
 runAfterFirstMounted(() => {
   document.querySelector('.loading-screen').style.display = 'none'

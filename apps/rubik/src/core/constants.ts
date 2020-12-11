@@ -2,7 +2,7 @@ import { ApiType } from './types'
 
 export const appRootId = 'app-root'
 export const appRootSelector = `#${appRootId}`
-export const orgPathPrefix = '/platform/org/'
+export const orgPathPrefix = '/platform/center/org/'
 export const sysAdmRoutePrefix = '/system/admin/'
 export const loginRoute = '/system/login'
 export const selfInfoRoute = '/system/self'

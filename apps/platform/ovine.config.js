@@ -9,19 +9,26 @@ const path = require('path')
 module.exports = (option) => {
   const { env, port } = option
 
+  const subPath = '/platform/apps_center/'
+
   const publicPathMap = {
-    localhost: `http://localhost:${port}/platform/`,
-    staging: 'http://ovine.igroupes.com/platform/',
+    localhost: `http://localhost:${port}${subPath}`,
+    staging: `http://ovine.igroupes.com${subPath}`,
     production: 'https://cdn-igroupes.com/ovine/',
   }
 
   const config = {
-    pathPrefix: '/platform/', //
     publicPath: publicPathMap[env], // 静态资源公共路径
     favicon: '/static/images/favicon.ico',
     title: 'OvineHerd', // 页面标题
     envModes: ['localhost', 'staging', 'production'], // 环境列表
-    initTheme: 'cxd',
+    devServer: {
+      publicPath: subPath,
+      openPage: '/platform/center',
+    },
+    ui: {
+      initTheme: 'cxd',
+    },
     template: {
       path: path.resolve(__dirname, './template.ejs'),
     },

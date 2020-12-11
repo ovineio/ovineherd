@@ -1,5 +1,6 @@
 import { deserialize, serialize } from '@core/utils/tool'
-import { getReqOption, requestByOption } from '~/core/api/utils'
+
+import { getReqOption } from '~/core/api/utils'
 import { relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 

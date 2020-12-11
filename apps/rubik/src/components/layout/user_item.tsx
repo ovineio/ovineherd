@@ -6,11 +6,13 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { Amis } from '@core/components/amis/schema'
-import { fetchUserInfo, getUserInfo } from '~/core/user'
-import { defUserAvatar, msgKey } from '~/core/constants'
-import { getOrgId, isAppIsolation } from '~/core/common'
-import { getLink, linkTo } from '~/core/utils'
+
 import { subscribe } from '@ovine/core/lib/utils/message'
+
+import { getOrgId } from '~/core/common'
+import { defUserAvatar, msgKey } from '~/core/constants'
+import { fetchUserInfo, getUserInfo } from '~/core/user'
+import { getLink, linkTo, runWithQianKun } from '~/core/utils'
 
 const StyledItem = styled.div`
   display: inline-block;
@@ -38,8 +40,7 @@ const StyledItem = styled.div`
 
 const UserItem = () => {
   const [source, setSource] = useState<any>(getUserInfo)
-  const isolation = isAppIsolation()
-  const orgId = isolation ? '' : getOrgId()
+  const orgId = getOrgId()
   const { avatar, real_name } = source
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const UserItem = () => {
   const renderBody = () => {
     return (
       <div className="info-content">
-        <img src={avatar || defUserAvatar} />
+        <img alt="头像" src={avatar || defUserAvatar} />
         <span>{real_name || '用户姓名'}</span>
       </div>
     )
@@ -65,7 +66,7 @@ const UserItem = () => {
       component: renderBody,
     },
     items: [
-      orgId && {
+      {
         type: 'button',
         level: 'link',
         icon: 'iconfont icon-myaccount',
@@ -74,7 +75,7 @@ const UserItem = () => {
           linkTo(getLink('selfInfo', orgId))
         },
       },
-      orgId && {
+      runWithQianKun() && {
         type: 'button',
         level: 'link',
         icon: 'iconfont icon-di',

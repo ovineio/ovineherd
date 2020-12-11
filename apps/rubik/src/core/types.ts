@@ -21,7 +21,6 @@ export type CustomType = {
 }
 
 export type AppInfo = {
-  type: AppType
   isOrg: boolean
   isSys: boolean
   isSysAdmLogin: boolean

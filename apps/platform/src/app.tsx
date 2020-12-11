@@ -6,6 +6,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { app } from '@core/app'
+import { unsubscribeAll } from '@core/utils/message'
 import { AppConfig } from '@core/app/types'
 import { initLogger } from '@core/utils/logger'
 import { DeepPartial } from '@core/utils/types'
@@ -22,6 +23,9 @@ const appRootId = '#app-root'
 const appConfig: DeepPartial<AppConfig> = {
   request: appRequestIns,
   env: appEnv,
+  constants: {
+    routePrefix: '/platform/center/',
+  },
   amis: {
     definitions: schemaDefinitions,
     affixOffsetTop: 60,
@@ -68,6 +72,7 @@ export async function mount(props) {
 
 export async function unmount(props) {
   const { container } = props
+  unsubscribeAll()
   ReactDOM.unmountComponentAtNode(
     container ? container.querySelector(appRootId) : document.querySelector(appRootId)
   )

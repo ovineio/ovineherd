@@ -3,14 +3,15 @@
  */
 
 import { toast } from 'amis'
+
 import { getStore, setStore } from '@core/utils/store'
 
 import { fetchAppInfo, userSelfInfoApi } from './api/resource'
-import { getOrgId, isAppIsolation, setAppCustom } from './common'
+import { getOrgId, isAppIsolation, setAppInfo } from './common'
 import { entityType, loginRoute, storeKey } from './constants'
 import { getAppId, getLink, linkTo } from './utils'
 
-let orgUserInfo: any = getStore(storeKey.orgUserInfo) || {}
+const orgUserInfo: any = getStore(storeKey.orgUserInfo) || {}
 let userInfo: any = getStore(storeKey.userInfo) || {}
 
 // 校验用户登录状态
@@ -26,7 +27,7 @@ let userInfo: any = getStore(storeKey.userInfo) || {}
 export async function onAuth() {
   try {
     const source = await fetchAppInfo()
-    setAppCustom(source)
+    setAppInfo(source)
 
     if (isAppIsolation()) {
       await fetchUserInfo()
@@ -104,10 +105,10 @@ export function getUserId() {
 }
 
 // 是否是 组织用户
-export function isOrgUser(info = userInfo) {
-  return info.type.indexOf(entityType.orgUser) === 0
+export function isOrgUser(info = getUserInfo()) {
+  return info.type?.indexOf(entityType.orgUser) === 0
 }
 
 export function isAppUser(info = userInfo) {
-  return info.type.indexOf(entityType.appUser) === 0
+  return info.type?.indexOf(entityType.appUser) === 0
 }

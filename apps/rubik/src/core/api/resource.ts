@@ -10,11 +10,9 @@ import { setStore } from '@core/utils/store'
 
 import { relation, storeKey } from '../constants'
 import { ApiName, ApiType } from '../types'
-import { getAppId, isStrTrue } from '../utils'
-import { userAdmRoutes } from '../routes'
+import { getAppId } from '../utils'
 
 import { ApiData, getReqOption, request, requestByOption } from './utils'
-import { isAppIsolation } from '../common'
 
 // 根据 token 获取用户信息
 export function userSelfInfoApi(data: ApiData, option?: ReqOption) {
@@ -81,19 +79,6 @@ export function orgConfigApi(option: { orgId: string }) {
  * ----
  * 1. 独立医应用，需要渲染额外的  用户列表/角色列表
  */
-
-function fetchOrgInfo(orgInfoId: string) {
-  return requestByOption({
-    ...relation.org.entity,
-    apiName: ApiName.one,
-    id: orgInfoId,
-    onlyData: true,
-  }).then((source) => {
-    setStore(storeKey.orgInfo, source)
-    return source
-  })
-}
-
 export function fetchAppInfo(appId: string = getAppId()) {
   return requestByOption({
     ...relation.app.entity,
@@ -104,10 +89,16 @@ export function fetchAppInfo(appId: string = getAppId()) {
     const { relation1_data: appInfo, relation2_data: org = {} } = source
     const { id: orgId } = org
 
-    setStore(storeKey.appInfo, appInfo)
     if (orgId) {
-      return fetchOrgInfo(orgId).then((orgSource) => {
-        return { appInfo, orgInfo: orgSource.relation1_data }
+      return requestByOption({
+        ...relation.org.entity,
+        apiName: ApiName.one,
+        id: orgId,
+        onlyData: true,
+      }).then((orgSource) => {
+        const orgInfo = orgSource.relation1_data || {}
+        orgInfo.orgId = orgId
+        return { appInfo, orgInfo }
       })
     }
 

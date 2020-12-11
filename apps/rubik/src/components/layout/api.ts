@@ -1,9 +1,9 @@
 import produce from 'immer'
 
-import { getAppRoutes, getSysAdmRoutes } from '~/core/routes'
-import { getLink, isSysAdminRoute } from '~/core/utils'
 import { getAppRouteItems } from '~/core/api/resource'
 import { getAppCustom } from '~/core/common'
+import { getAppRoutes, getSysAdmRoutes } from '~/core/routes'
+import { getLink, isSysAdminRoute } from '~/core/utils'
 
 import layoutState, { getBrandSchema, getModeBtnSchema } from './schema'
 
@@ -32,7 +32,6 @@ const getLayoutReqOpt = {
 
       // 普通使用者用户
       const routeItems = await getAppRouteItems()
-      console.log('@+++>', routeItems)
       d.routes = getAppRoutes(routeItems)
       d.rootRoute = getAppCustom().app_root_route
     })

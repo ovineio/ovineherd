@@ -1,9 +1,14 @@
+/**
+ * qiankun 全局样式 有 BUG
+ */
+
 import { createGlobalStyle } from 'styled-components'
 
 // TODO: 移动端展示兼容
+const svg = require('@generated/styles/themes/spinner-default.svg').default
 
 export const AppStyle = createGlobalStyle`
-    .app-root {
+    body {
         background-color: #faf9f8;
     }
 
@@ -24,14 +29,12 @@ export const AppStyle = createGlobalStyle`
     }
 
     .cxd-Spinner {
-        background: url(${require('@generated/styles/themes/spinner-default.svg')}) !important;
+        background-image: url(${svg}) !important;
     }
 
     .cxd-ImageControl-pasteTip {
         z-index: 2;
     }
-
-    .cxdp
 
     .cxd-Page-main{
         background-color: transparent;

@@ -4,8 +4,11 @@
 
 /* eslint-disable no-console */
 import './public_path'
+import '@core/app/includes'
 
 import ReactDOM from 'react-dom'
+
+import { unsubscribeAll } from '@core/utils/message'
 
 import { appRootSelector } from '~/core/constants'
 
@@ -42,6 +45,7 @@ export async function mount(props) {
 
 export async function unmount(props) {
   const { container } = props
+  unsubscribeAll()
   ReactDOM.unmountComponentAtNode(
     container ? container.querySelector(appRootSelector) : document.querySelector(appRootSelector)
   )

@@ -57,7 +57,8 @@ const CardItem = (props: ItemProps) => {
   }
 
   const onCardClick = () => {
-    window.history.pushState({}, undefined, getLink('app', undefined, id))
+    const appLink = getLink('app', undefined, id)
+    window.history.pushState({}, undefined, appLink)
   }
 
   return (

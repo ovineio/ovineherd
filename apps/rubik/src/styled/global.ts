@@ -1,6 +1,6 @@
 // 全局样式
 
-import { DefaultTheme, css } from 'styled-components'
+import { css } from 'styled-components'
 
 // styled-components 文档 https://styled-components.com/, 介绍文章 https://www.jianshu.com/p/2178abb2ee95
 // 需要下载 编辑器对应的 styled-components 插件，支持高亮，样式写法与 scss 类似
@@ -8,7 +8,12 @@ import { DefaultTheme, css } from 'styled-components'
 
 // 全局样式, 这里和 scss 类似支持嵌套，与styled变量，
 // 以下用作举例：
-const globalStyle = (theme: DefaultTheme) => css`
+const svg = require('@generated/styles/themes/spinner-default.svg').default
+
+const globalStyle = () => css`
+  .cxd-Spinner {
+    background-image: url(${svg}) !important;
+  }
   .cursor-p {
     cursor: pointer;
   }

@@ -9,12 +9,13 @@ import { useHistory } from 'react-router-dom'
 import { useImmer } from '@core/utils/hooks'
 import { setStore } from '@core/utils/store'
 
-import { Login } from './styled'
-import { getAppUniType, getOrgUniType } from '~/core/utils'
-import { storeKey } from '~/core/constants'
-import { setUserInfo } from '~/core/user'
 import { sysUserLoginApi } from '~/core/api/resource'
 import { getAppCustom, isAppIsolation } from '~/core/common'
+import { storeKey } from '~/core/constants'
+import { setUserInfo } from '~/core/user'
+import { getAppUniType, getOrgUniType } from '~/core/utils'
+
+import { Login } from './styled'
 
 type State = {
   inputs: {

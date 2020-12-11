@@ -15,7 +15,7 @@ const checkAppType = (appType: AppType, type?: AppType, pathName?: string) => {
     return type === appType
   }
   const pathname = pathName || window.location.pathname
-  const path = `${app.constants.pathPrefix}${appType}`
+  const path = `${app.constants.routePrefix}${appType}`
   return pathname.startsWith(`${path}/`) || pathname === path
 }
 
@@ -45,7 +45,7 @@ export const getLink = (type: LinkType, orgId: string = getOrgId(), extra?: any)
     case 'home':
       return orgId ? `/org/${orgId}/` : '/sys/'
     case 'app':
-      return `/app/${extra}`
+      return `/platform/app/${extra}/`
     default:
       return '/'
   }

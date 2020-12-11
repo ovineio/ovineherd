@@ -15,7 +15,7 @@ export const Header = styled.div`
   .navbar {
     padding: 0;
     color: rgba(0, 0, 0, 0.9);
-    .nav-link {
+    .nav-item .nav-link {
       height: ${HeaderHeight}px;
       line-height: ${HeaderHeight}px;
       padding: 0 15px;

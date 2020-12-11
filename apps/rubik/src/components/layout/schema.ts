@@ -1,5 +1,7 @@
 import { message } from '@core/constants'
 import { publish } from '@core/utils/message'
+// import { app } from '@ovine/core/lib/app'
+
 import { getAppCustom } from '~/core/common'
 
 import userItemSchema from './user_item'
@@ -43,10 +45,11 @@ export const getBrandSchema = () => {
 // 默认 Layout 配置
 const layoutSchema: any = {
   type: 'aside-layout',
-  resetRoute: false,
+  resetRoute: true,
+  debounceRoute: 10,
   routeTabs: {
     enable: true,
-    storage: true,
+    storage: false, // 由于多应用切换，场景复杂，暂时先关闭存储功能
   },
   header: {
     brand: getBrandSchema(),

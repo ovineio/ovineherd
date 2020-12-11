@@ -1,5 +1,7 @@
-import { app } from '@ovine/core/lib/app'
 import { get } from 'lodash'
+
+// import { app } from '@ovine/core/lib/app'
+
 import { getReqOption, requestByOption } from '~/core/api/utils'
 import { relation } from '~/core/constants'
 import { ApiName } from '~/core/types'

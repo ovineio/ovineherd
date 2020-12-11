@@ -6,8 +6,8 @@ import { get } from 'lodash'
 
 import { app } from '@core/app'
 
-import { loginRoute, orgPathPrefix, relation, sysAdmRoutePrefix } from './constants'
 import { getAppCustom, getOrgId } from './common'
+import { loginRoute, orgPathPrefix, relation, sysAdmRoutePrefix } from './constants'
 
 // 获取组织ID
 export const getAppId = (pathname: string = window.location.pathname): string =>
@@ -24,20 +24,20 @@ export function getOrgUniType(type: 'user', orgId: string = getOrgId()) {
 
 // TODO: 处理多环境问题
 export function getSiteEnv(pathname: string = window.location.pathname) {
-  get(pathname.match(/\/app\/(\w*)\/([dev|pre|prd])\//), '2') || 'prd'
+  return get(pathname.match(/\/app\/(\w*)\/([dev|pre|prd])\//), '2') || 'prd'
 }
 
 export function getAppUniType(type: 'user', appId = getAppId()) {
   switch (type) {
     case 'user':
-      return `${relation.org.user.type}_${appId}`
+      return `${relation.app.user.type}_${appId}`
     default:
       return ''
   }
 }
 
 export const isSysAdminRoute = (pathname: string = window.location.pathname): boolean => {
-  return pathname.startsWith(`${app.constants.pathPrefix.slice(0, -1)}${sysAdmRoutePrefix}`)
+  return pathname.startsWith(`${app.constants.routePrefix.slice(0, -1)}${sysAdmRoutePrefix}`)
 }
 
 type LinkType = 'home' | 'login' | 'selfInfo' | 'appSystem'
@@ -59,7 +59,8 @@ export const getLink = (type: LinkType, orgId?: string, extra?: any): string => 
 
 export const linkTo = (link: string) => {
   if (link.startsWith(orgPathPrefix)) {
-    window.history.pushState({}, undefined, link)
+    // location.href = link
+    window.history.pushState(null, link, link)
     return
   }
   app.routerHistory.push(link)
