@@ -7,7 +7,7 @@ import { useImmer, useSubscriber } from '@core/utils/hooks'
 import { publish } from '@core/utils/message'
 
 import { msgKey } from '~/core/constants'
-import { getLink, isStrTrue } from '~/core/utils'
+import { getLink, isStrTrue, linkTo } from '~/core/utils'
 
 import { getOrgAppApis } from './api'
 import { AppControls } from './schema'
@@ -58,7 +58,7 @@ const CardItem = (props: ItemProps) => {
 
   const onCardClick = () => {
     const appLink = getLink('app', undefined, id)
-    window.history.pushState({}, undefined, appLink)
+    linkTo(appLink)
   }
 
   return (

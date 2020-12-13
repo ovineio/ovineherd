@@ -8,14 +8,14 @@
 const env = {
   // 默认配置,如果对应的环境的变量不设置，就会使用默认的
   default: {
-    disableLimit: true,
+    // disableLimit: true,
     domains: {
       api: 'http://39.105.197.166:5288', // ovine api 地址
     },
   },
   // 本地开发
   localhost: {
-    disableLimit: true,
+    // disableLimit: false,
     domains: {
       api: 'http://39.105.197.166:5288',
     },

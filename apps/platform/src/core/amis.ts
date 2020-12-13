@@ -24,6 +24,7 @@ export const schemaDefinitions = {
     reload: true,
     icon: 'fa fa-refresh',
     tooltip: '刷新数据',
+    tooltipPlacement: 'top',
   },
   globalImgUpload: {
     reciever: apis.file.upload,

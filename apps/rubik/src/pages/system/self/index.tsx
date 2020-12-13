@@ -16,72 +16,6 @@ export const schema = {
           {
             type: 'panel',
             className: ' ',
-            headerClassName: 'cxd-section-header m-t-md m-b-md',
-            bodyClassName: 'p-b-none',
-            title: '当前所在组织信息',
-            body: {
-              type: 'form',
-              wrapWithPanel: false,
-              mode: 'horizontal',
-              initApi: '$preset.apis.orgCacheInfo',
-              controls: [
-                {
-                  type: 'grid',
-                  mode: 'normal',
-                  className: 'm-b-none',
-                  columns: [
-                    {
-                      md: 2,
-                      mode: 'normal',
-                      controls: [
-                        {
-                          type: 'static-image',
-                          name: 'logo',
-                        },
-                      ],
-                    },
-                    {
-                      md: 6,
-                      mode: 'horizontal',
-                      horizontal: {
-                        left: 'col-md-2',
-                        right: 'col-md-10',
-                      },
-                      controls: [
-                        {
-                          type: 'static',
-                          name: 'name',
-                          size: 'md',
-                          className: 'm-b-xs',
-                          label: '组织名称：',
-                        },
-                        {
-                          type: 'static',
-                          name: 'slogan',
-                          className: 'm-b-xs',
-                          size: 'md',
-                          label: '组织标语：',
-                        },
-                        {
-                          type: 'static',
-                          name: 'desc',
-                          className: 'm-b-xs',
-                          size: 'md',
-                          label: '组织介绍：',
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-          {
-            type: 'divider',
-          },
-          {
-            type: 'panel',
-            className: ' ',
             headerClassName: 'cxd-section-header m-t-md m-b-sm',
             title: '我的资料',
             body: {
@@ -163,7 +97,6 @@ export const schema = {
                   label: '保存个人信息',
                   icon: 'fa fa-check pull-left',
                   level: 'primary',
-                  descriptionClassName: 'p-l-md',
                   desc: '已修改的数据，只有保存后才会生效。不保存将默认放弃修改。',
                 },
               ],

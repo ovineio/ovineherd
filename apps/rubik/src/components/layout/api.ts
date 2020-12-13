@@ -1,4 +1,5 @@
 import produce from 'immer'
+import { flatten } from 'lodash'
 
 import { getAppRouteItems } from '~/core/api/resource'
 import { getAppCustom } from '~/core/common'
@@ -9,6 +10,8 @@ import layoutState, { getBrandSchema, getModeBtnSchema } from './schema'
 
 // TODO: 切换 时 会短暂 404 页面，是由于切换 route 时，将原有路由注销了，但是路由并没有同步跳转到新的页面里。
 // 方案：切换路由时，不渲染 404 页面，roues 加载完毕再加入 404
+
+let routeStore = []
 
 const getLayoutReqOpt = {
   url: 'fakeAsideLayoutApi',
@@ -23,17 +26,22 @@ const getLayoutReqOpt = {
       d.header.brand = getBrandSchema()
       d.header.items[0] = getModeBtnSchema(isSysAdmin)
 
-      // 系统 管理员用户
-      if (isSysAdmin) {
-        d.rootRoute = getLink('appSystem', 'page')
-        d.routes = getSysAdmRoutes()
-        return
+      const adminRoutes = getSysAdmRoutes()
+      let menuRoutes = routeStore[0]
+
+      // 更新路由信息
+      if (!isMounted || !isSysAdmin) {
+        const routeItems = await getAppRouteItems()
+        menuRoutes = getAppRoutes(routeItems)
       }
 
-      // 普通使用者用户
-      const routeItems = await getAppRouteItems()
-      d.routes = getAppRoutes(routeItems)
-      d.rootRoute = getAppCustom().app_root_route
+      adminRoutes[0].limitOnly = !isSysAdmin
+      menuRoutes[0].limitOnly = isSysAdmin
+
+      routeStore = [menuRoutes, adminRoutes]
+
+      d.routes = flatten(routeStore)
+      d.rootRoute = isSysAdmin ? getLink('appSystem', 'page') : getAppCustom().app_root_route
     })
 
     return nextState

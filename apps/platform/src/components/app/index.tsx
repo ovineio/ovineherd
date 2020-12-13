@@ -8,6 +8,7 @@ import { app } from '@core/app'
 import GlobalStyle from '@core/styled/global'
 import { useImmer } from '@core/utils/hooks'
 
+import { useRouteBySubApp } from '~/core/hooks'
 import Login from '~/pages/login'
 import Register from '~/pages/register'
 import { PrivateRoute, ConfigRoute } from '~/routes/route'
@@ -28,6 +29,8 @@ export default hot(() => {
 
   const { theme } = state
   const contextValue = { ...state, setContext: setState as any }
+
+  useRouteBySubApp()
 
   return (
     <Router history={app.routerHistory}>

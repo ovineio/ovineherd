@@ -4,6 +4,8 @@
 
 import { ApiType } from './types'
 
+export const appPathPrefix = '/platform/app/'
+
 // 用于存储的key
 export const storeKey = {
   auth: 'authStore',

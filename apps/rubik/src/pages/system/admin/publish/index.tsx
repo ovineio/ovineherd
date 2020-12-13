@@ -58,8 +58,8 @@ export const schema = {
         label: '操作',
         width: 170,
         buttons: [
-          '$preset.actions.editNav',
           '$preset.actions.designPage',
+          '$preset.actions.editNav',
           '$preset.actions.delNav',
         ],
       },

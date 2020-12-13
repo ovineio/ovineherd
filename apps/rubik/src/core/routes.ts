@@ -8,9 +8,11 @@ import { isStrTrue } from './utils'
 export const commonRoutes: RouteItem[] = [
   {
     nodePath: 'self',
+    pathToComponent: '/system/self',
     label: '个人中心',
     icon: 'fa fa-user-circle-o',
     sideVisible: false,
+    ignoreLimit: true,
     exact: true,
   },
   {
@@ -19,9 +21,10 @@ export const commonRoutes: RouteItem[] = [
     pathToComponent: '/system/welcome',
     icon: 'iconfont icon-user-guide',
     label: '欢迎使用',
-    highlightParent: false,
     exact: true,
+    highlightParent: false,
     sideVisible: false,
+    ignoreLimit: true,
   },
 ]
 
@@ -30,6 +33,7 @@ export const sysAdmRoutes = [
     nodePath: 'system',
     limitLabel: '系统管理员',
     label: '',
+    limitOnly: false,
     children: commonRoutes.concat([
       {
         label: '页面管理',
@@ -39,13 +43,15 @@ export const sysAdmRoutes = [
       {
         label: '权限管理',
         nodePath: 'admin/role',
+        pathToComponent: '/system/role',
         icon: 'iconfont icon-shezhi',
       },
-      {
-        label: '发布应用',
-        nodePath: 'admin/publish',
-        icon: 'iconfont icon-byapi',
-      },
+      // TODO: 完成发布应用的功能
+      // {
+      //   label: '发布应用',
+      //   nodePath: 'admin/publish',
+      //   icon: 'iconfont icon-byapi',
+      // },
       {
         label: '应用设置',
         nodePath: 'admin/setting/app',
@@ -95,7 +101,7 @@ export const getSysAdmRoutes = () => {
 
 export const getAppRoutes = (items: any[]) => {
   const routeItems = mapTree(items, (item: any) => {
-    const { label, icon, children, page_type, page_id, side_visible } = item
+    const { label, icon, children, page_type, limit_str, page_id, side_visible } = item
     const withChildren = !!children?.length
 
     const routeItem: any = {
@@ -103,7 +109,10 @@ export const getAppRoutes = (items: any[]) => {
       label,
       icon,
       sideVisible: isStrTrue(side_visible),
-      children: withChildren ? children : undefined,
+    }
+
+    if (withChildren) {
+      routeItem.children = children
     }
 
     // 普通页面
@@ -114,7 +123,12 @@ export const getAppRoutes = (items: any[]) => {
       }
       // 页面接口
       routeItem.pathToComponent = `api://v1/product/${page_id}`
+
+      if (limit_str) {
+        routeItem.limits = JSON.parse(limit_str)
+      }
     }
+
     return routeItem
   })
 

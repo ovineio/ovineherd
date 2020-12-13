@@ -4,6 +4,7 @@
 
 import { toast } from 'amis'
 
+import { setAppLimits } from '@core/routes/limit/exports'
 import { getStore, setStore } from '@core/utils/store'
 
 import { fetchAppInfo, userSelfInfoApi } from './api/resource'
@@ -52,6 +53,8 @@ export async function onAuth() {
     }
     return false
   }
+
+  setAppLimits('*')
 
   // 正常登录
   return true

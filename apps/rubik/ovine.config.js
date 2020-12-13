@@ -32,6 +32,9 @@ module.exports = (option) => {
     template: {
       path: path.resolve(__dirname, './template.ejs'),
     },
+    styledConfig: {
+      namespace: 'app',
+    },
     cacheGroups: {
       amisEditor: {
         chunks: 'async',

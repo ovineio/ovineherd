@@ -4,8 +4,10 @@ const selfPageCss = () => css`
   .cxd-Page-body {
     padding: 10px 0 0;
   }
-  .cxd-Tabs-content {
-    padding-top: 0;
+  .cxd-Tabs {
+    .cxd-Tabs-content {
+      padding-top: 0;
+    }
   }
   .cxd-Tabs-links {
     padding-left: 20px;

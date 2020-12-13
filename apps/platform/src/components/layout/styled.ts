@@ -45,6 +45,7 @@ export const Header = styled.div`
 `
 
 export const Layout = styled.div`
+  height: 100%;
   padding-top: 60px;
   background-color: #faf9f8;
 `

@@ -8,7 +8,7 @@ import { css } from 'styled-components'
 
 // 全局样式, 这里和 scss 类似支持嵌套，与styled变量，
 // 以下用作举例：
-const svg = require('@generated/styles/themes/spinner-default.svg').default
+const svg = require('@generated/styles/themes/spinner-default.svg')
 
 const globalStyle = () => css`
   .cxd-Spinner {

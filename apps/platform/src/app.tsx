@@ -6,9 +6,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { app } from '@core/app'
-import { unsubscribeAll } from '@core/utils/message'
 import { AppConfig } from '@core/app/types'
 import { initLogger } from '@core/utils/logger'
+import { unsubscribeAll } from '@core/utils/message'
 import { DeepPartial } from '@core/utils/types'
 
 import App from './components/app'

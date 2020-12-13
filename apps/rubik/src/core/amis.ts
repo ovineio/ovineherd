@@ -23,6 +23,7 @@ export const schemaDefinitions = {
     actionType: 'reload',
     reload: true,
     icon: 'fa fa-refresh',
+    tooltipPlacement: 'top',
     tooltip: '刷新数据',
   },
   globalImgUpload: {

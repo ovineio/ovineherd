@@ -5,10 +5,10 @@
 
 import { getLink } from '~/core/utils'
 
-import adminPageApi from './api'
+import getAppPageApis from './api'
 import appPageCss from './styled'
 
-export const schema = {
+const schema = {
   css: appPageCss,
   type: 'page',
   title: '应用页面管理',
@@ -19,7 +19,7 @@ export const schema = {
     $ref: 'globalCrudCCommon',
     api: '$preset.apis.listNav',
     className: 'g-no-border-table',
-    saveOrderApi: 'http://asd',
+    saveOrderApi: '$preset.apis.orderNav',
     // filter: '$preset.forms.filterNav',
     draggable: true,
     headerToolbar: [
@@ -48,6 +48,8 @@ export const schema = {
         tpl: `
           <% if(!!data.icon) { %>
             <i class="<%= data.icon %> cursor-p" data-tooltip="菜单图标" data-position="bottom" ></i>
+          <% } else { %>
+            <i  style="width:16px;display:inline-block;"></i>
           <% } %>
           <span><%= data.label %></span>
         `,
@@ -78,11 +80,11 @@ export const schema = {
           body: '$desc',
         },
       },
-      {
-        name: 'user.username',
-        label: '创建者',
-        type: 'text',
-      },
+      // {
+      //   name: 'user.username',
+      //   label: '创建者',
+      //   type: 'text',
+      // },
       {
         name: 'created_time',
         label: '添加时间',
@@ -94,16 +96,16 @@ export const schema = {
         label: '操作',
         width: 200,
         buttons: [
+          '$preset.actions.designPage',
           '$preset.actions.editNav',
           '$preset.actions.editLimit',
-          '$preset.actions.designPage',
           '$preset.actions.delNav',
         ],
       },
     ],
   },
   preset: {
-    apis: adminPageApi,
+    apis: {},
     actions: {
       addNav: {
         type: 'action',
@@ -150,10 +152,16 @@ export const schema = {
         level: 'link',
         actionType: 'dialog',
         dialog: {
-          title: '修改页面信息',
+          title: '编辑页面权限',
+          size: 'lg',
+          data: {
+            id: '$id',
+          },
+          actions: [],
+          bodyClassName: 'p-none',
           body: {
-            api: '$preset.apis.editNav',
-            $preset: 'forms.updateNav',
+            initApi: '$preset.apis.listLimit',
+            $preset: 'forms.editLimit',
           },
         },
       },
@@ -241,6 +249,77 @@ export const schema = {
         ],
       },
 
+      editLimit: {
+        type: 'form',
+        mode: 'normal',
+        saveOrderApi: '$preset.apis.orderLimit',
+        controls: [
+          {
+            type: 'table',
+            name: 'limitList',
+            addable: true,
+            editable: true,
+            removable: true,
+            draggable: true,
+            affixHeader: false,
+            columnsTogglable: true,
+            addApi: '$preset.apis.addLimit',
+            updateApi: '$preset.apis.editLimit',
+            deleteApi: '$preset.apis.delLimit',
+            inputClassName: 'padder g-no-border-table',
+            columns: [
+              {
+                name: 'label',
+                label: '权限名称',
+                quickEdit: {
+                  type: 'text',
+                  required: true,
+                  placeholder: '请输入权限名称',
+                },
+              },
+              {
+                name: 'key',
+                label: '权限KEY',
+                quickEdit: {
+                  type: 'text',
+                  required: true,
+                  placeholder: '请输入KEY',
+                },
+              },
+              {
+                name: 'needs',
+                label: '权限依赖',
+                type: 'tpl',
+                tpl: '<%= data.needs && data.needs.map((i) => i.label).join(",") %>',
+                quickEdit: {
+                  type: 'select',
+                  placeholder: '请选择依赖权限',
+                  multiple: true,
+                  clearable: true,
+                  joinValues: false,
+                  source: '$preset.apis.needsOptions',
+                },
+              },
+              {
+                name: 'desc',
+                label: '权限描述',
+                quickEdit: {
+                  type: 'text',
+                  placeholder: '请输入权限描述',
+                },
+              },
+            ],
+            onChange: (curr, prev) => {
+              if (curr.length && curr.length === prev.length) {
+                if (curr.map((i) => i.id).join(',') !== prev.map((i) => i.id).join(',')) {
+                  getAppPageApis().orderLimit.onFakeRequest({ data: curr })
+                }
+              }
+            },
+          },
+        ],
+      },
+
       filterNav: {
         type: 'form',
         wrapWithPanel: false,
@@ -272,4 +351,9 @@ export const schema = {
       },
     },
   },
+}
+
+export const getSchema = () => {
+  schema.preset.apis = getAppPageApis()
+  return schema
 }

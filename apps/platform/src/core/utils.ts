@@ -5,8 +5,9 @@
 import { get } from 'lodash'
 
 import { app } from '@core/app'
+import { jumpTo } from '@core/routes/exports'
 
-import { relation } from './constants'
+import { appPathPrefix, relation } from './constants'
 import { AppType } from './types'
 
 // app类型检测
@@ -72,4 +73,13 @@ export function getOrgUniType(type: 'user', orgId = getOrgId()) {
     default:
       return ''
   }
+}
+
+export const linkTo = (link: string) => {
+  if (link.startsWith(appPathPrefix)) {
+    // 只处理了 app 路由
+    window.history.pushState({ fromSubApp: true }, link, link)
+    return
+  }
+  jumpTo(link)
 }

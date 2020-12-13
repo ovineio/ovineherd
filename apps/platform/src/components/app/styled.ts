@@ -5,13 +5,9 @@
 import { createGlobalStyle } from 'styled-components'
 
 // TODO: 移动端展示兼容
-const svg = require('@generated/styles/themes/spinner-default.svg').default
+const svg = require('@generated/styles/themes/spinner-default.svg')
 
 export const AppStyle = createGlobalStyle`
-    body {
-        background-color: #faf9f8;
-    }
-
     span.badge {
         font-size: 10px;
     }

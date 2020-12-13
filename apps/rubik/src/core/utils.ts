@@ -5,6 +5,7 @@
 import { get } from 'lodash'
 
 import { app } from '@core/app'
+import { jumpTo } from '@core/routes/exports'
 
 import { getAppCustom, getOrgId } from './common'
 import { loginRoute, orgPathPrefix, relation, sysAdmRoutePrefix } from './constants'
@@ -40,7 +41,7 @@ export const isSysAdminRoute = (pathname: string = window.location.pathname): bo
   return pathname.startsWith(`${app.constants.routePrefix.slice(0, -1)}${sysAdmRoutePrefix}`)
 }
 
-type LinkType = 'home' | 'login' | 'selfInfo' | 'appSystem'
+type LinkType = 'home' | 'login' | 'selfInfo' | 'orgRole' | 'appSystem'
 export const getLink = (type: LinkType, orgId?: string, extra?: any): string => {
   switch (type) {
     case 'login':
@@ -49,6 +50,8 @@ export const getLink = (type: LinkType, orgId?: string, extra?: any): string => 
       return orgId ? `${orgPathPrefix}${orgId}/setting?#userInfo` : '/system/self?#userInfo'
     case 'home':
       return orgId ? `${orgPathPrefix}${orgId}/application` : getAppCustom().app_root_route
+    case 'orgRole':
+      return `${orgPathPrefix}${orgId}/role`
     case 'appSystem':
       // 共用参数第二参数
       return `${sysAdmRoutePrefix}${extra || orgId}`
@@ -60,10 +63,10 @@ export const getLink = (type: LinkType, orgId?: string, extra?: any): string => 
 export const linkTo = (link: string) => {
   if (link.startsWith(orgPathPrefix)) {
     // location.href = link
-    window.history.pushState(null, link, link)
+    window.history.pushState({ fromSubApp: true }, link, link)
     return
   }
-  app.routerHistory.push(link)
+  jumpTo(link)
 }
 
 export function getTextWidth(text: string = '') {

@@ -2,9 +2,10 @@
 
 import { uuid } from 'amis/lib/utils/helper'
 import { set } from 'lodash'
-import React, { DependencyList, useMemo, useState } from 'react'
+import React, { DependencyList, useEffect, useMemo, useState } from 'react'
 
 import { Amis } from '@core/components/amis/schema'
+import { jumpTo } from '@core/routes/exports'
 import { useSubscriber } from '@core/utils/hooks'
 import { AnyFunc } from '@core/utils/types'
 
@@ -39,4 +40,14 @@ export function useActiveUserTab() {
   })
 
   return userRefreshKey
+}
+
+export function useRouteBySubApp() {
+  useEffect(() => {
+    const { fromSubApp } = window.history.state || {}
+    if (fromSubApp) {
+      const toLink = window.location.href.replace(window.location.origin, '')
+      jumpTo(toLink)
+    }
+  }, [])
 }

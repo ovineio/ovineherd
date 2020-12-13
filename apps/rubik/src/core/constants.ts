@@ -40,6 +40,7 @@ export const entityType = {
   app: 'ovine_app', // 应用
   appUser: 'ovine_app_user', // 应用用户
 
+  appRole: 'ovine_app_role', // 组织权限
   appLimit: 'ovine_app_limit', //
   appTeam: 'ovine_app_team', // 组织团队
 
@@ -89,7 +90,7 @@ export const relation = {
     user: {
       apiType: ApiType.user,
       type: entityType.orgUser,
-      relation1_type: ApiType.config, // 组织管理员 配置信息
+      relation1_type: ApiType.config, //   组织管理员 配置信息
       relation2_type: ApiType.category, // 组织管理员 关联的组织
       relation3_type: ApiType.category, // 组织管理员 关联的部门ID
       relation4_type: ApiType.category, // 组织管理员 关联的角色ID
@@ -137,8 +138,10 @@ export const relation = {
     user: {
       apiType: ApiType.user,
       type: entityType.orgUser, // 该 type 需要拼接 appId
-      relation1_type: ApiType.config, // 应用管理员配置 信息
-      relation2_type: ApiType.product, // 应用管理员配置 关联的 应用
+      relation1_type: ApiType.config, //   应用管理员配置 信息
+      relation2_type: ApiType.product, //  应用管理员 关联的 应用
+      relation3_type: ApiType.category, // 应用管理员 关联的部门ID
+      relation4_type: ApiType.category, // 应用管理员 关联的角色ID
     },
     nav: {
       apiType: ApiType.category,
@@ -153,6 +156,24 @@ export const relation = {
     page: {
       apiType: ApiType.product,
       type: entityType.appPage,
+    },
+    role: {
+      apiType: ApiType.category,
+      type: entityType.appRole,
+      relation1_type: ApiType.category, // 关联到组织
+      relation2_type: ApiType.authorization, // 关联到权限
+      // 默认值
+      path: '0',
+      level: '0',
+      parent_id: '0',
+    },
+    limit: {
+      apiType: ApiType.authorization,
+      type: entityType.appLimit,
+      resource: 'page',
+      entity: 'page',
+      operation: 'all',
+      relation1_type: ApiType.category, // 权限 关联的角色
     },
   },
 }

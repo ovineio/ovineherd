@@ -29,6 +29,9 @@ module.exports = (option) => {
     ui: {
       initTheme: 'cxd',
     },
+    styledConfig: {
+      namespace: 'platform',
+    },
     template: {
       path: path.resolve(__dirname, './template.ejs'),
     },

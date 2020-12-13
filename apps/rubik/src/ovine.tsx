@@ -1,9 +1,11 @@
+import { cloneDeep } from 'lodash'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { app } from '@core/app'
 import { AppConfig } from '@core/app/types'
 import { App } from '@core/components/app'
+import { jumpTo } from '@core/routes/exports'
 import { AppThemeVariable } from '@core/styled/themes/types'
 import { initLogger } from '@core/utils/logger'
 
@@ -21,6 +23,7 @@ declare module 'styled-components' {
   export interface DefaultTheme extends AppThemeVariable {}
 }
 
+// 存在 APP 实例多次创建的情况
 const appConfig: DeepPartial<AppConfig> = {
   request: appRequestIns,
   entry,
@@ -31,6 +34,7 @@ const appConfig: DeepPartial<AppConfig> = {
   constants: {
     enableBackTop: true,
     loginRoute,
+    // routePrefix: '/platform/app/',
     routePrefix: () => {
       // 动态 pathPrefix
       const math = /.*\/app\/\w*\//.exec(window.location.pathname)
@@ -41,10 +45,19 @@ const appConfig: DeepPartial<AppConfig> = {
     definitions: schemaDefinitions,
     affixOffsetTop: 60,
   },
+  hook: {
+    onAppMounted: () => {
+      const { fromSubApp } = window.history.state || {}
+      if (fromSubApp) {
+        const toLink = window.location.href.replace(window.location.origin, '')
+        jumpTo(toLink)
+      }
+    },
+  },
 }
 
 const renderOvineApp = (props) => {
-  app.create(appConfig as AppConfig).then(() => {
+  app.create(cloneDeep(appConfig) as AppConfig).then(() => {
     const { container } = props
     initLogger(app.env.logger)
     ReactDOM.render(
