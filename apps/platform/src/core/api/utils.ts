@@ -2,7 +2,7 @@
  * 定义需要的 api
  */
 
-import { get, isEmpty, map, omitBy } from 'lodash'
+import { cloneDeep, get, isEmpty, map, omitBy } from 'lodash'
 
 import { app } from '@core/app'
 import { ReqOption, ReqApiRes } from '@core/utils/request/types'
@@ -189,9 +189,9 @@ export const getReqOption = (
   option?: ReqOption
 ) => {
   const { apiType, apiName, ...data } = apiOption
-  const apiInfo = get(apis, `${apiType}.${apiName}`)
+  const apiInfo = cloneDeep(get(apis, `${apiType}.${apiName}`))
 
-  if (apiName === ApiName.one && data.id) {
+  if (data.id) {
     apiInfo.url = apiInfo.url.replace('$id', data.id)
   }
 

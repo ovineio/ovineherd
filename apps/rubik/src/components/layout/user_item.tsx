@@ -11,7 +11,7 @@ import { subscribe } from '@ovine/core/lib/utils/message'
 
 import { getOrgId, isAppIsolation } from '~/core/common'
 import { defUserAvatar, msgKey } from '~/core/constants'
-import { fetchUserInfo, getUserInfo } from '~/core/user'
+import { fetchUserInfo, getUserInfo, userLogout } from '~/core/user'
 import { getLink, linkTo, runWithQianKun } from '~/core/utils'
 
 const StyledItem = styled.div`
@@ -84,14 +84,12 @@ const UserItem = () => {
           linkTo(getLink('home', orgId))
         },
       },
-      {
+      isAppIsolation() && {
         type: 'button',
         level: 'link',
         icon: 'iconfont icon-exit',
         label: '退出登录',
-        onAction: () => {
-          linkTo(getLink('login', orgId))
-        },
+        onAction: userLogout,
       },
     ].filter(Boolean),
   }

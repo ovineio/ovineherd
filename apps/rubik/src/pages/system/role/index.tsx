@@ -1,7 +1,6 @@
 import { getOrgId, isAppIsolation } from '~/core/common'
 import { getLink, linkTo } from '~/core/utils'
 
-import { getAppRoleApis, getOrgRoleApis } from './api'
 import members from './members'
 
 export const getSchema = () => {
@@ -73,7 +72,6 @@ export const getSchema = () => {
       ],
     },
     preset: {
-      apis: isolation ? getAppRoleApis() : getOrgRoleApis(),
       actions: {
         roleMember: {
           visibleOn,

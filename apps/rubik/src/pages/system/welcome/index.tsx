@@ -2,6 +2,7 @@
  * 系统自定义欢迎页面
  */
 
+// TODO: 设计欢迎页面
 export const schema = {
   type: 'page',
   body: {

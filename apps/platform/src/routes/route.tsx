@@ -15,12 +15,12 @@ export const ConfigRoute = (props) => {
 
 // 用于登录拦截
 export const PrivateRoute = ({ children, ...rest }) => {
-  const { custom, appInfo } = useAppContext()
+  const { appInfo } = useAppContext()
   const { orgId, type } = appInfo
 
   const [isMounted, setMounted] = useState(false)
   const loginLink = getLink('login', orgId)
-  const isLoginApp = isMounted && isLogin(type, custom.isolation)
+  const isLoginApp = isMounted && isLogin(type)
 
   useUserInfo({
     isLogin: isMounted && isLoginApp,

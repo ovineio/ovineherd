@@ -1,12 +1,12 @@
 import { chunk, map } from 'lodash'
 
 import { getReqOption, requestByOption } from '~/core/api/utils'
-import { getOrgId } from '~/core/common'
+import { getOrgId, isAppIsolation } from '~/core/common'
 import { relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 import { getAppId, getAppUniType, getOrgUniType } from '~/core/utils'
 
-export const getAppRoleApis = () => {
+const getAppRoleApis = () => {
   // TODO: 组织使用： 假删除。 添加冻结功能
   const appId = getAppId()
 
@@ -170,7 +170,7 @@ export const getAppRoleApis = () => {
   return appRoleApis
 }
 
-export const getOrgRoleApis = () => {
+const getOrgRoleApis = () => {
   const orgId = getOrgId()
 
   const orgTeamOption = getReqOption(
@@ -421,3 +421,50 @@ export const getOrgRoleApis = () => {
 
   return orgRoleApis
 }
+
+const getRoleLimits = (isolation) => {
+  const limits = isolation
+    ? {
+        $page: {
+          label: '访问页面',
+        },
+        roleMember: {
+          label: '成员管理',
+        },
+        setLimit: {
+          label: '设置角色',
+        },
+        edit: {
+          label: '编辑',
+        },
+        add: {
+          label: '添加',
+          needs: ['edit'],
+        },
+        del: {
+          label: '删除',
+          needs: ['edit'],
+        },
+      }
+    : {
+        $page: {
+          label: '访问页面',
+        },
+        setLimit: {
+          label: '设置角色',
+        },
+      }
+
+  return limits
+}
+
+const getPreset = () => {
+  const isolation = isAppIsolation(true)
+
+  return {
+    apis: isolation ? getAppRoleApis() : getOrgRoleApis(),
+    limits: getRoleLimits(isolation),
+  }
+}
+
+export default getPreset

@@ -4,7 +4,7 @@ import { ApiName } from '~/core/types'
 import { getAppId, getAppUniType } from '~/core/utils'
 
 // TODO: 可直接从组织中选用户
-export const getAppUserApis = () => {
+const getAppUserApis = () => {
   const appId = getAppId()
   const appUserType = getAppUniType('user', appId)
   // 查询 用户 列表
@@ -40,7 +40,7 @@ export const getAppUserApis = () => {
     {
       apiType: relation.app.role.apiType,
       type: relation.app.role.type,
-      relation1: appId,
+      q_relation1: appId,
       apiName: ApiName.list,
       '&': '$$',
     },
@@ -69,3 +69,25 @@ export const getAppUserApis = () => {
 
   return appUserApis
 }
+
+const getPreset = () => ({
+  apis: getAppUserApis(),
+  limits: {
+    $page: {
+      label: '访问页面',
+    },
+    edit: {
+      label: '编辑',
+    },
+    add: {
+      label: '添加',
+      needs: ['edit'],
+    },
+    del: {
+      label: '删除',
+      needs: ['edit'],
+    },
+  },
+})
+
+export default getPreset

@@ -137,7 +137,7 @@ export const relation = {
     },
     user: {
       apiType: ApiType.user,
-      type: entityType.orgUser, // 该 type 需要拼接 appId
+      type: entityType.appUser, // 该 type 需要拼接 appId
       relation1_type: ApiType.config, //   应用管理员配置 信息
       relation2_type: ApiType.product, //  应用管理员 关联的 应用
       relation3_type: ApiType.category, // 应用管理员 关联的部门ID

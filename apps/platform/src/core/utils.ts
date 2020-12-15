@@ -9,6 +9,7 @@ import { jumpTo } from '@core/routes/exports'
 
 import { appPathPrefix, relation } from './constants'
 import { AppType } from './types'
+import { matchPath } from 'react-router-dom'
 
 // app类型检测
 const checkAppType = (appType: AppType, type?: AppType, pathName?: string) => {
@@ -33,8 +34,12 @@ export const getAppType = (pathName?: string): AppType =>
   checkAppType('org', undefined, pathName) ? 'org' : 'sys'
 
 // 获取组织ID
-export const getOrgId = (): string =>
-  get(window.location.pathname.match(/\/org\/((\w)+)\//), '1') || ''
+export const getOrgId = (): string => {
+  const matched = matchPath(window.location.pathname, {
+    path: '/platform/center/org/:orgId',
+  })
+  return get(matched, 'params.orgId') || ''
+}
 
 type LinkType = 'home' | 'login' | 'selfInfo' | 'app'
 export const getLink = (type: LinkType, orgId: string = getOrgId(), extra?: any): string => {
@@ -46,7 +51,7 @@ export const getLink = (type: LinkType, orgId: string = getOrgId(), extra?: any)
     case 'home':
       return orgId ? `/org/${orgId}/` : '/sys/'
     case 'app':
-      return `/platform/app/${extra}/`
+      return `/platform/app/${extra}`
     default:
       return '/'
   }

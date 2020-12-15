@@ -5,10 +5,9 @@
 
 import { getLink } from '~/core/utils'
 
-import getAppPageApis from './api'
 import appPageCss from './styled'
 
-const schema = {
+export const schema = {
   css: appPageCss,
   type: 'page',
   title: '应用页面管理',
@@ -34,6 +33,7 @@ const schema = {
       // 表单放在 toolbar 有数据请求时，会异请求多次
       '$preset.forms.filterNav',
       '$preset.actions.addNav',
+      '$preset.actions.setHome',
     ],
     footerToolbar: [],
     footable: {
@@ -107,6 +107,22 @@ const schema = {
   preset: {
     apis: {},
     actions: {
+      setHome: {
+        type: 'action',
+        align: 'right',
+        label: '设置首页',
+        icon: 'iconfont icon-duhome pull-left',
+        actionType: 'dialog',
+        showCloseButton: false,
+        dialog: {
+          title: '设置应用首页',
+          body: {
+            api: '$preset.apis.setHome',
+            initApi: '$preset.apis.getHome',
+            $preset: 'forms.setHome',
+          },
+        },
+      },
       addNav: {
         type: 'action',
         align: 'right',
@@ -123,7 +139,6 @@ const schema = {
           },
         },
       },
-
       editNav: {
         type: 'action',
         label: '编辑',
@@ -147,12 +162,12 @@ const schema = {
       },
       editLimit: {
         type: 'action',
-        label: '编辑权限',
+        label: '页面权限',
         hiddenOn: 'data.page_type === "2"',
         level: 'link',
         actionType: 'dialog',
         dialog: {
-          title: '编辑页面权限',
+          title: '管理页面权限',
           size: 'lg',
           data: {
             id: '$id',
@@ -178,6 +193,26 @@ const schema = {
       },
     },
     forms: {
+      setHome: {
+        type: 'form',
+        wrapWithPanel: false,
+        controls: [
+          {
+            type: 'tree-select',
+            name: 'page_id',
+            size: 'full',
+            clearable: true,
+            multiple: false,
+            showIcon: false,
+            searchable: true,
+            valueField: 'page_id',
+            placeholder: '搜索页面',
+            label: '应用首页',
+            source: '$preset.apis.navParent',
+          },
+        ],
+      },
+
       updateNav: {
         type: 'form',
         controls: [
@@ -198,6 +233,22 @@ const schema = {
               },
             ],
           },
+
+          {
+            name: 'label',
+            type: 'text',
+            label: '菜单名称',
+            required: true,
+            placeholder: '请输入菜单名称',
+            desc: '该页面对应菜单的展示名称',
+          },
+          {
+            type: 'app-icon-selector',
+            label: '选择图标',
+            placeholder: '请输入图标',
+            clearable: true,
+            name: 'icon',
+          },
           {
             type: 'tree-select',
             name: 'parent_id',
@@ -208,42 +259,22 @@ const schema = {
             label: '父级页面',
             placeholder: '请选择父级页面',
             value: '0',
-            source: '$preset.apis.navParent',
+            source: {
+              url: 'fakeNavParentWithRoot',
+              $preset: 'apis.navParent',
+            },
           },
-          {
-            name: 'label',
-            type: 'text',
-            label: '菜单名称',
-            required: true,
-            desc: '该页面对应菜单的展示名称',
-          },
-          {
-            type: 'app-icon-selector',
-            label: '选择图标',
-            placeholder: '请输入图标',
-            clearable: true,
-            name: 'icon',
-          },
-
           {
             name: 'side_visible',
             label: '是否菜单可见',
-            ref: 'globalSwitch',
+            $ref: 'globalSwitch',
             type: 'switch',
             value: '1',
           },
           {
-            name: 'is_home',
-            label: '设为首页',
-            ref: 'globalSwitch',
-            type: 'switch',
-            value: '0',
-            option: '设置该页面为首页，将取消原首页',
-          },
-
-          {
             name: 'desc',
             label: '备注信息',
+            placeholder: '请输入备注信息',
             type: 'textarea',
           },
         ],
@@ -263,6 +294,7 @@ const schema = {
             draggable: true,
             affixHeader: false,
             columnsTogglable: true,
+            $preset: 'apis.onOrderChange',
             addApi: '$preset.apis.addLimit',
             updateApi: '$preset.apis.editLimit',
             deleteApi: '$preset.apis.delLimit',
@@ -309,13 +341,6 @@ const schema = {
                 },
               },
             ],
-            onChange: (curr, prev) => {
-              if (curr.length && curr.length === prev.length) {
-                if (curr.map((i) => i.id).join(',') !== prev.map((i) => i.id).join(',')) {
-                  getAppPageApis().orderLimit.onFakeRequest({ data: curr })
-                }
-              }
-            },
           },
         ],
       },
@@ -325,35 +350,41 @@ const schema = {
         wrapWithPanel: false,
         target: 'pageList',
         mode: 'inline',
-        className: 'filter-form',
+        // className: 'filter-form',
         controls: [
           {
-            type: 'action',
-            icon: 'fa fa-search',
-            iconOnly: true,
-          },
-          {
-            // TODO: 解决报错
-            type: 'tree-select',
-            name: 'n_page_id',
-            size: 'full',
+            name: 'n_label',
+            type: 'text',
+            placeholder: '请输入页面名称',
             clearable: true,
-            multiple: false,
-            showIcon: false,
-            searchable: true,
-            submitOnChange: true,
-            valueField: 'id',
-            value: '',
-            placeholder: '搜索页面',
-            source: '$preset.apis.navParent',
+            addOn: {
+              iconOnly: true,
+              icon: 'iconfont icon-ai-search',
+              type: 'submit',
+            },
           },
+          // {
+          //   type: 'action',
+          //   icon: 'fa fa-search',
+          //   iconOnly: true,
+          // },
+          // {
+          // TODO: 解决报错
+          // type: 'tree-select',
+          // name: 'n_page_id',
+          // size: 'full',
+          // clearable: true,
+          // multiple: false,
+          // showIcon: false,
+          // searchable: true,
+          // submitOnChange: true,
+          // valueField: 'id',
+          // value: '',
+          // placeholder: '搜索页面',
+          // source: '$preset.apis.navParent',
+          // },
         ],
       },
     },
   },
-}
-
-export const getSchema = () => {
-  schema.preset.apis = getAppPageApis()
-  return schema
 }

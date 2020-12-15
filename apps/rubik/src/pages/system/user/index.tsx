@@ -1,6 +1,4 @@
-import { getAppUserApis } from './api'
-
-const schema = {
+export const schema = {
   type: 'page',
   title: '应用成员管理',
   bodyClassName: 'p-t-none',
@@ -308,9 +306,4 @@ const schema = {
       },
     },
   },
-}
-
-export const getSchema = () => {
-  schema.preset.apis = getAppUserApis()
-  return schema
 }

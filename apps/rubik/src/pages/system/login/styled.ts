@@ -4,7 +4,19 @@ export const Login = styled.div`
   position: fixed;
   height: 100%;
   width: 100%;
-
+  .back-org {
+    position: absolute;
+    top: 15px;
+    left: 12px;
+    cursor: pointer;
+    color: #167ffc;
+    &:hover {
+      text-decoration: underline;
+    }
+    i {
+      font-size: 12px;
+    }
+  }
   .img-bk {
     min-width: 105%;
     min-height: 105%;
@@ -37,13 +49,6 @@ export const Login = styled.div`
     height: 30px;
     path {
       fill: #4966e0;
-    }
-  }
-
-  a {
-    color: #167ffc;
-    &:hover {
-      text-decoration: underline;
     }
   }
 

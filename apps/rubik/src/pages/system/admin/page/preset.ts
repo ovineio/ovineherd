@@ -1,17 +1,43 @@
 import { filterTree } from 'amis/lib/utils/helper'
-import produce from 'immer'
-import { cloneDeep, find, findIndex, get, isArray, isString, map, remove, uniqueId } from 'lodash'
+import {
+  cloneDeep,
+  find,
+  findIndex,
+  get,
+  isArray,
+  isString,
+  map,
+  pick,
+  remove,
+  uniqueId,
+} from 'lodash'
 
 import { getReqOption, requestByOption } from '~/core/api/utils'
+import { getAppCustom, getAppInfo } from '~/core/common'
 import { relation } from '~/core/constants'
+import { setRootPageId } from '~/core/routes'
 import { ApiName, ApiType } from '~/core/types'
 import { getAppId } from '~/core/utils'
 
 let cacheListNav = []
+let cacheRootPageId = ''
 
 const defLimitInfo = {
   $page: {
     label: '访问页面',
+  },
+  edit: {
+    label: '编辑',
+    desc: '默认权限--编辑',
+  },
+  add: {
+    label: '添加',
+    desc: '默认权限--添加',
+  },
+  del: {
+    label: '删除',
+    needs: ['add', 'edit'],
+    desc: '默认权限--删除',
   },
 }
 
@@ -41,18 +67,21 @@ const getAppPageApis = () => {
 
   const navParent = {
     url: 'fakeNavParent',
-    cache: 1000,
+    // cache: 500,
     data: {
       nav_id: '$id',
     },
     onFakeRequest: (option) => {
       const { nav_id } = option.data
-      const appNav = produce(cacheListNav, (d) => {
-        d.unshift({
+      let appNav = cacheListNav
+      if (option.api !== 'fakeNavParent') {
+        appNav = cloneDeep(cacheListNav)
+        appNav.unshift({
           label: '主目录',
           id: '0',
         })
-      })
+      }
+
       const options = !nav_id ? appNav : filterTree(appNav, (i) => i.id !== nav_id)
       const source = {
         status: 0,
@@ -83,22 +112,7 @@ const getAppPageApis = () => {
         option.data.parent_id = parent_id || '0'
 
         if (page_type === '1') {
-          option.data.limit_str = JSON.stringify({
-            ...defLimitInfo,
-            add: {
-              label: '添加',
-              desc: '默认权限--添加',
-            },
-            edit: {
-              label: '编辑',
-              desc: '默认权限--编辑',
-            },
-            del: {
-              label: '删除',
-              needs: ['add', 'edit'],
-              desc: '默认权限--删除',
-            },
-          })
+          option.data.limit_str = JSON.stringify(defLimitInfo)
         }
 
         return option
@@ -106,15 +120,44 @@ const getAppPageApis = () => {
     }
   )
 
+  const getHome = {
+    url: 'fakeGetHome',
+    onFakeRequest: () => {
+      return {
+        data: {
+          page_id: cacheRootPageId || getAppCustom().app_root_page_id,
+        },
+      }
+    },
+  }
+
+  const setHome = getReqOption(
+    {
+      apiType: relation.app.appInfo.apiType,
+      apiName: ApiName.edit,
+      id: getAppInfo().id,
+      app_root_page_id: '$page_id',
+    },
+    {
+      onSuccess: (source, option) => {
+        const { app_root_page_id = '' } = option.data
+        setRootPageId(app_root_page_id)
+        cacheRootPageId = app_root_page_id
+        return source
+      },
+    }
+  )
+
   const editNav = getReqOption({
     apiType: relation.app.nav.apiType,
     apiName: ApiName.edit,
-    '&': '$$',
   })
 
   const delNav = getReqOption({
     apiType: relation.app.nav.apiType,
     apiName: ApiName.del,
+    with_root: true,
+    '&': '$$',
   })
 
   const orderNav = {
@@ -152,7 +195,7 @@ const getAppPageApis = () => {
       apiType: ApiType.category,
     }
     const getLimitStr = () => {
-      const limit = cloneDeep(defLimitInfo)
+      const limit = pick(defLimitInfo, ['$page'])
       limitStore.list.forEach((i) => {
         const { label, needs, desc } = i
         const item: any = { label, desc }
@@ -328,12 +371,14 @@ const getAppPageApis = () => {
     },
   }
 
-  const orderLimit = {
-    url: 'PUT fakeOrderLimit',
-    onFakeRequest: async (option) => {
-      const { data } = option
-      limitStore.list = data
-      await limitCtrl('save')
+  const onOrderChange = {
+    onChange: (curr, prev) => {
+      if (curr.length && curr.length === prev.length) {
+        if (curr.map((i) => i.id).join(',') !== prev.map((i) => i.id).join(',')) {
+          limitStore.list = curr
+          limitCtrl('save')
+        }
+      }
     },
   }
 
@@ -341,6 +386,8 @@ const getAppPageApis = () => {
     navParent,
     listNav,
     orderNav,
+    getHome,
+    setHome,
     addNav,
     editNav,
     delNav,
@@ -348,11 +395,37 @@ const getAppPageApis = () => {
     editLimit,
     delLimit,
     addLimit,
-    orderLimit,
+    onOrderChange,
     needsOptions,
   }
 
   return appPageApis
 }
 
-export default getAppPageApis
+const getPreset = () => ({
+  apis: getAppPageApis(),
+  limits: {
+    $page: {
+      label: '访问页面',
+    },
+    edit: {
+      label: '编辑',
+    },
+    design: {
+      label: '设计页面',
+    },
+    limit: {
+      label: '页面权限',
+    },
+    add: {
+      label: '添加',
+      needs: ['edit'],
+    },
+    del: {
+      label: '删除',
+      needs: ['edit'],
+    },
+  },
+})
+
+export default getPreset

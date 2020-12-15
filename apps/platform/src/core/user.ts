@@ -34,7 +34,7 @@ export function getUserInfo() {
 }
 
 // 判断用户是否是登陆状态
-export function isLogin(type?: AppType, isolation: boolean = false) {
+export function isLogin(type?: AppType) {
   const withAuth = !!getStore(storeKey.auth)
   // debugger
   if (!withAuth) {
@@ -46,13 +46,8 @@ export function isLogin(type?: AppType, isolation: boolean = false) {
   }
 
   if (isOrg(type)) {
-    if (isolation) {
-      return isOrgUser()
-    }
-    return true
+    return isOrgUser()
   }
-
-  return false
 }
 
 export function getToken() {

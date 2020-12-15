@@ -4,8 +4,10 @@
 
 import { toast } from 'amis'
 
+import { isEmpty } from 'lodash'
+
 import { setAppLimits } from '@core/routes/limit/exports'
-import { getStore, setStore } from '@core/utils/store'
+import { clearStore, getStore, setStore } from '@core/utils/store'
 
 import { fetchAppInfo, userSelfInfoApi } from './api/resource'
 import { getOrgId, isAppIsolation, setAppInfo } from './common'
@@ -33,23 +35,26 @@ export async function onAuth() {
     if (isAppIsolation()) {
       await fetchUserInfo()
       // 用户 APPID 与 路径上的 APPID 不匹配
-      if (!userInfo.id || (isAppUser() && userInfo.relation2 !== getAppId())) {
+      if (!userInfo.id || !isAppUser() || (isAppUser() && userInfo.relation2 !== getAppId())) {
         if (window.location.pathname.indexOf(loginRoute) !== -1) {
           toast.error('登录错误', '当前登录信息有误请重新登录')
         }
+        clearUserLoginState()
         return false
       }
     }
   } catch (e) {
     // TODO: 区别错误原因 并分别提示
+    clearUserLoginState()
     return false
   }
 
   // 独立应用 并且没有的登录 跳转到 app/login
   if (!isLogin()) {
+    clearUserLoginState()
     // 跳转到组织登录页面
     if (!isAppIsolation()) {
-      linkTo(getLink('login', getOrgId()))
+      linkTo(getLink('login', getOrgId()), false, true)
     }
     return false
   }
@@ -70,6 +75,7 @@ export async function fetchUserInfo() {
   return userSelfInfoApi({ id: userId }).then((source) => {
     // TODO: 获取权限信息,设置到用户信息上
     setUserInfo(source)
+
     return source
   })
 }
@@ -109,9 +115,21 @@ export function getUserId() {
 
 // 是否是 组织用户
 export function isOrgUser(info = getUserInfo()) {
-  return info.type?.indexOf(entityType.orgUser) === 0
+  const data = isEmpty(info) ? orgUserInfo : info
+  return data.type?.indexOf(entityType.orgUser) === 0
 }
 
 export function isAppUser(info = userInfo) {
   return info.type?.indexOf(entityType.appUser) === 0
+}
+
+export function clearUserLoginState() {
+  clearStore(storeKey.auth)
+  clearStore(storeKey.userInfo)
+  userInfo = {}
+}
+
+export function userLogout() {
+  clearUserLoginState()
+  linkTo(getLink('login'))
 }

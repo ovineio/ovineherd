@@ -1,66 +1,69 @@
 import { filterTree, mapTree } from 'amis/lib/utils/helper'
 
+import { cloneDeep } from 'lodash'
+
 import { RouteItem } from '@core/routes/types'
 
-import { isAppIsolation } from './common'
+import { getAppCustom, isAppIsolation } from './common'
 import { isStrTrue } from './utils'
 
-export const commonRoutes: RouteItem[] = [
-  {
-    nodePath: 'self',
-    pathToComponent: '/system/self',
-    label: '个人中心',
-    icon: 'fa fa-user-circle-o',
-    sideVisible: false,
-    ignoreLimit: true,
-    exact: true,
-  },
-  {
-    path: '/',
-    nodePath: 'welcome',
-    pathToComponent: '/system/welcome',
-    icon: 'iconfont icon-user-guide',
-    label: '欢迎使用',
-    exact: true,
-    highlightParent: false,
-    sideVisible: false,
-    ignoreLimit: true,
-  },
-]
+let rootPageId = ''
+
+const selfInfoRoute: RouteItem = {
+  nodePath: 'self',
+  pathToComponent: '/system/self',
+  label: '个人中心',
+  icon: 'fa fa-user-circle-o',
+  sideVisible: false,
+  ignoreLimit: true,
+  exact: true,
+}
+
+const welcomeRoute: RouteItem = {
+  path: '/',
+  nodePath: 'welcome',
+  pathToComponent: '/system/welcome',
+  icon: 'iconfont icon-user-guide',
+  label: '欢迎使用',
+  exact: true,
+  highlightParent: false,
+  sideVisible: false,
+  ignoreLimit: true,
+}
 
 export const sysAdmRoutes = [
   {
-    nodePath: 'system',
+    nodePath: 'system/admin',
     limitLabel: '系统管理员',
     label: '',
     limitOnly: false,
-    children: commonRoutes.concat([
+    children: cloneDeep([selfInfoRoute]).concat([
       {
         label: '页面管理',
-        nodePath: 'admin/page',
+        nodePath: 'page',
         icon: 'iconfont icon-sdktool',
       },
       {
         label: '权限管理',
-        nodePath: 'admin/role',
+        nodePath: 'role',
         pathToComponent: '/system/role',
-        icon: 'iconfont icon-shezhi',
+        icon: 'iconfont icon-app-verify',
       },
       // TODO: 完成发布应用的功能
       // {
       //   label: '发布应用',
-      //   nodePath: 'admin/publish',
+      //   nodePath: 'publish',
       //   icon: 'iconfont icon-byapi',
       // },
       {
         label: '应用设置',
-        nodePath: 'admin/setting/app',
+        nodePath: 'setting/app',
         icon: 'iconfont icon-shezhi',
       },
       {
         label: '登录设置',
-        nodePath: 'admin/setting/login',
-        icon: 'iconfont icon-app-verify',
+        nodePath: 'setting/login',
+        icon: 'iconfont icon-user',
       },
     ]),
   },
@@ -72,7 +75,7 @@ export const userAdmRoutes = [
     limitLabel: '普通管理员',
     label: '系统管理',
     icon: 'fa fa-windows',
-    children: commonRoutes.concat([
+    children: cloneDeep([selfInfoRoute]).concat([
       {
         label: '用户列表',
         nodePath: 'user',
@@ -86,8 +89,8 @@ export const userAdmRoutes = [
 ]
 
 export const getSysAdmRoutes = () => {
-  const isolationAppPaths = ['admin/setting/login']
-  const orgAppPaths = ['admin/role']
+  const isolationAppPaths = ['setting/login']
+  const orgAppPaths = ['role']
   return filterTree(sysAdmRoutes, (item) => {
     const isolation = isAppIsolation(true)
 
@@ -100,6 +103,8 @@ export const getSysAdmRoutes = () => {
 }
 
 export const getAppRoutes = (items: any[]) => {
+  let withRootRoute = false
+
   const routeItems = mapTree(items, (item: any) => {
     const { label, icon, children, page_type, limit_str, page_id, side_visible } = item
     const withChildren = !!children?.length
@@ -113,6 +118,12 @@ export const getAppRoutes = (items: any[]) => {
 
     if (withChildren) {
       routeItem.children = children
+    }
+
+    if (page_id === (rootPageId || getAppCustom().app_root_page_id)) {
+      withRootRoute = true
+      routeItem.path = '/'
+      routeItem.exact = true
     }
 
     // 普通页面
@@ -129,20 +140,42 @@ export const getAppRoutes = (items: any[]) => {
       }
     }
 
+    if (page_type === '2' && !withChildren) {
+      routeItem.pathToComponent = {
+        url: 'fakePageApi',
+        onFakeRequest: () => {
+          return {
+            data: {
+              schema: {
+                type: 'page',
+                title: '页面错误',
+                body: '当前页面为文件夹页面，请添加子页面！',
+              },
+            },
+          }
+        },
+      }
+    }
+
     return routeItem
   })
 
   // TODO: 支持  设置多类别 侧边栏
+  const rootRoute = withRootRoute ? [] : [{ ...welcomeRoute, sideVisible: !routeItems.length }]
   const routes = [
     {
       nodePath: '/',
       label: '',
       limitLabel: '侧边栏目录',
       children: isAppIsolation(true)
-        ? routeItems.concat(userAdmRoutes)
-        : routeItems.concat(commonRoutes.find((i) => i.path === '/')),
+        ? routeItems.concat(rootRoute.concat(userAdmRoutes))
+        : routeItems.concat(rootRoute),
     },
   ]
 
   return routes
+}
+
+export const setRootPageId = (id: string) => {
+  rootPageId = id
 }

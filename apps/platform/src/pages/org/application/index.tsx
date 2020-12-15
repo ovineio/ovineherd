@@ -57,7 +57,7 @@ const CardItem = (props: ItemProps) => {
   }
 
   const onCardClick = () => {
-    const appLink = getLink('app', undefined, id)
+    const appLink = getLink('app', undefined, isolation ? `${id}/system/login` : `${id}/`)
     linkTo(appLink)
   }
 

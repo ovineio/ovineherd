@@ -10,10 +10,10 @@ import { useImmer } from '@core/utils/hooks'
 import { setStore } from '@core/utils/store'
 
 import { sysUserLoginApi } from '~/core/api/resource'
-import { getAppCustom, isAppIsolation } from '~/core/common'
+import { getAppCustom, getOrgId, isAppIsolation } from '~/core/common'
 import { storeKey } from '~/core/constants'
-import { setUserInfo } from '~/core/user'
-import { getAppUniType, getOrgUniType } from '~/core/utils'
+import { isOrgUser, setUserInfo } from '~/core/user'
+import { getAppUniType, getLink, getOrgUniType, linkTo, runWithQianKun } from '~/core/utils'
 
 import { Login } from './styled'
 
@@ -43,6 +43,7 @@ export default () => {
   const custom = getAppCustom()
 
   const { inputs, tips, loading } = state
+  const showBackOrg = runWithQianKun() && isOrgUser()
 
   const onInputChange = (e: any) => {
     const { name, value } = e.target
@@ -88,14 +89,24 @@ export default () => {
       setStore(storeKey.auth, data.id)
       setUserInfo(data)
 
-      history.replace(custom.app_root_route)
+      history.replace('/')
     })
+  }
+
+  const backOrg = () => {
+    linkTo(getLink('home', getOrgId()))
   }
 
   return (
     <Login>
       <img src={custom.login_bg_img} alt="back-img" className="img-bk" />
       <div className="login-card">
+        {showBackOrg && (
+          <div className="back-org" onClick={backOrg}>
+            <i className="iconfont icon-ltsa" />
+            <span>返回组织</span>
+          </div>
+        )}
         <div className="side login-form">
           {!custom.login_logo ? (
             <div className="logo-brand">

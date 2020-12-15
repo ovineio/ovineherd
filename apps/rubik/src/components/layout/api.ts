@@ -2,7 +2,6 @@ import produce from 'immer'
 import { flatten } from 'lodash'
 
 import { getAppRouteItems } from '~/core/api/resource'
-import { getAppCustom } from '~/core/common'
 import { getAppRoutes, getSysAdmRoutes } from '~/core/routes'
 import { getLink, isSysAdminRoute } from '~/core/utils'
 
@@ -41,7 +40,7 @@ const getLayoutReqOpt = {
       routeStore = [menuRoutes, adminRoutes]
 
       d.routes = flatten(routeStore)
-      d.rootRoute = isSysAdmin ? getLink('appSystem', 'page') : getAppCustom().app_root_route
+      d.rootRoute = isSysAdmin ? getLink('appSystem', 'page') : '/'
     })
 
     return nextState

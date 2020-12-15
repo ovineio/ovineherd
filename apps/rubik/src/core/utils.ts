@@ -3,6 +3,7 @@
  */
 
 import { get } from 'lodash'
+import { matchPath } from 'react-router-dom'
 
 import { app } from '@core/app'
 import { jumpTo } from '@core/routes/exports'
@@ -10,9 +11,13 @@ import { jumpTo } from '@core/routes/exports'
 import { getAppCustom, getOrgId } from './common'
 import { loginRoute, orgPathPrefix, relation, sysAdmRoutePrefix } from './constants'
 
-// 获取组织ID
-export const getAppId = (pathname: string = window.location.pathname): string =>
-  get(pathname.match(/\/app\/(\w*)\//), '1') || ''
+// 获取APPID
+export const getAppId = (pathname: string = window.location.pathname): string => {
+  const matched = matchPath(pathname, {
+    path: '/platform/app/:appId',
+  })
+  return get(matched, 'params.appId') || ''
+}
 
 export function getOrgUniType(type: 'user', orgId: string = getOrgId()) {
   switch (type) {
@@ -47,7 +52,11 @@ export const getLink = (type: LinkType, orgId?: string, extra?: any): string => 
     case 'login':
       return orgId ? `${orgPathPrefix}${orgId}/login` : loginRoute
     case 'selfInfo':
-      return orgId ? `${orgPathPrefix}${orgId}/setting?#userInfo` : '/system/self?#userInfo'
+      return orgId
+        ? `${orgPathPrefix}${orgId}/setting?#userInfo`
+        : isSysAdminRoute()
+        ? '/system/admin/self?#userInfo'
+        : '/system/self?#userInfo'
     case 'home':
       return orgId ? `${orgPathPrefix}${orgId}/application` : getAppCustom().app_root_route
     case 'orgRole':
@@ -60,13 +69,13 @@ export const getLink = (type: LinkType, orgId?: string, extra?: any): string => 
   }
 }
 
-export const linkTo = (link: string) => {
+export const linkTo = (link: string, blank = false, replace = false) => {
   if (link.startsWith(orgPathPrefix)) {
     // location.href = link
     window.history.pushState({ fromSubApp: true }, link, link)
     return
   }
-  jumpTo(link)
+  jumpTo(link, blank, replace)
 }
 
 export function getTextWidth(text: string = '') {

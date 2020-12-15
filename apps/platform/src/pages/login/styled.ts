@@ -4,7 +4,6 @@ export const Login = styled.div`
   position: fixed;
   height: 100%;
   width: 100%;
-
   .img-bk {
     min-width: 105%;
     min-height: 105%;
