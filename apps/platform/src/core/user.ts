@@ -48,6 +48,8 @@ export function isLogin(type?: AppType) {
   if (isOrg(type)) {
     return isOrgUser()
   }
+
+  return false
 }
 
 export function getToken() {

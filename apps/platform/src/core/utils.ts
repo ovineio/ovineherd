@@ -4,12 +4,13 @@
 
 import { get } from 'lodash'
 
+import { matchPath } from 'react-router-dom'
+
 import { app } from '@core/app'
 import { jumpTo } from '@core/routes/exports'
 
 import { appPathPrefix, relation } from './constants'
 import { AppType } from './types'
-import { matchPath } from 'react-router-dom'
 
 // app类型检测
 const checkAppType = (appType: AppType, type?: AppType, pathName?: string) => {
