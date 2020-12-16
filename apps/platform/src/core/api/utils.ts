@@ -223,7 +223,7 @@ export function requestByOption<T = {}>(
 
 // data:  onlyOne 获取 items 单独的一个
 export function request<T = {}>(apiKey: string, data?: ApiData, option?: ReqOption) {
-  const apiInfo = get(apis, apiKey)
+  const apiInfo = cloneDeep(get(apis, apiKey))
 
   const { onlyOne, onlyData = true, withHttp = false, ...params } = data || {}
 

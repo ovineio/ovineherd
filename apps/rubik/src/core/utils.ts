@@ -3,20 +3,16 @@
  */
 
 import { get } from 'lodash'
-import { matchPath } from 'react-router-dom'
 
 import { app } from '@core/app'
 import { jumpTo } from '@core/routes/exports'
 
-import { getAppCustom, getOrgId } from './common'
+import { getOrgId } from './common'
 import { loginRoute, orgPathPrefix, relation, sysAdmRoutePrefix } from './constants'
 
 // 获取APPID
-export const getAppId = (pathname: string = window.location.pathname): string => {
-  const matched = matchPath(pathname, {
-    path: '/platform/app/:appId',
-  })
-  return get(matched, 'params.appId') || ''
+export const getAppId = (): string => {
+  return app.constants.routePrefix.split('/').slice(-2, -1)[0] || ''
 }
 
 export function getOrgUniType(type: 'user', orgId: string = getOrgId()) {
@@ -58,7 +54,7 @@ export const getLink = (type: LinkType, orgId?: string, extra?: any): string => 
         ? '/system/admin/self?#userInfo'
         : '/system/self?#userInfo'
     case 'home':
-      return orgId ? `${orgPathPrefix}${orgId}/application` : getAppCustom().app_root_route
+      return orgId ? `${orgPathPrefix}${orgId}/application` : '/'
     case 'orgRole':
       return `${orgPathPrefix}${orgId}/role`
     case 'appSystem':
@@ -75,7 +71,7 @@ export const linkTo = (link: string, blank = false, replace = false) => {
     window.history.pushState({ fromSubApp: true }, link, link)
     return
   }
-  jumpTo(link, blank, replace)
+  jumpTo(link, { blank, replace })
 }
 
 export function getTextWidth(text: string = '') {

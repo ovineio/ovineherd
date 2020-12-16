@@ -22,9 +22,9 @@ const entry = [
       children: [
         {
           type: 'preset-route',
+          exact: true,
           path: getLink('appSystem', 'design/:pageId'),
           pathToComponent: getLink('appSystem', 'design'),
-          exact: true,
         },
         asideLayout,
       ],

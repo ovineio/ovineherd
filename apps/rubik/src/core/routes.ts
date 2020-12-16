@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash'
 
 import { RouteItem } from '@core/routes/types'
 
-import { getAppCustom, isAppIsolation } from './common'
+import { getAppInfo, isAppIsolation } from './common'
 import { isStrTrue } from './utils'
 
 let rootPageId = ''
@@ -31,7 +31,7 @@ const welcomeRoute: RouteItem = {
   ignoreLimit: true,
 }
 
-export const sysAdmRoutes = [
+export const sysAdmRoutes: RouteItem[] = [
   {
     nodePath: 'system/admin',
     limitLabel: '系统管理员',
@@ -69,7 +69,7 @@ export const sysAdmRoutes = [
   },
 ]
 
-export const userAdmRoutes = [
+export const userAdmRoutes: RouteItem[] = [
   {
     nodePath: 'system',
     limitLabel: '普通管理员',
@@ -110,6 +110,8 @@ export const getAppRoutes = (items: any[]) => {
     const withChildren = !!children?.length
 
     const routeItem: any = {
+      page_type,
+      page_id,
       nodePath: parseInt(page_id, 10).toString(36),
       label,
       icon,
@@ -119,8 +121,8 @@ export const getAppRoutes = (items: any[]) => {
     if (withChildren) {
       routeItem.children = children
     }
-
-    if (page_id === (rootPageId || getAppCustom().app_root_page_id)) {
+    const rootPID = rootPageId || getAppInfo().app_root_page_id
+    if (page_id === rootPID) {
       withRootRoute = true
       routeItem.path = '/'
       routeItem.exact = true
@@ -161,7 +163,9 @@ export const getAppRoutes = (items: any[]) => {
   })
 
   // TODO: 支持  设置多类别 侧边栏
-  const rootRoute = withRootRoute ? [] : [{ ...welcomeRoute, sideVisible: !routeItems.length }]
+  const rootRoute: RouteItem[] = withRootRoute
+    ? []
+    : [{ ...welcomeRoute, sideVisible: !routeItems.length }]
   const routes = [
     {
       nodePath: '/',

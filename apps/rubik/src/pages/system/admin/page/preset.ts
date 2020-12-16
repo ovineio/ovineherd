@@ -13,14 +13,11 @@ import {
 } from 'lodash'
 
 import { getReqOption, requestByOption } from '~/core/api/utils'
-import { getAppCustom, getAppInfo } from '~/core/common'
+import { getAppInfo } from '~/core/common'
 import { relation } from '~/core/constants'
 import { setRootPageId } from '~/core/routes'
 import { ApiName, ApiType } from '~/core/types'
 import { getAppId } from '~/core/utils'
-
-let cacheListNav = []
-let cacheRootPageId = ''
 
 const defLimitInfo = {
   $page: {
@@ -47,6 +44,10 @@ const limitStore = {
 }
 
 const getAppPageApis = () => {
+  let cacheListNav = []
+  let cacheRootPageId = getAppInfo().app_root_page_id || ''
+  setRootPageId(cacheRootPageId)
+
   const appId = getAppId()
 
   const listNav = {
@@ -125,7 +126,7 @@ const getAppPageApis = () => {
     onFakeRequest: () => {
       return {
         data: {
-          page_id: cacheRootPageId || getAppCustom().app_root_page_id,
+          page_id: cacheRootPageId,
         },
       }
     },

@@ -1,10 +1,19 @@
 import { message } from '@core/constants'
 import { publish } from '@core/utils/message'
-// import { app } from '@ovine/core/lib/app'
 
 import { getAppCustom } from '~/core/common'
+import { getLink, isSysAdminRoute, linkTo } from '~/core/utils'
 
 import userItemSchema from './user_item'
+
+let isStashLayout = false
+
+export function stashLayoutCtrl(type: 'get' | 'set', value?: boolean) {
+  if (type === 'set') {
+    isStashLayout = value
+  }
+  return isStashLayout
+}
 
 export const getModeBtnSchema = (isSysAdmin: boolean) => {
   const modeBtn = isSysAdmin
@@ -22,6 +31,7 @@ export const getModeBtnSchema = (isSysAdmin: boolean) => {
     type: 'action',
     onAction: () => {
       // 发送 更新 layout 消息，刷新 layoutApi 接口
+      isStashLayout = false
       publish(message.asideLayoutCtrl.msg, {
         key: message.asideLayoutCtrl.reload,
         data: { designMode: !isSysAdmin }, // 刷新时携带新的参数
@@ -31,13 +41,13 @@ export const getModeBtnSchema = (isSysAdmin: boolean) => {
 }
 
 export const getBrandSchema = () => {
-  const { title, logo, app_root_route = '/' } = getAppCustom()
+  const { title, logo } = getAppCustom()
   return {
     logo,
     title,
     link: {
       title,
-      href: app_root_route,
+      href: '/',
     },
   }
 }
@@ -45,11 +55,25 @@ export const getBrandSchema = () => {
 // 默认 Layout 配置
 const layoutSchema: any = {
   type: 'aside-layout',
-  resetRoute: true,
+  resetRoute: false,
   debounceRoute: 10,
   routeTabs: {
     enable: true,
-    storage: false, // 由于多应用切换，场景复杂，暂时先关闭存储功能
+    storage: true, // 由于多应用切换，场景复杂，暂时先关闭存储功能
+    onContextMenu: (menus, roueItem) => {
+      if (isSysAdminRoute()) {
+        return menus
+      }
+      const { active, pathToComponent = '', page_id, label } = roueItem || {}
+
+      if (active && pathToComponent.indexOf('api://') > -1) {
+        menus.unshift({
+          label: '设计页面',
+          onSelect: () => linkTo(getLink('appSystem', `design/${page_id}?label=${label}`)),
+        })
+      }
+      return menus
+    },
   },
   header: {
     brand: getBrandSchema(),

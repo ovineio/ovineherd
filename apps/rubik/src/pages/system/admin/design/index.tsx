@@ -3,6 +3,8 @@ import React, { useEffect, useMemo } from 'react'
 import { getUrlParams } from '@core/utils/tool'
 import Editor from '@ovine/editor/lib'
 
+import { stashLayoutCtrl } from '~/components/layout/schema'
+
 import getDesignPageApi from './api'
 
 const defaultSchema = {
@@ -24,6 +26,7 @@ export default (props: any) => {
     document.title = '正在编辑...'
     return () => {
       document.title = title
+      stashLayoutCtrl('set', true)
     }
   }, [])
 

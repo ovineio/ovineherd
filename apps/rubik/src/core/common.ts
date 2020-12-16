@@ -83,7 +83,6 @@ export function getAppCustom(): CustomType {
   const defImg = 'https://static.igroupes.com/ovine_bg_cxd.jpeg'
 
   return defaults(info, {
-    app_root_page_id: '',
     login_bg_img: defImg,
     login_intro_img: defImg,
     login_logo: info.logo,

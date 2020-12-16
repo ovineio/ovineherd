@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom'
 import { app } from '@core/app'
 import { AppConfig } from '@core/app/types'
 import { App } from '@core/components/app'
-import { jumpTo } from '@core/routes/exports'
 import { AppThemeVariable } from '@core/styled/themes/types'
 import { initLogger } from '@core/utils/logger'
 
@@ -46,13 +45,13 @@ const appConfig: DeepPartial<AppConfig> = {
     affixOffsetTop: 60,
   },
   hook: {
-    onAppMounted: () => {
-      const { fromSubApp } = window.history.state || {}
-      if (fromSubApp) {
-        const toLink = window.location.href.replace(window.location.origin, '')
-        jumpTo(toLink)
-      }
-    },
+    // onAppMounted: () => {
+    //   const { fromSubApp } = window.history.state || {}
+    //   if (fromSubApp) {
+    //     const toLink = window.location.href.replace(window.location.origin, '')
+    //     jumpTo(toLink)
+    //   }
+    // },
   },
 }
 
