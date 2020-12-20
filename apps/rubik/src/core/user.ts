@@ -10,9 +10,8 @@ import { setAppLimits } from '@core/routes/limit/exports'
 import { clearStore, getStore, setStore } from '@core/utils/store'
 
 import { fetchAppInfo, userSelfInfoApi } from './api/resource'
-import { getOrgId, isAppIsolation, setAppInfo } from './common'
+import { getOrgId, isAppIsolation, setStoreInfo } from './common'
 import { entityType, loginRoute, storeKey } from './constants'
-import { setRootPageId } from './routes'
 import { getAppId, getLink, linkTo } from './utils'
 
 const orgUserInfo: any = getStore(storeKey.orgUserInfo) || {}
@@ -29,11 +28,9 @@ let userInfo: any = getStore(storeKey.userInfo) || {}
  *      2. 已登录，可以通用多个非独立应用登录
  */
 export async function onAuth() {
-  setRootPageId('')
   try {
     const source = await fetchAppInfo()
-    setAppInfo(source)
-
+    setStoreInfo(source)
     if (isAppIsolation()) {
       await fetchUserInfo()
       // 用户 APPID 与 路径上的 APPID 不匹配

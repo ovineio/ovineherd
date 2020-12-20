@@ -69,8 +69,9 @@ export const AppControls = [
     },
     $ref: 'globalImgUpload',
     label: '背景图片',
-    crop: {
-      aspectRatio: '2.1',
-    },
+    crop: false,
+    // crop: {
+    //   aspectRatio: '2.1',
+    // },
   },
 ]

@@ -24,16 +24,15 @@ declare module 'styled-components' {
 
 // 存在 APP 实例多次创建的情况
 const appConfig: DeepPartial<AppConfig> = {
-  request: appRequestIns,
   entry,
   env,
+  request: appRequestIns,
   styled: {
     globalStyle,
   },
   constants: {
     enableBackTop: true,
     loginRoute,
-    // routePrefix: '/platform/app/',
     routePrefix: () => {
       // 动态 pathPrefix
       const math = /.*\/app\/\w*\//.exec(window.location.pathname)
@@ -43,15 +42,6 @@ const appConfig: DeepPartial<AppConfig> = {
   amis: {
     definitions: schemaDefinitions,
     affixOffsetTop: 60,
-  },
-  hook: {
-    // onAppMounted: () => {
-    //   const { fromSubApp } = window.history.state || {}
-    //   if (fromSubApp) {
-    //     const toLink = window.location.href.replace(window.location.origin, '')
-    //     jumpTo(toLink)
-    //   }
-    // },
   },
 }
 

@@ -181,6 +181,7 @@ export const getApiOption = (
   const apiInfo = get(apis, `${apiType}.${apiName}`)
 
   return {
+    domain: 'api',
     ...apiInfo,
     ...rest,
   }
@@ -202,6 +203,7 @@ export const getReqOption = (
 
   return {
     data: isEmpty(data) ? undefined : data,
+    domain: 'api',
     ...apiInfo,
     ...option,
   }

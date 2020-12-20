@@ -13,9 +13,8 @@ import {
 } from 'lodash'
 
 import { getReqOption, requestByOption } from '~/core/api/utils'
-import { getAppInfo } from '~/core/common'
+import { getAppInfo, getHomePageId, setHomePageId } from '~/core/common'
 import { relation } from '~/core/constants'
-import { setRootPageId } from '~/core/routes'
 import { ApiName, ApiType } from '~/core/types'
 import { getAppId } from '~/core/utils'
 
@@ -45,8 +44,6 @@ const limitStore = {
 
 const getAppPageApis = () => {
   let cacheListNav = []
-  let cacheRootPageId = getAppInfo().app_root_page_id || ''
-  setRootPageId(cacheRootPageId)
 
   const appId = getAppId()
 
@@ -126,7 +123,7 @@ const getAppPageApis = () => {
     onFakeRequest: () => {
       return {
         data: {
-          page_id: cacheRootPageId,
+          page_id: getHomePageId(),
         },
       }
     },
@@ -137,13 +134,12 @@ const getAppPageApis = () => {
       apiType: relation.app.appInfo.apiType,
       apiName: ApiName.edit,
       id: getAppInfo().id,
-      app_root_page_id: '$page_id',
+      app_home_page_id: '$page_id',
     },
     {
       onSuccess: (source, option) => {
-        const { app_root_page_id = '' } = option.data
-        setRootPageId(app_root_page_id)
-        cacheRootPageId = app_root_page_id
+        const { app_home_page_id = '' } = option.data
+        setHomePageId(app_home_page_id)
         return source
       },
     }

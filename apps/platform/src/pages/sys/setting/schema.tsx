@@ -97,7 +97,6 @@ export const settingSchema = {
                   label: '保存个人信息',
                   icon: 'fa fa-check pull-left',
                   level: 'primary',
-                  descriptionClassName: 'p-l-md',
                   desc: '已修改的数据，只有保存后，才会生效。不保存，将默认放弃修改。',
                 },
               ],
@@ -316,6 +315,12 @@ export const settingSchema = {
                       label: '登录背景',
                       descriptionClassName: 'd-block',
                       description: '用于登录背景图片展示',
+                      crop: false,
+                      // crop: {
+                      //   aspectRatio: '16:9',
+                      //   scalable: true,
+                      //   rotatable: true,
+                      // },
                     },
                     {
                       type: 'image',
@@ -325,6 +330,11 @@ export const settingSchema = {
                       label: '登录小图',
                       descriptionClassName: 'd-block',
                       description: '用于登录表单小图展示',
+                      crop: {
+                        aspectRatio: '3:4',
+                        scalable: true,
+                        rotatable: true,
+                      },
                     },
                   ],
                 },

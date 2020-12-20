@@ -17,7 +17,7 @@ export type CustomType = {
   title: string // 导航L标题
   type: string // 类型
   isolation: StringBool // 是否独立
-  app_root_page_id: string // 首页
+  app_home_page_id: string // 首页
 }
 
 export type AppInfo = {

@@ -23,9 +23,9 @@ export const Login = styled.div`
     position: absolute;
     left: 50%;
     top: 50%;
-    filter: blur(5px);
+    /* filter: blur(5px); */
     transform: translate(-50%, -50%);
-    opacity: 0.5;
+    opacity: 0.9;
   }
   .admin-mark {
     position: absolute;

@@ -2,21 +2,14 @@ import { defaults, pick } from 'lodash'
 
 import { getStore, setStore } from '@core/utils/store'
 
+import { app } from '@ovine/core/lib/app'
+
 import { storeKey } from './constants'
 import { CustomType } from './types'
 import { isStrTrue, runWithQianKun } from './utils'
 
-let store = getCacheStore()
-
-export function getAppInfo() {
-  return store.appInfo
-}
-export function getOrgInfo() {
-  return store.orgInfo
-}
-export function getOrgId() {
-  return store.orgInfo.orgId
-}
+let store: any = getCacheStore()
+let homePageId = ''
 
 // 设置站点自定义信息
 function applySiteCustom(custom: any = store.custom) {
@@ -42,6 +35,46 @@ function getCacheStore() {
   }
 }
 
+// 设置 ovine 常量信息
+export function setOvineConstants(source: string | any[]) {
+  if (source) {
+    const constants = {}
+    const constArr = typeof source === 'string' ? JSON.parse(source) : source
+    constArr.forEach(({ name, value }) => {
+      constants[name] = value
+    })
+    app.amis.constants = constants
+  }
+}
+
+// 同步更新后的 APP Info
+export function syncAppInfo(info) {
+  store.appInfo = {
+    ...store.appInfo,
+    ...info,
+  }
+}
+
+export function getAppInfo() {
+  return store.appInfo
+}
+
+export function getOrgInfo() {
+  return store.orgInfo
+}
+
+export function getOrgId() {
+  return store.orgInfo.orgId
+}
+
+export function setHomePageId(id: string) {
+  homePageId = id
+}
+
+export function getHomePageId() {
+  return homePageId
+}
+
 export function isAppIsolation(exact: boolean = false, appInfo: any = store.appInfo) {
   // 未在 qiankun 中，默认为独立应用，仅在测试环境有效，生产环境不允许篡改 isolation 独立应用功能。
   const isDevIsolation = process.env.NODE_ENV !== 'production' && !runWithQianKun()
@@ -55,7 +88,7 @@ export function isAppIsolation(exact: boolean = false, appInfo: any = store.appI
   return isExactIsolation || isDevIsolation
 }
 
-export function setAppInfo(source: any) {
+export function setStoreInfo(source: any) {
   const { appInfo, orgInfo } = source
 
   // 合并 组织与应用的设置信息
@@ -74,6 +107,8 @@ export function setAppInfo(source: any) {
   setStore(storeKey.appInfo, appInfo)
   setStore(storeKey.orgInfo, orgInfo)
   setStore(storeKey.siteCustom, custom)
+  setOvineConstants(appInfo.app_env_constants)
+  homePageId = appInfo.app_home_page_id || ''
 
   store = getCacheStore()
 }

@@ -16,6 +16,7 @@ let userInfo: any = getStore(storeKey.userInfo) || {}
 // 根据 token 获取用户信息
 export async function fetchUserInfo() {
   // console.log('@===>', getUserId())
+  // TODO: 校验，如果当前用户 的组织ID不是，当前OrgId 直接清除登录信息
   return userSelfInfoApi({ id: getUserId() }).then((source) => {
     // TODO: 获取权限信息,设置到用户信息上
     setUserInfo(source)

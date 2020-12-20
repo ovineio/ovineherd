@@ -3,24 +3,28 @@ import { getAppInfo } from '~/core/common'
 import { relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 
-const appConfId = getAppInfo().id
+export const getSettingApis = () => {
+  const appConfId = getAppInfo().id
 
-const appInfo = getReqOption({
-  apiType: relation.app.appInfo.apiType,
-  apiName: ApiName.one,
-  id: appConfId,
-})
+  const appInfo = getReqOption({
+    apiType: relation.app.appInfo.apiType,
+    apiName: ApiName.one,
+    id: appConfId,
+  })
 
-const editAppInfo = getReqOption({
-  apiType: relation.app.appInfo.apiType,
-  apiName: ApiName.edit,
-})
+  const editAppInfo = getReqOption({
+    apiType: relation.app.appInfo.apiType,
+    apiName: ApiName.edit,
+  })
 
-const prest = {
-  apis: {
+  return {
     appInfo,
     editAppInfo,
-  },
+  }
 }
 
-export default prest
+const getPreset = () => ({
+  apis: getSettingApis(),
+})
+
+export default getPreset

@@ -58,6 +58,12 @@ export const schema = {
             label: '登录背景',
             descriptionClassName: 'd-block',
             description: '用于登录背景图片展示',
+            crop: false,
+            // crop: {
+            //   aspectRatio: '16:9',
+            //   scalable: true,
+            //   rotatable: true,
+            // },
           },
           {
             type: 'image',
@@ -67,6 +73,11 @@ export const schema = {
             label: '登录小图',
             descriptionClassName: 'd-block',
             description: '用于登录表单小图展示',
+            crop: {
+              aspectRatio: '3:4',
+              scalable: true,
+              rotatable: true,
+            },
           },
         ],
       },
@@ -78,7 +89,6 @@ export const schema = {
         label: '保存登录设置',
         icon: 'fa fa-check pull-left',
         level: 'primary',
-        descriptionClassName: 'p-l-md',
         desc: '修改表单信息后，请点击保存才能生效',
       },
     ],

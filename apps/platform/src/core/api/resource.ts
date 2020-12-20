@@ -230,7 +230,7 @@ export async function sysCreateAppApi(option: any) {
         username,
         password,
         ...relation.app.user,
-        type: `${relation.org.user.type}_${ids.appId}`,
+        type: `${relation.app.user.type}_${ids.appId}`,
         apiName: ApiName.add,
       })
       ids.appAdminId = `${appAdminId}`

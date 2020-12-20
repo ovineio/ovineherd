@@ -6,7 +6,8 @@ import { getLink, isSysAdminRoute, linkTo } from '~/core/utils'
 
 import userItemSchema from './user_item'
 
-let isStashLayout = false
+// isStashLayout:false 时，重置 RouteTabs 并跳到首页
+let isStashLayout = true
 
 export function stashLayoutCtrl(type: 'get' | 'set', value?: boolean) {
   if (type === 'set') {
@@ -64,7 +65,9 @@ const layoutSchema: any = {
       if (isSysAdminRoute()) {
         return menus
       }
+
       const { active, pathToComponent = '', page_id, label } = roueItem || {}
+      // console.log('contextMenus==>', roueItem)
 
       if (active && pathToComponent.indexOf('api://') > -1) {
         menus.unshift({

@@ -1,8 +1,8 @@
-import selfPageCss from './styled'
+import { tabsPageCss } from '~/styled/global'
 
 export const schema = {
   type: 'page',
-  css: selfPageCss,
+  css: tabsPageCss,
   body: {
     type: 'tabs',
     mode: 'line',
@@ -15,7 +15,7 @@ export const schema = {
         body: [
           {
             type: 'panel',
-            className: ' ',
+            className: 'p-md',
             headerClassName: 'cxd-section-header m-t-md m-b-sm',
             title: '我的资料',
             body: {
@@ -24,6 +24,7 @@ export const schema = {
               mode: 'horizontal',
               initApi: '$preset.apis.selfInfo',
               api: '$preset.apis.editSelf',
+              className: 'p-md ',
               controls: [
                 {
                   type: 'grid',
@@ -107,9 +108,10 @@ export const schema = {
           },
           {
             type: 'panel',
-            className: ' ',
+            className: 'p-md',
             headerClassName: 'cxd-section-header m-t-md m-b-sm',
             title: '账户安全',
+            bodyClassName: 'p-md',
             body: [
               {
                 type: 'alert',
@@ -138,7 +140,8 @@ export const schema = {
         body: [
           {
             type: 'panel',
-            className: ' ',
+            className: 'p-md',
+            bodyClassName: 'p-md',
             headerClassName: 'cxd-section-header m-t-md m-b-sm',
             title: '退出应用',
             body: [
@@ -161,7 +164,8 @@ export const schema = {
           {
             type: 'panel',
             title: '转移应用',
-            className: ' ',
+            className: 'p-md',
+            bodyClassName: 'p-md',
             headerClassName: 'cxd-section-header m-t-md m-b-sm',
             body: [
               {
@@ -190,7 +194,8 @@ export const schema = {
           },
           {
             type: 'panel',
-            className: ' ',
+            className: 'p-md',
+            bodyClassName: 'p-md',
             headerClassName: 'cxd-section-header m-t-sm m-b-sm',
             title: '删除应用',
             body: [

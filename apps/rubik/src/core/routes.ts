@@ -4,10 +4,8 @@ import { cloneDeep } from 'lodash'
 
 import { RouteItem } from '@core/routes/types'
 
-import { getAppInfo, isAppIsolation } from './common'
+import { getHomePageId, isAppIsolation } from './common'
 import { isStrTrue } from './utils'
-
-let rootPageId = ''
 
 const selfInfoRoute: RouteItem = {
   nodePath: 'self',
@@ -63,7 +61,7 @@ export const sysAdmRoutes: RouteItem[] = [
       {
         label: '登录设置',
         nodePath: 'setting/login',
-        icon: 'iconfont icon-user',
+        icon: 'iconfont icon-bss-in-protection',
       },
     ]),
   },
@@ -121,8 +119,8 @@ export const getAppRoutes = (items: any[]) => {
     if (withChildren) {
       routeItem.children = children
     }
-    const rootPID = rootPageId || getAppInfo().app_root_page_id
-    if (page_id === rootPID) {
+
+    if (page_id === getHomePageId()) {
       withRootRoute = true
       routeItem.path = '/'
       routeItem.exact = true
@@ -178,8 +176,4 @@ export const getAppRoutes = (items: any[]) => {
   ]
 
   return routes
-}
-
-export const setRootPageId = (id: string) => {
-  rootPageId = id
 }
