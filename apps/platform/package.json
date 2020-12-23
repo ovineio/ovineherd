@@ -6,8 +6,6 @@
   "scripts": {
     "gen:static": "node-sass -v && yarn scss && yarn dll",
     "start": "ovine dev --mock --host 0.0.0.0 --port 7061 --no-hot",
-    "dev": "ovine dev --no-dll --mock --port 7061",
-    "dev:lib": "yarn rm:lib && cross-env DEV_LIB=true && ovine dev --no-dll --mock --host=0.0.0.0 --port 7061",
     "build:staging": "yarn eslint && ovine build --env=staging",
     "test:build": "yarn cp:lib && ovine build --bundle-analyzer",
     "open:dist": "http-server ./dist -i -g -c5 -o / -p 7051 -P http://0.0.0.0:7051?",
