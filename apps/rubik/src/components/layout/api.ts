@@ -25,7 +25,7 @@ const getLayoutReqOpt = {
       d.resetRoute = !isStashLayout
       d.routeTabs.storage = isStashLayout
 
-      d.header.brand = getBrandSchema()
+      d.header.brand = getBrandSchema(isSysAdmin)
       d.header.items[0] = getModeBtnSchema(isSysAdmin)
 
       const adminRoutes = getSysAdmRoutes()

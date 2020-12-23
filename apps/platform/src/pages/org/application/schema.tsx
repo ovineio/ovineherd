@@ -30,7 +30,7 @@ export const AppControls = [
     label: '管理员密码',
     placeholder: '请填写应用管理员登录密码',
     visibleOn: '!data.id && data.isolation === "1"',
-    requiredOn: 'data.isolation === "1"',
+    requiredOn: '!data.id && data.isolation === "1"',
   },
   {
     type: 'text',

@@ -132,8 +132,12 @@ export const getAppRoutes = (items: any[]) => {
       if (withChildren) {
         routeItem.exact = true
       }
+
       // 页面接口
-      routeItem.pathToComponent = `api://v1/product/${page_id}`
+      routeItem.pathToComponent = {
+        domain: 'api',
+        url: `v1/product/${page_id}`,
+      }
 
       if (limit_str) {
         routeItem.limits = JSON.parse(limit_str)

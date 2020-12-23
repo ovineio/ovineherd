@@ -49,6 +49,7 @@ const getAppPageApis = () => {
 
   const listNav = {
     url: 'GET /v1/option/category',
+    domain: 'api',
     data: {
       type: relation.app.nav.type,
       parent_id: 0,
@@ -65,6 +66,7 @@ const getAppPageApis = () => {
 
   const navParent = {
     url: 'fakeNavParent',
+    domain: 'api',
     // cache: 500,
     data: {
       nav_id: '$id',

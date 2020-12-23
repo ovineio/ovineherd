@@ -1,5 +1,6 @@
 import { message } from '@core/constants'
 import { publish } from '@core/utils/message'
+import { get } from 'lodash'
 
 import { getAppCustom } from '~/core/common'
 import { getLink, isSysAdminRoute, linkTo } from '~/core/utils'
@@ -41,15 +42,17 @@ export const getModeBtnSchema = (isSysAdmin: boolean) => {
   }
 }
 
-export const getBrandSchema = () => {
+export const getBrandSchema = (isSysAdmin?: boolean) => {
   const { title, logo } = getAppCustom()
   return {
     logo,
     title,
-    link: {
-      title,
-      href: '/',
-    },
+    link: isSysAdmin
+      ? false
+      : {
+          title,
+          href: '/',
+        },
   }
 }
 
@@ -67,9 +70,9 @@ const layoutSchema: any = {
       }
 
       const { active, pathToComponent = '', page_id, label } = roueItem || {}
-      // console.log('contextMenus==>', roueItem)
+      console.log('contextMenus==>', roueItem)
 
-      if (active && pathToComponent.indexOf('api://') > -1) {
+      if (active && get(pathToComponent, 'url')) {
         menus.unshift({
           label: '设计页面',
           onSelect: () => linkTo(getLink('appSystem', `design/${page_id}?label=${label}`)),
