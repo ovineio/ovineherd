@@ -1,5 +1,5 @@
 import { sysCreateOrgApi } from '~/core/api/resource'
-import { getReqOption } from '~/core/api/utils'
+import { getReqOption, requestByOption } from '~/core/api/utils'
 import { relation } from '~/core/constants'
 import { ApiName } from '~/core/types'
 
@@ -46,11 +46,33 @@ export const getSysOrgApis = () => {
     },
   }
 
-  const sysEditOrgReqOpt = getReqOption({
-    ...relation.org.orgInfo,
-    apiName: ApiName.edit,
-    '&': '$$',
-  })
+  const sysEditOrgReqOpt = getReqOption(
+    {
+      ...relation.org.orgInfo,
+      apiName: ApiName.edit,
+      '&': '$$',
+    },
+    {
+      onPreRequest: async (option) => {
+        // eslint-disable-next-line
+        const { user_id, password, ...reset } = option.data
+
+        // 修改密码
+        if (password) {
+          await requestByOption({
+            password,
+            apiType: relation.org.user.apiType,
+            apiName: ApiName.edit,
+            id: user_id,
+          })
+        }
+
+        option.data = reset
+
+        return option
+      },
+    }
+  )
 
   const sysListApplyReqOpt = getReqOption({
     ...relation.sys.orgRegisterApply,

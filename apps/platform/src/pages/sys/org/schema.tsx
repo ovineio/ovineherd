@@ -31,7 +31,14 @@ const orgSchema = {
           name: 'orgList',
           $ref: 'globalCrudCCommon',
           api: '$preset.apis.listOrg',
-          headerToolbar: ['$preset.forms.filterOrg', '$preset.actions.addOrg'],
+          headerToolbar: [
+            {
+              $ref: 'globalTableReloadTool',
+              target: 'orgList',
+            },
+            '$preset.forms.filterOrg',
+            '$preset.actions.addOrg',
+          ],
           footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
           columns: [
             {
@@ -107,9 +114,11 @@ const orgSchema = {
           $ref: 'globalCrudCCommon',
           api: '$preset.apis.listOrgApply',
           hash: 'orgApplyList',
+          name: 'orgApplyList',
           headerToolbar: [
             {
               $ref: 'globalTableReloadTool',
+              target: 'orgApplyList',
             },
           ],
           footerToolbar: ['statistics', 'switch-per-page', 'pagination'],
@@ -229,6 +238,8 @@ const orgSchema = {
           data: {
             // eslint-disable-next-line
             '&': '${config}',
+            user_id: '${user.id}',
+            username: '${user.username}',
           },
           body: {
             api: '$preset.apis.editOrg',
@@ -356,6 +367,10 @@ const orgSchema = {
         mode: 'horizontal',
         controls: [
           {
+            name: 'user_id',
+            type: 'hidden',
+          },
+          {
             name: 'name',
             label: '组织名称',
             type: 'text',
@@ -363,6 +378,22 @@ const orgSchema = {
             required: true,
             validations: {
               minLength: 2,
+            },
+          },
+          {
+            name: 'username',
+            label: '组织管理员账号',
+            type: 'text',
+            required: true,
+            disabled: true,
+          },
+          {
+            name: 'password',
+            label: '组织管理员密码',
+            type: 'text',
+            placeholder: '修改组织管理员登陆密码',
+            validations: {
+              minLength: 4,
             },
           },
           {

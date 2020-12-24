@@ -47,11 +47,13 @@ export const Header = styled.div`
 export const Layout = styled.div`
   height: 100%;
   padding-top: 60px;
-  background-color: #faf9f8;
 `
 
 export const Body = styled.div`
   /* padding-top: 60px; */
+  & > .container {
+    padding-bottom: 20px;
+  }
 `
 
 export const UserItem = styled.div`

@@ -12,6 +12,8 @@ import {
   initGlobalState,
 } from 'qiankun'
 
+import { switchPageClassName } from './utils'
+
 import './index.less'
 
 /**
@@ -71,17 +73,19 @@ registerMicroApps(
   {
     beforeLoad: [
       (app) => {
-        console.log('[LifeCycle] before load %c%s', 'color: green;', app.name)
+        // console.log('[LifeCycle] before load %c%s', 'color: green;', app.name)
       },
     ],
     beforeMount: [
       (app) => {
-        console.log('[LifeCycle] before mount %c%s', 'color: green;', app.name)
+        switchPageClassName('add', app.name)
+        // console.log('[LifeCycle] before mount %c%s', 'color: green;', app.name)
       },
     ],
     afterUnmount: [
       (app) => {
-        console.log('[LifeCycle] after unmount %c%s', 'color: green;', app.name)
+        switchPageClassName('remove', app.name)
+        // console.log('[LifeCycle] after unmount %c%s', 'color: green;', app.name)
       },
     ],
   }

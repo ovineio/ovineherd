@@ -7,6 +7,7 @@ const StyledWrap = styled.div`
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
   .cxd-Table {
+    margin-bottom: 0;
     border: 0;
   }
 
@@ -16,7 +17,7 @@ const StyledWrap = styled.div`
   .cxd-Tabs-links {
     padding-left: 20px;
   }
-  .cxd-Tabs-content {
+  .cxd-Tabs--line > .cxd-Tabs-content {
     padding-bottom: 0;
   }
 `

@@ -1,6 +1,7 @@
+import { get } from 'lodash'
+
 import { message } from '@core/constants'
 import { publish } from '@core/utils/message'
-import { get } from 'lodash'
 
 import { getAppCustom } from '~/core/common'
 import { getLink, isSysAdminRoute, linkTo } from '~/core/utils'
@@ -70,7 +71,7 @@ const layoutSchema: any = {
       }
 
       const { active, pathToComponent = '', page_id, label } = roueItem || {}
-      console.log('contextMenus==>', roueItem)
+      // console.log('contextMenus==>', roueItem)
 
       if (active && get(pathToComponent, 'url')) {
         menus.unshift({

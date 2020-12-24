@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components'
 import { app } from '@core/app'
 import GlobalStyle from '@core/styled/global'
 import { useImmer } from '@core/utils/hooks'
+import BactTop from '@core/components/back_top'
 
 import { useRouteBySubApp } from '~/core/hooks'
 import Login from '~/pages/login'
@@ -42,6 +43,7 @@ export default hot(() => {
       />
       <AlertComponent theme={theme} />
       <ContextMenu theme={theme} />
+      <BactTop />
       <ThemeProvider theme={app.theme.getTheme()}>
         <GlobalStyle />
         <AppStyle />
