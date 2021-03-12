@@ -13,7 +13,7 @@ export const orgRoleSchema = {
         hash: 'roleList',
         body: {
           type: 'crud',
-          $ref: 'globalCrudCCommon',
+          $ref: 'globalCrudCommon',
           api: '$preset.apis.listRole',
           name: 'roleList',
           quickSaveItemApi: '$preset.apis.editRole',

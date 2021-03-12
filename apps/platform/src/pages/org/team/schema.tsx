@@ -46,7 +46,7 @@ export const treeSchema = {
 
 export const tableSchema = {
   type: 'crud',
-  $ref: 'globalCrudCCommon',
+  $ref: 'globalCrudCommon',
   name: 'userList',
   headerToolbar: [
     {

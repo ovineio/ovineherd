@@ -11,7 +11,7 @@ const orgSchema = {
         title: '管理员列表',
         body: {
           type: 'crud',
-          $ref: 'globalCrudCCommon',
+          $ref: 'globalCrudCommon',
           api: '$preset.apis.listUser',
           name: 'userList',
           headerToolbar: ['$preset.forms.filter', '$preset.actions.add'],

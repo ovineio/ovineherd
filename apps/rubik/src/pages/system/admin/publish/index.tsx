@@ -7,7 +7,7 @@ export const schema = {
   body: {
     type: 'crud',
     name: 'pageList',
-    $ref: 'globalCrudCCommon',
+    $ref: 'globalCrudCommon',
     className: 'g-no-border-table',
     // api: '$preset.apis.listNav',
     headerToolbar: [

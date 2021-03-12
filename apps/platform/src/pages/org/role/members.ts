@@ -10,7 +10,7 @@ const members = {
     type: 'lib-crud',
     name: 'memberList',
     api: '$preset.apis.listMember',
-    $ref: 'globalCrudCCommon',
+    $ref: 'globalCrudCommon',
     filterTogglable: false,
     affixHeader: false,
     syncLocation: false,

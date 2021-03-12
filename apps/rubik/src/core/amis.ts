@@ -39,7 +39,7 @@ export const schemaDefinitions = {
       rotatable: true,
     },
   },
-  globalCrudCCommon: {
+  globalCrudCommon: {
     filterTogglable: false,
     perPageAvailable: [20, 50, 150],
     defaultParams: {

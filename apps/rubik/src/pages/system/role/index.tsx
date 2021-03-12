@@ -16,7 +16,7 @@ export const getSchema = () => {
     body: {
       type: 'crud',
       name: 'roleList',
-      $ref: 'globalCrudCCommon',
+      $ref: 'globalCrudCommon',
       api: '$preset.apis.listRole',
       className: 'g-no-border-table',
       quickSaveItemApi: '$preset.apis.editRole',

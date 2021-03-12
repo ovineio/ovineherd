@@ -5,7 +5,7 @@ export const schema = {
   body: {
     type: 'crud',
     name: 'userList',
-    $ref: 'globalCrudCCommon',
+    $ref: 'globalCrudCommon',
     api: '$preset.apis.listUser',
     className: 'g-no-border-table',
     headerToolbar: [

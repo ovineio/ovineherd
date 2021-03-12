@@ -29,7 +29,7 @@ const orgSchema = {
         body: {
           type: 'crud',
           name: 'orgList',
-          $ref: 'globalCrudCCommon',
+          $ref: 'globalCrudCommon',
           api: '$preset.apis.listOrg',
           headerToolbar: [
             {
@@ -111,7 +111,7 @@ const orgSchema = {
         hash: 'orgApplyList',
         body: {
           type: 'crud',
-          $ref: 'globalCrudCCommon',
+          $ref: 'globalCrudCommon',
           api: '$preset.apis.listOrgApply',
           hash: 'orgApplyList',
           name: 'orgApplyList',
