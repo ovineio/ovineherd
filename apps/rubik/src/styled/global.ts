@@ -10,58 +10,58 @@ import { css } from 'styled-components'
 // 以下用作举例：
 const svg = require('@generated/styles/themes/spinner-default.svg')
 
-const globalStyle = () => css`
-  .cxd-Spinner {
+const globalStyle = ({ ns }) => css`
+  .${ns}Spinner {
     background-image: url(${svg}) !important;
   }
   .cursor-p {
     cursor: pointer;
   }
-  .cxd-TextareaControl {
+  .${ns}TextareaControl {
     color: #666;
   }
   .g-no-border-table {
-    .cxd-Table {
+    .${ns}Table {
       border: 0;
     }
-    .cxd-Table-toolbar {
+    .${ns}Table-toolbar {
       padding: 15px 0;
     }
   }
   .g-normal-spinner {
-    .cxd-Spinner {
+    .${ns}Spinner {
       width: 40px;
       height: 40px;
     }
   }
 `
 
-export const tabsPageCss = () => css`
-  .cxd-Page-body {
+export const tabsPageCss = ({ ns }) => css`
+  .${ns}Page-body {
     padding: 10px 0 0;
   }
-  .cxd-Tabs {
-    .cxd-Tabs-content {
+  .${ns}Tabs {
+    .${ns}Tabs-content {
       padding-top: 0;
     }
   }
-  .cxd-Tabs-links {
+  .${ns}Tabs-links {
     padding-left: 20px;
   }
-  .cxd-Panel {
+  .${ns}Panel {
     border: 0;
     box-shadow: none;
   }
-  .cxd-Tabs-pane {
+  .${ns}Tabs-pane {
     padding: 0;
   }
-  .cxd-Panel-heading {
+  .${ns}Panel-heading {
     display: none;
   }
-  .cxd-Panel-body {
+  .${ns}Panel-body {
     padding: 0;
   }
-  .cxd-section-header {
+  .${ns}section-header {
     font-size: 16px;
     color: #333;
     border-left: #108cee 0.25rem solid;

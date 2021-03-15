@@ -1,19 +1,19 @@
 import { css } from 'styled-components'
 
-const appPageCss = () => css`
+const appPageCss = ({ ns }) => css`
   .filter-form {
-    .cxd-Button {
+    .${ns}Button {
       position: absolute;
       z-index: 2;
       border: 0;
       background: transparent;
       color: #a2a2a2;
     }
-    .cxd-TreeSelect {
+    .${ns}TreeSelect {
       padding-left: 30px;
     }
   }
-  .cxd-Table-content {
+  .${ns}Table-content {
     overflow: visible;
   }
 `

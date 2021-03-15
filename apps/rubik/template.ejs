@@ -2,29 +2,30 @@
 <html>
 
 <head>
-  <% var opts = htmlWebpackPlugin.options; %>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta app-version="<%=opts.version%>" />
-  <title>loading...</title>
-  <link type="image/x-icon" rel="shortcut icon" href="<%=opts.favIcon || `${opts.staticLibPath}core/favicon.ico`%>" />
-  <link rel="stylesheet" href="<%=opts.dllVendorCss%>" />
-  <link rel="stylesheet" href="<%=opts.staticLibPath%>themes/cxd.css?t=12" />
-  <% if(!opts.isProd) { %>
-  <script> var IS_WEBPACK_DEV_SERVER = true; var IS_SCSS_UPDATE = <%= opts.scssUpdate %>; </script>
-  <% } %>
+  <% var opts=htmlWebpackPlugin.options; %>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta app-version="<%=opts.version%>" />
+    <title>loading...</title>
+    <link type="image/x-icon" rel="shortcut icon" href="<%=opts.favIcon || `${opts.staticLibPath}core/favicon.ico`%>" />
+    <link rel="stylesheet" href="https://bce.bdstatic.com/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="<%=opts.dllVendorCss%>" />
+    <link rel="stylesheet" href="<%=opts.staticLibPath%>themes/antd.css?t=12" />
+    <% if(!opts.isProd) { %>
+      <script> var IS_WEBPACK_DEV_SERVER = true; var IS_SCSS_UPDATE = <%= opts.scssUpdate %>;</script>
+      <% } %>
 </head>
 
 <body>
   <%= opts.preBody %>
-  <div id="modal-root" class="modal-root"></div>
-  <div id="app-root" class="app-root"></div>
-  <% if(opts.dllVendorJs) { var jsFiles = opts.dllVendorJs.split(','); %>
-  <% for (var i = 0; i<jsFiles.length; i++){ %>
-  <script src="<%= jsFiles[i] %>"></script>
-  <% } %>
-  <% } %>
-  <%= opts.postBody %>
+    <div id="modal-root" class="modal-root"></div>
+    <div id="app-root" class="app-root"></div>
+    <% if(opts.dllVendorJs) { var jsFiles=opts.dllVendorJs.split(','); %>
+      <% for (var i=0; i<jsFiles.length; i++){ %>
+        <script src="<%= jsFiles[i] %>"></script>
+        <% } %>
+          <% } %>
+            <%= opts.postBody %>
 </body>
 
 </html>

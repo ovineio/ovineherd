@@ -27,7 +27,7 @@ module.exports = (option) => {
       openPage: '/platform/app',
     },
     ui: {
-      initTheme: 'cxd',
+      defaultTheme: 'antd',
     },
     template: {
       path: path.resolve(__dirname, './template.ejs'),

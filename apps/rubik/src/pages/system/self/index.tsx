@@ -16,7 +16,7 @@ export const schema = {
           {
             type: 'panel',
             className: 'p-md',
-            headerClassName: 'cxd-section-header m-t-md m-b-sm',
+            headerClassName: 'app-section-header m-t-md m-b-sm',
             title: '我的资料',
             body: {
               type: 'form',
@@ -109,7 +109,7 @@ export const schema = {
           {
             type: 'panel',
             className: 'p-md',
-            headerClassName: 'cxd-section-header m-t-md m-b-sm',
+            headerClassName: 'app-section-header m-t-md m-b-sm',
             title: '账户安全',
             bodyClassName: 'p-md',
             body: [
@@ -142,7 +142,7 @@ export const schema = {
             type: 'panel',
             className: 'p-md',
             bodyClassName: 'p-md',
-            headerClassName: 'cxd-section-header m-t-md m-b-sm',
+            headerClassName: 'app-section-header m-t-md m-b-sm',
             title: '退出应用',
             body: [
               {
@@ -166,7 +166,7 @@ export const schema = {
             title: '转移应用',
             className: 'p-md',
             bodyClassName: 'p-md',
-            headerClassName: 'cxd-section-header m-t-md m-b-sm',
+            headerClassName: 'app-section-header m-t-md m-b-sm',
             body: [
               {
                 type: 'alert',
@@ -196,7 +196,7 @@ export const schema = {
             type: 'panel',
             className: 'p-md',
             bodyClassName: 'p-md',
-            headerClassName: 'cxd-section-header m-t-sm m-b-sm',
+            headerClassName: 'app-section-header m-t-sm m-b-sm',
             title: '删除应用',
             body: [
               {
