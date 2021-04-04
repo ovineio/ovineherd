@@ -1,0 +1,8 @@
+appname = base_service
+httpport = 5222
+runmode = dev
+autorender = false
+copyrequestbody = true
+EnableDocs = true
+sqlconn = root:123456@tcp(localhost:3306)/ovineherd
+

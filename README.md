@@ -13,6 +13,4 @@
   - `yarn gen:static` 生成子应用静态文件
   - `yarn all:start` 启动所有项目
 
-#### 本项目 服务端部分
-
-服务端部分，采用的是比较奇葩的实现方式。此处稳定后，会重构。可以完全将其替换自己的服务端接口。
+#### 本项目 服务端部分 `server/uniadmin/` [文档地址](http://doc.uniappadmin.cn/docs/baser_service/explain)

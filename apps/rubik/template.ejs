@@ -8,12 +8,9 @@
     <meta app-version="<%=opts.version%>" />
     <title>loading...</title>
     <link type="image/x-icon" rel="shortcut icon" href="<%=opts.favIcon || `${opts.staticLibPath}core/favicon.ico`%>" />
-    <link rel="stylesheet" href="https://bce.bdstatic.com/iconfont/iconfont.css" />
     <link rel="stylesheet" href="<%=opts.dllVendorCss%>" />
-    <link rel="stylesheet" href="<%=opts.staticLibPath%>themes/antd.css?t=12" />
-    <% if(!opts.isProd) { %>
-      <script> var IS_WEBPACK_DEV_SERVER = true; var IS_SCSS_UPDATE = <%= opts.scssUpdate %>;</script>
-      <% } %>
+    <link rel="stylesheet" href="<%=opts.staticLibPath%>styles/bd_iconfont.css?v=<%= opts.libVer %>" />
+    <script id="injectScriptHolder"></script>
 </head>
 
 <body>

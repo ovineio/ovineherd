@@ -22,12 +22,15 @@ module.exports = (option) => {
     favicon: '/static/images/favicon.ico',
     title: 'OvineHerd', // 页面标题
     envModes: ['localhost', 'staging', 'production'], // 环境列表
+    dll: {
+      useJsdelivr: true,
+    },
     devServer: {
       publicPath: subPath,
       openPage: '/platform/center',
     },
     ui: {
-      initTheme: 'cxd',
+      appTheme: 'cxd',
     },
     styledConfig: {
       namespace: 'platform',

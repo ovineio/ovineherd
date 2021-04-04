@@ -22,12 +22,15 @@ module.exports = (option) => {
     favicon: '/static/images/favicon.ico',
     title: 'app',
     envModes: ['localhost', 'staging', 'production'], // 环境列表
+    dll: {
+      useJsdelivr: true,
+    },
     devServer: {
       publicPath: subPath,
       openPage: '/platform/app',
     },
     ui: {
-      defaultTheme: 'antd',
+      appTheme: 'cxd',
     },
     template: {
       path: path.resolve(__dirname, './template.ejs'),

@@ -28,6 +28,7 @@ module.exports = {
     'no-nested-ternary': OFF,
     'global-require': OFF,
     'no-underscore-dangle': OFF,
+    'no-template-curly-in-string': OFF,
     'no-param-reassign': OFF,
     'arrow-parens': [ERROR, 'always'],
     'no-use-before-define': ['error', { functions: false }],

@@ -1,0 +1,457 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/v1",
+    "paths": {
+        "/attributes/": {
+            "get": {
+                "tags": [
+                    "attributes"
+                ],
+                "description": "get Attributes",
+                "operationId": "AttributesController.Get All",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "query",
+                        "description": "Filter. e.g. col1:v1,col2:v2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fields",
+                        "description": "Fields returned. e.g. col1,col2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "description": "Sorted-by fields. e.g. col1,col2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "order",
+                        "description": "Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Limit the size of result set. Must be an integer",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Start position of result set. Must be an integer",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Attributes"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "attributes"
+                ],
+                "description": "create Attributes",
+                "operationId": "AttributesController.Post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Attributes content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Attributes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.Attributes"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/attributes/{id}": {
+            "get": {
+                "tags": [
+                    "attributes"
+                ],
+                "description": "get Attributes by id",
+                "operationId": "AttributesController.Get One",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Attributes"
+                        }
+                    },
+                    "403": {
+                        "description": ":id is empty"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "attributes"
+                ],
+                "description": "update the Attributes",
+                "operationId": "AttributesController.Put",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Attributes content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Attributes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Attributes"
+                        }
+                    },
+                    "403": {
+                        "description": ":id is not int"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "attributes"
+                ],
+                "description": "delete the Attributes",
+                "operationId": "AttributesController.Delete",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "id is empty"
+                    }
+                }
+            }
+        },
+        "/categories/": {
+            "get": {
+                "tags": [
+                    "categories"
+                ],
+                "description": "get Categories",
+                "operationId": "CategoriesController.Get All",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "query",
+                        "description": "Filter. e.g. col1:v1,col2:v2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fields",
+                        "description": "Fields returned. e.g. col1,col2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "description": "Sorted-by fields. e.g. col1,col2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "order",
+                        "description": "Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Limit the size of result set. Must be an integer",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Start position of result set. Must be an integer",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "categories"
+                ],
+                "description": "create Categories",
+                "operationId": "CategoriesController.Post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Categories content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{int} models.Categories"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/categories/{id}": {
+            "get": {
+                "tags": [
+                    "categories"
+                ],
+                "description": "get Categories by id",
+                "operationId": "CategoriesController.Get One",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    },
+                    "403": {
+                        "description": ":id is empty"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "categories"
+                ],
+                "description": "update the Categories",
+                "operationId": "CategoriesController.Put",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Categories content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    },
+                    "403": {
+                        "description": ":id is not int"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "categories"
+                ],
+                "description": "delete the Categories",
+                "operationId": "CategoriesController.Delete",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "id is empty"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Attributes": {
+            "title": "Attributes",
+            "type": "object",
+            "properties": {
+                "CreatedTime": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "Format": {
+                    "description": "数据类型",
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Key": {
+                    "description": "自定义字段",
+                    "type": "string"
+                },
+                "Language": {
+                    "description": "语言",
+                    "type": "string"
+                },
+                "Relation": {
+                    "description": "数据关联关系",
+                    "type": "string"
+                },
+                "Remark": {
+                    "description": "字段名",
+                    "type": "string"
+                },
+                "SourceId": {
+                    "description": "目标id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "UpdatedTime": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "Value": {
+                    "description": "字段",
+                    "type": "string"
+                }
+            }
+        },
+        "models.Categories": {
+            "title": "Categories",
+            "type": "object",
+            "properties": {
+                "CreatedTime": {
+                    "type": "string"
+                },
+                "Id": {
+                    "description": "id",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Level": {
+                    "description": "层级",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ParentId": {
+                    "description": "父ID",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Path": {
+                    "type": "string"
+                },
+                "Type": {
+                    "type": "string"
+                },
+                "UpdatedTime": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "attributes",
+            "description": "AttributesController operations for Attributes\n"
+        },
+        {
+            "name": "categories",
+            "description": "CategoriesController operations for Categories\n"
+        }
+    ]
+}

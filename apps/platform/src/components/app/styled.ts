@@ -2,60 +2,54 @@
  * qiankun 全局样式 有 BUG
  */
 
-import { createGlobalStyle } from 'styled-components'
-
-// TODO: 移动端展示兼容
-const svg = require('@generated/styles/themes/spinner-default.svg')
+import { createGlobalStyle, css } from 'styled-components'
 
 export const AppStyle = createGlobalStyle`
     span.badge {
         font-size: 10px;
     }
 
-    .table-cell-image {
-        .cxd-Image {
-            width: 50px;
-            height: 50px;
-            padding: 0;
-            &-thumb {
-                overflow: inherit;
-                height: 100%;
-            }
+    ${({ theme: { ns } }: any) => css`
+      .table-cell-image {
+        .${ns}Image {
+          width: 50px;
+          height: 50px;
+          padding: 0;
+          &-thumb {
+            overflow: inherit;
+            height: 100%;
+          }
         }
-    }
+      }
 
-    .cxd-Spinner {
-        background-image: url(${svg}) !important;
-    }
-
-    .cxd-ImageControl-pasteTip {
+      .${ns}ImageControl-pasteTip {
         z-index: 2;
-    }
+      }
 
-    .cxd-Page-main{
+      .${ns}Page-main {
         background-color: transparent;
-    }
+      }
 
-    .cxd-Modal-header {
+      .${ns}Modal-header {
         padding-top: 0.8rem;
         padding-bottom: 0.8rem;
-    }
-    .cxd-Modal-body {
+      }
+      .${ns}Modal-body {
         padding-bottom: 1rem;
-    }
-    .cxd-Modal-footer {
+      }
+      .${ns}Modal-footer {
         margin: 0;
         padding-left: 1.875rem;
         padding-right: 1.875rem;
-    }
-    .cxd-TextareaControl {
+      }
+      .${ns}TextareaControl {
         color: #666;
-    }
-    .cxd-Table-toolbar {
-        padding: 0.625rem 20px
-    }
+      }
+      .${ns}Table-toolbar {
+        padding: 0.625rem 20px;
+      }
 
-    .cxd-section-header {
+      .${ns}section-header {
         font-size: 16px;
         color: #333;
         border-left: #108cee 0.25rem solid;
@@ -63,18 +57,39 @@ export const AppStyle = createGlobalStyle`
         padding: 0 0 0 14px;
         border-bottom: 0;
         font-weight: 400;
-    }
+      }
 
-    .cxd-Wizard--horizontal {
-        .cxd-Wizard-steps {
-            ul {
-                margin-left: -20px;
-            }
+      .${ns}Wizard--horizontal {
+        .${ns}Wizard-steps {
+          ul {
+            margin-left: -20px;
+          }
         }
-    }
+      }
 
-    .cxd-Table-table > tbody > tr > td,
-    .cxd-Table-table > tbody > tr > th {
-        vertical-align: middle;
-    }
+      .${ns}Table-table > tbody > tr > td,
+      .${ns}Table-table > tbody > tr > th {
+        vertical-align: middle !important;
+      }
+
+      .${ns}Crud-toolbar {
+        .${ns}Form-item {
+          margin-bottom: 0;
+        }
+      }
+
+      // 重写提示
+      .${ns}Image-overlay {
+        a {
+          &[data-position='bottom']:after {
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+          &[data-position='bottom']:hover:after {
+            margin: 0 0 0 var(--Tooltip--attr-gap);
+          }
+        }
+      }
+    `}
 `

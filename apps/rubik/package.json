@@ -4,7 +4,7 @@
   "description": "ovine herd platform.",
   "license": "MIT",
   "scripts": {
-    "gen:static": "node-sass -v && yarn scss && yarn dll && cp -rf ./.ovine ../platform/",
+    "gen:static": "node-sass -v && yarn scss && cp -rf ./.ovine ../platform/",
     "dev": "ovine dev --mock --port 7062",
     "start": "ovine dev --mock --host 0.0.0.0 --port 7062 --no-hot",
     "build:staging": "yarn eslint && ovine build --env=staging",
@@ -25,9 +25,10 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.8.6",
-    "@ovine/cli": "^0.1.1",
-    "@ovine/core": "^0.1.1",
-    "@ovine/editor": "^0.1.1",
+    "@ovine/cli": "0.1.2",
+    "@ovine/core": "0.1.2",
+    "@ovine/editor": "0.1.2",
+    "axios": "^0.21.1",
     "immer": "^5.3.2",
     "lodash": "^4.17.15",
     "react": "^16.8.6",

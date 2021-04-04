@@ -31,7 +31,8 @@ export async function onAuth() {
   try {
     const source = await fetchAppInfo()
     setStoreInfo(source)
-    if (isAppIsolation()) {
+
+    if (isAppIsolation(true)) {
       await fetchUserInfo()
       // 用户 APPID 与 路径上的 APPID 不匹配
       if (!userInfo.id || !isAppUser() || (isAppUser() && userInfo.relation2 !== getAppId())) {
@@ -51,6 +52,7 @@ export async function onAuth() {
   // 独立应用 并且没有的登录 跳转到 app/login
   if (!isLogin()) {
     clearUserLoginState()
+
     // 跳转到组织登录页面
     if (!isAppIsolation()) {
       linkTo(getLink('login', getOrgId()), false, true)

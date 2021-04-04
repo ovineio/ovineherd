@@ -236,7 +236,6 @@ const orgSchema = {
         dialog: {
           title: '编辑组织',
           data: {
-            // eslint-disable-next-line
             '&': '${config}',
             user_id: '${user.id}',
             username: '${user.username}',

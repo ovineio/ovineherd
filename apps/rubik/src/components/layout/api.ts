@@ -19,9 +19,10 @@ const getLayoutReqOpt = {
     const isMounted = typeof designMode !== 'undefined'
     const isSysAdmin = isMounted ? designMode : isSysAdminRoute()
     const isStashLayout = stashLayoutCtrl('get')
+    const routeItems = await getAppRouteItems()
 
     // 修改 布局 schema
-    const nextState = produce(layoutState, async (d) => {
+    const nextState = produce(layoutState, (d) => {
       d.resetRoute = !isStashLayout
       d.routeTabs.storage = isStashLayout
 
@@ -33,7 +34,6 @@ const getLayoutReqOpt = {
 
       // 更新路由信息
       if (!isMounted || !isSysAdmin) {
-        const routeItems = await getAppRouteItems()
         menuRoutes = getAppRoutes(routeItems)
       }
 

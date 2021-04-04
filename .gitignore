@@ -17,3 +17,7 @@ node_modules
 # workspace
 /website/docs/build
 /packages/init/tmp/*
+
+
+/server/uniadmin/static/upload/images/
+/server/uniadmin/nohup.out

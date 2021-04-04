@@ -11,7 +11,7 @@ export const schemaDefinitions = {
     enlargeAble: true,
   },
   globalFileUpload: {
-    reciever: apis.file.upload,
+    receiver: apis.file.upload,
   },
   globalSwitch: {
     type: 'switch',
@@ -27,7 +27,7 @@ export const schemaDefinitions = {
     tooltipPlacement: 'top',
   },
   globalImgUpload: {
-    reciever: apis.file.upload,
+    receiver: apis.file.upload,
     maxSize: 500 * 1000,
     limit: {
       maxWidth: 2000,

@@ -5,9 +5,9 @@ import { Switch, Router, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
 import { app } from '@core/app'
+import BactTop from '@core/components/back_top'
 import GlobalStyle from '@core/styled/global'
 import { useImmer } from '@core/utils/hooks'
-import BactTop from '@core/components/back_top'
 
 import { useRouteBySubApp } from '~/core/hooks'
 import Login from '~/pages/login'
