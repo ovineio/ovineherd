@@ -25,6 +25,7 @@ export const PrivateRoute = ({ children, ...rest }) => {
   useUserInfo({
     isLogin: isMounted && isLoginApp,
   })
+
   useEffect(() => {
     setMounted(true)
   }, [])

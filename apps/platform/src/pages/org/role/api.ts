@@ -1,4 +1,4 @@
-import { chunk, map } from 'lodash'
+import { chunk, map, omit } from 'lodash'
 
 import { getReqOption, requestByOption } from '~/core/api/utils'
 import { relation } from '~/core/constants'
@@ -161,12 +161,19 @@ export const getOrgRoleApi = () => {
         })
       }
 
-      map(rest, (val, key) => {
-        setLimitStr(key, val)
+      map(omit(rest, 'relation2'), (val, key) => {
+        if (val) {
+          setLimitStr(key, val)
+        }
       })
 
-      appLimit.forEach(({ id, limit }) => {
-        setLimitStr(`app/${id}`, limit)
+      appLimit.forEach(({ id, limit, ignore }) => {
+        if (ignore) {
+          setLimitStr(`app/${id}`, 'ignore')
+        }
+        if (limit) {
+          setLimitStr(`app/${id}`, limit)
+        }
       })
 
       const limitInfo = { limit_raw, limit_data }
@@ -204,10 +211,18 @@ export const getOrgRoleApi = () => {
     {
       apiType: relation.org.limit.apiType,
       apiName: ApiName.one,
-      sendOn: '',
-      id: '$relation2',
+      // sendOn: '',
+      relation2: '$relation2',
     },
     {
+      onPreRequest: (option) => {
+        option.url = option.url.replace(
+          /authorization\/(.*)$/,
+          `authorization/${option.data.relation2}`
+        )
+        option.data = {}
+        return option
+      },
       onSuccess: (source) => {
         try {
           source.data = JSON.parse(source.data.limit_raw)

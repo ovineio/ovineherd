@@ -134,3 +134,23 @@ export function userLogout() {
   clearUserLoginState()
   linkTo(getLink('login'))
 }
+
+export function checkLimit(key: string): boolean {
+  if (isOrgUser()) {
+    const orgLimit = orgUserInfo.org_limit || {}
+    const actions = ['loginApp', 'designApp']
+
+    if (actions.includes(key)) {
+      const prefix = `app/${getAppId()}/`
+      for (let i = 0; i < actions.length; i++) {
+        if ((orgLimit[`orgApp/${key}`] && !orgLimit[prefix + 'ignore']) || orgLimit[prefix + key]) {
+          return true
+        }
+      }
+    }
+
+    return false
+  }
+
+  return true
+}

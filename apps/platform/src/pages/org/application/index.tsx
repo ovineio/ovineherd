@@ -5,8 +5,10 @@ import React, { useEffect } from 'react'
 import { Amis } from '@core/components/amis/schema'
 import { useImmer, useSubscriber } from '@core/utils/hooks'
 import { publish } from '@core/utils/message'
+import { clearStore } from '@core/utils/store'
 
 import { msgKey } from '~/core/constants'
+import { getOrgLimit } from '~/core/user'
 import { getLink, isStrTrue, linkTo } from '~/core/utils'
 
 import { getOrgAppApis } from './api'
@@ -24,8 +26,9 @@ type ItemProps = {
 }
 const CardItem = (props: ItemProps) => {
   const { toggleDialog, appApis, item = {} } = props
-
   const { id, config = {}, user = {} } = item
+
+  const appLimit = getOrgLimit('apps', { id })
   const isolation = isStrTrue(config.isolation)
 
   const itemBgStyle = {
@@ -57,8 +60,17 @@ const CardItem = (props: ItemProps) => {
   }
 
   const onCardClick = () => {
+    if (!appLimit.loginApp) {
+      toast.info('无法登录该应用，如需登录应用，请联系管理员！', '无权限', { timeout: 4000 })
+      return
+    }
     const appLink = getLink('app', undefined, isolation ? `${id}/system/login` : `${id}/`)
+    clearStore('libRouteTabsStore')
     linkTo(appLink)
+  }
+
+  if (!appLimit.viewApp) {
+    return null
   }
 
   return (
@@ -73,18 +85,22 @@ const CardItem = (props: ItemProps) => {
         <div className="item-cover" style={itemBgStyle} />
         <div className="item-mask" />
         <ul className="item-actions">
-          <li
-            className="fa fa-cog"
-            data-tooltip="编辑"
-            data-position="bottom"
-            onClick={onEditClick}
-          />
-          <li
-            className="fa fa-trash-o"
-            data-tooltip="删除  "
-            data-position="bottom"
-            onClick={onDelClick}
-          />
+          {appLimit.editApp && (
+            <li
+              className="fa fa-cog"
+              data-tooltip="编辑"
+              data-position="bottom"
+              onClick={onEditClick}
+            />
+          )}
+          {appLimit.delApp && (
+            <li
+              className="fa fa-trash-o"
+              data-tooltip="删除  "
+              data-position="bottom"
+              onClick={onDelClick}
+            />
+          )}
         </ul>
         <div className="item-info">
           <h6 className="item-title">
@@ -121,6 +137,7 @@ const initState = {
 export default () => {
   const [state, setState] = useImmer<State>(initState)
   const appApis = getOrgAppApis()
+  const orgLimit = getOrgLimit('apps')
 
   const { isLoading, showUpdateDialog, activeItemInfo, listSource } = state
   const isEdit = !!activeItemInfo.id
@@ -171,12 +188,14 @@ export default () => {
     <S.StyledAppCards className="container">
       <h5 className="m-b-md">我的应用</h5>
       <div className="row no-gutters items-grid">
-        <div className="col-lg-3">
-          <div className="new-item" onClick={toggleDialog}>
-            <i className="iconfont icon-plus m-b-sm" />
-            <span>添加一个新应用</span>
+        {orgLimit.addApp && (
+          <div className="col-lg-3">
+            <div className="new-item" onClick={toggleDialog}>
+              <i className="iconfont icon-plus m-b-sm" />
+              <span>添加一个新应用</span>
+            </div>
           </div>
-        </div>
+        )}
         <Spinner overlay theme="cxd" size="lg" show={isLoading} />
         {listSource.map((item, index) => {
           return <CardItem key={index} item={item} appApis={appApis} toggleDialog={toggleDialog} />

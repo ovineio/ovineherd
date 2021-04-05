@@ -3,6 +3,7 @@ import { flatten } from 'lodash'
 
 import { getAppRouteItems } from '~/core/api/resource'
 import { getAppRoutes, getSysAdmRoutes } from '~/core/routes'
+import { checkLimit } from '~/core/user'
 import { getLink, isSysAdminRoute } from '~/core/utils'
 
 import layoutState, { getBrandSchema, getModeBtnSchema, stashLayoutCtrl } from './schema'
@@ -27,7 +28,10 @@ const getLayoutReqOpt = {
       d.routeTabs.storage = isStashLayout
 
       d.header.brand = getBrandSchema(isSysAdmin)
-      d.header.items[0] = getModeBtnSchema(isSysAdmin)
+
+      if (checkLimit('designApp')) {
+        d.header.items[0] = getModeBtnSchema(isSysAdmin)
+      }
 
       const adminRoutes = getSysAdmRoutes()
       let menuRoutes = routeStore[0]

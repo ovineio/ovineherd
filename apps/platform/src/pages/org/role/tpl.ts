@@ -99,8 +99,8 @@ export const limitSetting: any = {
         multiple: true,
         options: [
           {
-            label: '查看列表',
-            value: 'viewApp',
+            label: '登录应用',
+            value: 'loginApp',
           },
           {
             label: '新建应用',
@@ -109,10 +109,6 @@ export const limitSetting: any = {
           {
             label: '修改信息',
             value: 'editApp',
-          },
-          {
-            label: '登录应用',
-            value: 'loginApp',
           },
           {
             label: '设计应用',
@@ -151,23 +147,28 @@ export const limitSetting: any = {
             placeholder: '选择应用',
           },
           {
+            type: 'checkbox',
+            name: 'ignore',
+            label: '剔除此应用权限',
+            mode: 'inline',
+            hiddenOn: '!!this.limit',
+          },
+          {
             type: 'checkboxes',
             name: 'limit',
+            mode: 'inline',
             checkAll: true,
             multiple: true,
             required: true,
+            hiddenOn: '!!this.ignore',
             options: [
               {
-                label: '查看',
-                value: 'viewApp',
+                label: '登录应用',
+                value: 'loginApp',
               },
               {
                 label: '修改信息',
                 value: 'editApp',
-              },
-              {
-                label: '登录应用',
-                value: 'loginApp',
               },
               {
                 label: '设计应用',

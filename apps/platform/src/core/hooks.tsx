@@ -16,17 +16,23 @@ type UseSchemaOption = {
   apis?: any
   getSchema?: AnyFunc
   getApis?: AnyFunc
+  filterSchema?: AnyFunc
   schemaProps?: any
 }
 export function useSchema(option: UseSchemaOption, deps: DependencyList = []) {
-  const { schemaProps, schema: optSchema, apis: optApis, getSchema, getApis } = option
-
+  const { schemaProps, schema: optSchema, apis: optApis, getSchema, getApis, filterSchema } = option
   const schemaComponent = useMemo(() => {
     const schema = getSchema ? getSchema() : optSchema
     const apis = getApis ? getApis() : optApis
     set(schema, 'preset.apis', apis || {})
 
-    return <Amis key={uuid()} schema={schema} props={schemaProps} />
+    return (
+      <Amis
+        key={uuid()}
+        schema={filterSchema ? filterSchema(schema) : schema}
+        props={schemaProps}
+      />
+    )
   }, deps)
 
   return schemaComponent

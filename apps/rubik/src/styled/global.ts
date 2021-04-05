@@ -34,6 +34,12 @@ const globalStyle = ({ ns }) => css`
       height: 40px;
     }
   }
+
+  .${ns}Crud-toolbar {
+    .${ns}Form-item {
+      margin-bottom: 0;
+    }
+  }
 `
 
 export const tabsPageCss = ({ ns }) => css`

@@ -1,5 +1,5 @@
-import React from 'react'
 import { Button } from 'amis'
+import React from 'react'
 
 import { StyledHeader } from './styled'
 

@@ -3,6 +3,7 @@
  */
 
 // import { toast } from 'amis'
+import { get, keys, map } from 'lodash'
 
 import { getStore, setStore } from '@core/utils/store'
 
@@ -70,4 +71,58 @@ export function isSysUser(info = userInfo) {
 // 是否是 组织用户
 export function isOrgUser(info = userInfo) {
   return info.type.indexOf(entityType.orgUser) === 0
+}
+
+export function checkOrgLimit(key?: string) {
+  if (userInfo.isOrgRoot) {
+    return true
+  }
+
+  return !!get(userInfo.org_limit, key)
+}
+
+export function getOrgLimit(action: string, opts?: any): any {
+  // 应用 apps 相关的权限解析
+  const { id: appId = '', pathPrefix = '' } = opts || {}
+
+  const info: any = {}
+  const orgLimit = userInfo.org_limit || {}
+
+  const limitStr = keys(orgLimit).join(',') || ''
+  const appActions = ['loginApp', 'editApp', 'designApp', 'delApp']
+
+  // apps 页面的权限
+  if (action === 'apps') {
+    info.addApp = orgLimit['orgApp/addApp']
+    if (appId) {
+      const prefix = `app/${appId}/`
+      appActions.forEach((act) => {
+        if ((orgLimit[`orgApp/${act}`] && !orgLimit[`${prefix  }ignore`]) || orgLimit[prefix + act]) {
+          info.viewApp = true
+          info[act] = true
+        }
+      })
+      if (!info.viewApp && info.addApp && !orgLimit[`${prefix  }ignore`]) {
+        info.viewApp = true
+      }
+    }
+  }
+
+  // 页面相关权限
+  if (action === 'pages') {
+    info.application = new RegExp(['addApp'].concat(appActions).join('|')).test(limitStr)
+    info.team = /orgTeam/.test(limitStr)
+    info.role = /orgRole/.test(limitStr)
+    info.setting = true // 一定会有权限
+
+    if (pathPrefix) {
+      map(info, (isVisible: boolean, key: string) => {
+        if (isVisible && !info.redirect) {
+          info.redirect = `${pathPrefix}${key}`
+        }
+      })
+    }
+  }
+
+  return info
 }

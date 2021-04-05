@@ -81,11 +81,11 @@ const orgSchema = {
                 body: '$config.sys_desc',
               },
             },
-            {
-              name: 'user.username',
-              label: '管理员',
-              type: 'text',
-            },
+            // {
+            //   name: 'user.username',
+            //   label: '管理员',
+            //   type: 'text',
+            // },
             {
               name: 'created_time',
               label: '添加时间',

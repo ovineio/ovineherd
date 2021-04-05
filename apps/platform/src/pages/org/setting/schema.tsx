@@ -411,6 +411,7 @@ export const settingSchema = {
       {
         title: '危险操作',
         hash: 'danger',
+        visibleOn: 'false',
         icon: 'fa p-r-xs fa-power-off',
         body: [
           {

@@ -4,13 +4,7 @@
  */
 
 /* eslint-disable no-console */
-import {
-  start,
-  registerMicroApps,
-  runAfterFirstMounted,
-  setDefaultMountApp,
-  initGlobalState,
-} from 'qiankun'
+import { start, registerMicroApps, runAfterFirstMounted, setDefaultMountApp } from 'qiankun'
 
 import { switchPageClassName } from './utils'
 
@@ -90,19 +84,6 @@ registerMicroApps(
     ],
   }
 )
-
-const { onGlobalStateChange, setGlobalState } = initGlobalState({
-  user: 'qiankun',
-})
-
-onGlobalStateChange((value, prev) => console.log('[onGlobalStateChange - master]:', value, prev))
-
-setGlobalState({
-  ignore: 'master',
-  user: {
-    name: 'master',
-  },
-})
 
 /**
  * Step3 设置默认进入的子应用

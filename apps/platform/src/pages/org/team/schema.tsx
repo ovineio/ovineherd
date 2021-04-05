@@ -80,22 +80,33 @@ export const tableSchema = {
       label: '姓名',
       type: 'text',
     },
-    {
-      name: 'leader',
-      label: '管理员',
-      type: 'tpl',
-      tpl: `
-      <% if(data.leader === '1') {%>
-        <span class="badge badge-pill badge-success">是</span>
-      <% } else { %>
-        <span class="badge badge-pill badge-secondary">否</span>
-      <%  } %>
-    `,
-    },
+    // {
+    //   name: 'leader',
+    //   label: '管理员',
+    //   type: 'tpl',
+    //   tpl: `
+    //   <% if(data.leader === '1') {%>
+    //     <span class="badge badge-pill badge-success">是</span>
+    //   <% } else { %>
+    //     <span class="badge badge-pill badge-secondary">否</span>
+    //   <%  } %>
+    // `,
+    // },
     {
       name: 'team.label',
       label: '所属部门',
       type: 'text',
+    },
+    {
+      name: 'relation4_data.name',
+      label: '权限角色',
+      type: 'tpl',
+      tpl: `<% if (data.relation4_data) { %>
+        <%= data.relation4_data.name %>
+      <% } else { %>
+        <span class="text-danger" data-tooltip="该账号未设置角色无法登录，设置角色后可正常使用">暂无角色<i class="fa fa-question-circle-o p-l-xs"></i></span>
+      <% } %>
+      `,
     },
     {
       name: 'created_time',

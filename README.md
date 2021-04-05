@@ -13,4 +13,7 @@
   - `yarn gen:static` 生成子应用静态文件
   - `yarn all:start` 启动所有项目
 
-#### 本项目 服务端部分 `server/uniadmin/` [文档地址](http://doc.uniappadmin.cn/docs/baser_service/explain)
+#### 本项目 服务端部分 `server/uniadmin/`
+
+- [文档地址](http://doc.uniappadmin.cn/docs/baser_service/explain)
+- [源代码仓库](https://gitee.com/uniappadmin/uniappadmin)

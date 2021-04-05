@@ -85,15 +85,18 @@ export default () => {
       setState((d) => {
         d.loading = false
       })
+
       const { code, msg, data } = source || {}
       if (code) {
         setErrorTip(msg)
         return
       }
+
       setStore(storeKey.auth, data.id)
       setUserInfo(data)
 
       const home = getLink('home', isOrgUser() ? data.relation2 : '')
+
       history.replace(home)
     })
   }

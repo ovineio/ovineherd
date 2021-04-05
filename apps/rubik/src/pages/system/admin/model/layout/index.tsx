@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Header from '../header'
 import Aside from '../aside'
+import Header from '../header'
 
 import { StyledBody, StyledLayout } from './styled'
 

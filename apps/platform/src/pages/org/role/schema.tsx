@@ -111,6 +111,7 @@ export const orgRoleSchema = {
         label: '编辑',
         level: 'link',
         actionType: 'dialog',
+        disabledOn: 'is_root',
         dialog: {
           title: '编辑角色信息',
           body: {
@@ -123,6 +124,7 @@ export const orgRoleSchema = {
         type: 'action',
         label: '设置权限',
         level: 'link',
+        disabledOn: 'is_root',
         actionType: 'dialog',
         dialog: {
           size: 'lg',
@@ -134,6 +136,7 @@ export const orgRoleSchema = {
         type: 'action',
         label: '删除',
         className: 'text-danger',
+        disabledOn: 'is_root',
         level: 'link',
         actionType: 'ajax',
         confirmText: '[删除确认] 确认要删除该角色: 【$name】 ?',

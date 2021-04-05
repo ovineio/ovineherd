@@ -47,11 +47,11 @@ export const sysAdmRoutes: RouteItem[] = [
         pathToComponent: '/system/role',
         icon: 'iconfont icon-app-verify',
       },
-      {
-        label: '数据模型',
-        nodePath: 'model',
-        icon: 'iconfont icon-sdktool',
-      },
+      // {
+      //   label: '数据模型',
+      //   nodePath: 'model',
+      //   icon: 'iconfont icon-sdktool',
+      // },
       // TODO: 完成发布应用的功能
       // {
       //   label: '发布应用',

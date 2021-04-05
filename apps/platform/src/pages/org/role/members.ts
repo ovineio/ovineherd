@@ -15,6 +15,8 @@ const members = {
     affixHeader: false,
     syncLocation: false,
     forceReload: true,
+    labelTpl: '$real_name',
+    itemCheckableOn: 'this.is_root !== "1"',
     headerToolbar: [
       {
         $ref: 'globalTableReloadTool',
@@ -136,17 +138,26 @@ const members = {
         label: '姓名',
         type: 'container',
         body: {
-          type: 'action',
-          level: 'link',
-          label: '$real_name',
-          actionType: 'dialog',
-          dialog: {
-            title: '管理员详细资料',
-            actions: [],
-            closeOnEsc: true,
-            body: {
-              type: 'lib-renderer',
-              renderer: 'viewUserInfoForm',
+          type: 'lib-when',
+          condition: '!!real_name',
+          ifFalse: {
+            type: 'tpl',
+            className: 'text-muted',
+            tpl: '暂未添加姓名',
+          },
+          ifTrue: {
+            type: 'action',
+            level: 'link',
+            label: '$real_name',
+            actionType: 'dialog',
+            dialog: {
+              title: '管理员详细资料',
+              actions: [],
+              closeOnEsc: true,
+              body: {
+                type: 'lib-renderer',
+                renderer: 'viewUserInfoForm',
+              },
             },
           },
         },
@@ -169,7 +180,7 @@ const members = {
       },
       {
         name: 'desc',
-        label: '角色描述',
+        label: '成员描述',
         // eslint-disable-next-line
         tpl: '${desc|default:-|truncate:10}',
         popOver: {
@@ -190,7 +201,7 @@ const members = {
           {
             type: 'action',
             label: '移除角色',
-            disabledOn: '!role.name',
+            disabledOn: '!role.name || is_root',
             level: 'link',
             className: 'text-danger',
             actionType: 'ajax',

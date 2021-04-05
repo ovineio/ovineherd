@@ -2,6 +2,8 @@ import React from 'react'
 import ContentLoader from 'react-content-loader'
 import { Link, NavLink } from 'react-router-dom'
 
+import { getOrgLimit } from '~/core/user'
+
 import { useAppContext } from '../app/context'
 
 import * as S from './styled'
@@ -17,7 +19,9 @@ type Props = {
 }
 export default (props: Props) => {
   const { menus, urlPrefix } = props
-  const { custom } = useAppContext()
+  const { custom, appInfo } = useAppContext()
+
+  const orgLimit = appInfo.isOrg ? getOrgLimit('pages') : {}
 
   const { title, logo } = custom
 
@@ -58,6 +62,9 @@ export default (props: Props) => {
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               {menus.map((item) => {
+                if (appInfo.isOrg && !orgLimit[item.link]) {
+                  return null
+                }
                 return (
                   <li className="nav-item">
                     <NavLink

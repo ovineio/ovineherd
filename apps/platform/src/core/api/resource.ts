@@ -2,13 +2,15 @@
  * 由于后端接口设计很特殊
  * 因此将页面所有要调的接口，全部封装在这里
  */
+import { toast } from 'amis'
+import { get } from 'lodash'
 
 import { ReqOption } from '@core/utils/request/types'
 import { setStore } from '@ovine/core/lib/utils/store'
 
 import { relation, storeKey } from '../constants'
 import { ApiName, ApiType } from '../types'
-import { getOrgId, getOrgUniType, isStrTrue } from '../utils'
+import { getLink, getOrgId, getOrgUniType, isStrTrue, isSys, linkTo } from '../utils'
 import { ApiData, getReqOption, requestByOption } from './utils'
 
 // 根据 token 获取用户信息
@@ -20,7 +22,46 @@ export function userSelfInfoApi(data: ApiData, option?: ReqOption) {
       ...data,
     },
     option
-  )
+  ).then((source) => {
+    // 暂不处理 sys
+    if (isSys()) {
+      return source
+    }
+
+    if (get(source, 'relation4_data.is_root')) {
+      source.isOrgRoot = true
+      return source
+    }
+    const limitId = get(source, 'relation4_data.relation2') || ''
+
+    if (!limitId) {
+      toast.error('当前账号暂无权限，请联系管理员设置权限，再重新登录。', '权限异常', {
+        timeout: 4000,
+      })
+      linkTo(getLink('login'))
+      return source
+    }
+
+    return requestByOption({
+      apiType: ApiType.authorization,
+      apiName: ApiName.one,
+      id: limitId,
+    })
+      .then((limit) => {
+        const limitArr = JSON.parse(limit.limit_data)
+        const limits: any = {}
+        limitArr.forEach((i) => {
+          limits[i] = 1
+        })
+        source.org_limit = limits
+        return source
+      })
+      .catch((__) => {
+        toast.error('获取权限数据异常', '权限异常', { timeout: 4000 })
+        linkTo(getLink('login'))
+        return source
+      })
+  })
 }
 
 export function userSelfInfoReqOpt(data: ApiData, option?: ReqOption) {
@@ -95,6 +136,7 @@ export async function sysCreateOrgApi(option: any) {
     orgInfoId: '',
     teamId: '',
     orgId: '',
+    roleId: '',
   }
 
   try {
@@ -139,12 +181,25 @@ export async function sysCreateOrgApi(option: any) {
     })
     ids.orgAdmUserId = `${orgAdmUserId}`
 
+    // 添加一个 超级权限 角色
+    const { id: roleId } = await requestByOption({
+      ...relation.org.role,
+      apiName: ApiName.add,
+      relation1: orgId,
+      is_root: '1', // 超级权限
+      name: '超级权限',
+      desc: '由系统自动创建，拥有该组织所有权限，请谨慎操作。',
+    })
+    ids.roleId = `${roleId}`
+
     // 将创建的 组织 关联到该组织用户
     await requestByOption({
       apiType: relation.org.user.apiType,
       apiName: ApiName.edit,
       id: ids.orgAdmUserId,
-      relation2: ids.orgId,
+      relation2: ids.orgId, // 关联组织
+      relation4: ids.roleId, // 关联权限
+      desc: '本组织超级管理员',
     })
 
     // 将 管理员 关联到 该组织
@@ -187,6 +242,14 @@ export async function sysCreateOrgApi(option: any) {
         ...relation.org.entity,
         id: ids.orgId,
         apiName: ApiName.del,
+      })
+    }
+
+    if (ids.roleId) {
+      await requestByOption({
+        ...relation.org.role,
+        apiName: ApiName.del,
+        id: ids.roleId,
       })
     }
 
