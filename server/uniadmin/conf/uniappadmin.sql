@@ -162,7 +162,6 @@ CREATE TABLE `specifications` (
 
 -- ----------------------------
 -- Table structure for users
--- username: rootadmin password: admin123 type: ovine_system_user
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -190,3 +189,15 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+-- ----------------------------
+-- Insert Init Data
+-- ----------------------------
+
+INSERT INTO users
+( username, password, type) VALUES
+( "rootadmin", "admin123", "ovine_system_user");
+
+
+INSERT INTO configurations
+( type) VALUES
+( "ovine_system");

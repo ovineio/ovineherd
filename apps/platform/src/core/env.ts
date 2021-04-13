@@ -8,13 +8,13 @@ const env = {
   default: {
     disableLimit: true,
     domains: {
-      api: 'https://ovine.igroupes.com', // ovine api 地址
+      api: 'http://39.105.197.166:5288', // ovine api 地址
     },
   },
   // 本地开发
   localhost: {
     domains: {
-      api: 'http://localhost:7049',
+      // api: 'http://localhost:7049',
     },
     // 日志配置
     logger: {
