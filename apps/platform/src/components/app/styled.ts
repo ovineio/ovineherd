@@ -10,6 +10,10 @@ export const AppStyle = createGlobalStyle`
     }
 
     ${({ theme: { ns } }: any) => css`
+      .${ns}Checkbox {
+        white-space: nowrap;
+      }
+
       .table-cell-image {
         .${ns}Image {
           padding: 0;

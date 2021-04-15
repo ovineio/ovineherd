@@ -118,6 +118,7 @@ export const tableSchema = {
       type: 'operation',
       label: '操作',
       width: 110,
+      visibleOn: 'this.editUser || this.delUser',
       buttons: ['$preset.actions.viewUser', '$preset.actions.editUser', '$preset.actions.delUser'],
     },
   ],
@@ -125,6 +126,7 @@ export const tableSchema = {
     actions: {
       add: {
         type: 'action',
+        visibleOn: 'this.addUser',
         align: 'right',
         label: '添加管理员',
         level: 'primary',
@@ -166,6 +168,7 @@ export const tableSchema = {
       },
       editUser: {
         type: 'action',
+        visibleOn: 'this.editUser',
         label: '编辑',
         level: 'link',
         actionType: 'dialog',
@@ -179,6 +182,7 @@ export const tableSchema = {
       },
       delUser: {
         type: 'action',
+        visibleOn: 'this.delUser',
         label: '删除',
         className: 'text-danger',
         level: 'link',

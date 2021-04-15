@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 
 import { useAppContext } from '~/components/app/context'
@@ -16,23 +16,12 @@ export const ConfigRoute = (props) => {
 // 用于登录拦截
 export const PrivateRoute = ({ children, ...rest }) => {
   const { appInfo } = useAppContext()
-  const { orgId, type } = appInfo
+  const { orgId } = appInfo
 
-  const [isMounted, setMounted] = useState(false)
   const loginLink = getLink('login', orgId)
-  const isLoginApp = isMounted && isLogin(type)
+  const isLoginApp = isLogin()
 
-  useUserInfo({
-    isLogin: isMounted && isLoginApp,
-  })
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!isMounted) {
-    return null
-  }
+  useUserInfo()
 
   return (
     <Route

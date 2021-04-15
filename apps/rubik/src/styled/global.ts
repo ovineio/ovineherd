@@ -8,17 +8,14 @@ import { css } from 'styled-components'
 
 // 全局样式, 这里和 scss 类似支持嵌套，与styled变量，
 // 以下用作举例：
-const svg = require('@generated/styles/themes/spinner-default.svg')
 
 const globalStyle = ({ ns }) => css`
-  .${ns}Spinner {
-    background-image: url(${svg}) !important;
-  }
   .cursor-p {
     cursor: pointer;
   }
-  .${ns}TextareaControl {
-    color: #666;
+
+  .${ns}Checkbox {
+    white-space: nowrap;
   }
   .g-no-border-table {
     .${ns}Table {

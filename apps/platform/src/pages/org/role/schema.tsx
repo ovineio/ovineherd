@@ -69,6 +69,7 @@ export const orgRoleSchema = {
               type: 'operation',
               label: '操作',
               width: 150,
+              editRole: 'this.editRole || this.setLimit || this.delRole',
               buttons: [
                 '$preset.actions.editRole',
                 '$preset.actions.setLimit',
@@ -83,6 +84,7 @@ export const orgRoleSchema = {
   preset: {
     actions: {
       roleMember: {
+        visibleOn: 'this.roleMember',
         type: 'action',
         align: 'right',
         label: '成员管理',
@@ -93,6 +95,7 @@ export const orgRoleSchema = {
       },
       addRole: {
         type: 'action',
+        visibleOn: 'this.addRole',
         align: 'right',
         label: '添加角色',
         level: 'primary',
@@ -108,6 +111,7 @@ export const orgRoleSchema = {
       },
       editRole: {
         type: 'action',
+        visibleOn: 'this.editRole',
         label: '编辑',
         level: 'link',
         actionType: 'dialog',
@@ -122,6 +126,7 @@ export const orgRoleSchema = {
       },
       setLimit: {
         type: 'action',
+        visibleOn: 'this.setLimit',
         label: '设置权限',
         level: 'link',
         disabledOn: 'this.is_root',
@@ -134,6 +139,7 @@ export const orgRoleSchema = {
       },
       delRole: {
         type: 'action',
+        visibleOn: 'this.delRole',
         label: '删除',
         className: 'text-danger',
         disabledOn: 'this.is_root',

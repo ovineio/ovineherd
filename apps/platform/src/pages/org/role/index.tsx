@@ -1,4 +1,3 @@
-import { last } from 'lodash'
 import React from 'react'
 
 import Tabs from '~/components/tabs'
@@ -14,20 +13,14 @@ export default () => {
   const pageSchema = useSchema({
     schema: orgRoleSchema,
     getApis: getOrgRoleApi,
-    filterSchema: (schema) => {
-      const editRole = `${checkOrgLimit('orgRole/editRole')}`
-      const setLimit = `${checkOrgLimit('orgRole/editLimit')}`
-      const delRole = `${checkOrgLimit('orgRole/delRole')}`
-
-      schema.preset.actions.addRole.visibleOn = `${checkOrgLimit('orgRole/addRole')}`
-      schema.preset.actions.roleMember.visibleOn = `${checkOrgLimit('orgRole/editMember')}`
-      schema.preset.actions.editRole.visibleOn = editRole
-      schema.preset.actions.setLimit.visibleOn = setLimit
-      schema.preset.actions.delRole.visibleOn = delRole
-
-      last<any>(schema.body.tabs[0].body.columns).visibleOn = editRole || setLimit || delRole
-
-      return schema
+    schemaProps: {
+      data: {
+        addRole: checkOrgLimit('orgRole/addRole'),
+        editRole: checkOrgLimit('orgRole/editRole'),
+        setLimit: checkOrgLimit('orgRole/editLimit'),
+        delRole: checkOrgLimit('orgRole/delRole'),
+        roleMember: checkOrgLimit('orgRole/editMember'),
+      },
     },
   })
 

@@ -9,6 +9,8 @@ import { jumpTo } from '@core/routes/exports'
 import { useSubscriber } from '@core/utils/hooks'
 import { AnyFunc } from '@core/utils/types'
 
+import { useAppContext } from '~/components/app/context'
+
 import { msgKey } from './constants'
 
 type UseSchemaOption = {
@@ -21,6 +23,9 @@ type UseSchemaOption = {
 }
 export function useSchema(option: UseSchemaOption, deps: DependencyList = []) {
   const { schemaProps, schema: optSchema, apis: optApis, getSchema, getApis, filterSchema } = option
+  const { userInfo } = useAppContext()
+  const depArr = [userInfo].concat(deps)
+
   const schemaComponent = useMemo(() => {
     const schema = getSchema ? getSchema() : optSchema
     const apis = getApis ? getApis() : optApis
@@ -33,7 +38,7 @@ export function useSchema(option: UseSchemaOption, deps: DependencyList = []) {
         props={schemaProps}
       />
     )
-  }, deps)
+  }, depArr)
 
   return schemaComponent
 }

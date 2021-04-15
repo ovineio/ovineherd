@@ -13,6 +13,42 @@ import { ApiName, ApiType } from '../types'
 import { getLink, getOrgId, getOrgUniType, isStrTrue, isSys, linkTo } from '../utils'
 import { ApiData, getReqOption, requestByOption } from './utils'
 
+function getSysLimit(source: any) {
+  if (get(source, 'relation4_data.is_root')) {
+    source.isOrgRoot = true
+    return source
+  }
+  const limitId = get(source, 'relation4_data.relation2') || ''
+
+  if (!limitId) {
+    toast.error('当前账号暂无权限，请联系管理员设置权限，再重新登录。', '权限异常', {
+      timeout: 4000,
+    })
+    linkTo(getLink('login'))
+    return source
+  }
+
+  return requestByOption({
+    apiType: ApiType.authorization,
+    apiName: ApiName.one,
+    id: limitId,
+  })
+    .then((limit) => {
+      const limitArr = JSON.parse(limit.limit_data)
+      const limits: any = {}
+      limitArr.forEach((i) => {
+        limits[i] = 1
+      })
+      source.org_limit = limits
+      return source
+    })
+    .catch((__) => {
+      toast.error('获取权限数据异常', '权限异常', { timeout: 4000 })
+      linkTo(getLink('login'))
+      return source
+    })
+}
+
 // 根据 token 获取用户信息
 export function userSelfInfoApi(data: ApiData, option?: ReqOption) {
   return requestByOption(
@@ -28,39 +64,7 @@ export function userSelfInfoApi(data: ApiData, option?: ReqOption) {
       return source
     }
 
-    if (get(source, 'relation4_data.is_root')) {
-      source.isOrgRoot = true
-      return source
-    }
-    const limitId = get(source, 'relation4_data.relation2') || ''
-
-    if (!limitId) {
-      toast.error('当前账号暂无权限，请联系管理员设置权限，再重新登录。', '权限异常', {
-        timeout: 4000,
-      })
-      linkTo(getLink('login'))
-      return source
-    }
-
-    return requestByOption({
-      apiType: ApiType.authorization,
-      apiName: ApiName.one,
-      id: limitId,
-    })
-      .then((limit) => {
-        const limitArr = JSON.parse(limit.limit_data)
-        const limits: any = {}
-        limitArr.forEach((i) => {
-          limits[i] = 1
-        })
-        source.org_limit = limits
-        return source
-      })
-      .catch((__) => {
-        toast.error('获取权限数据异常', '权限异常', { timeout: 4000 })
-        linkTo(getLink('login'))
-        return source
-      })
+    return getSysLimit(source)
   })
 }
 

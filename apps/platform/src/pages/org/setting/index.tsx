@@ -14,13 +14,11 @@ export default () => {
     {
       schema: settingSchema,
       getApis: getOrgSettingApis,
-      filterSchema: (schema) => {
-        const editOrg = `${checkOrgLimit('orgSetting/editOrg')}`
-        const editLogin = `${checkOrgLimit('orgSetting/editLogin')}`
-
-        schema.body.tabs[1].visibleOn = editOrg
-        schema.body.tabs[2].visibleOn = editLogin
-        return schema
+      schemaProps: {
+        data: {
+          editOrg: checkOrgLimit('orgSetting/editOrg'),
+          editLogin: checkOrgLimit('orgSetting/editOrg'),
+        },
       },
     },
     [activeKey]

@@ -199,6 +199,7 @@ export const settingSchema = {
       },
       {
         title: '组织信息',
+        visibleOn: 'this.editOrg',
         hash: 'orgInfo',
         icon: 'fa p-r-xs fa-cog',
         body: {
@@ -308,6 +309,7 @@ export const settingSchema = {
       {
         title: '登录设置',
         hash: 'orgLogin',
+        visibleOn: 'this.editLogin',
         icon: 'fa p-r-xs fa-window-maximize',
         body: [
           {

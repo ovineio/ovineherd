@@ -4,7 +4,7 @@
 
 import { toast } from 'amis'
 
-import { isEmpty } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 import { setAppLimits } from '@core/routes/limit/exports'
 import { clearStore, getStore, setStore } from '@core/utils/store'
@@ -83,6 +83,9 @@ export async function fetchUserInfo() {
 
 export function setUserInfo(info: any) {
   userInfo = info
+  if (isOrgUser(userInfo)) {
+    //
+  }
   setStore(storeKey.userInfo, info)
 }
 

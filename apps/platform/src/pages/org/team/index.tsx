@@ -30,13 +30,11 @@ export default () => {
     getApis: getOrgTeamApis,
     schemaProps: {
       scopeRef: getTableRef,
-    },
-    filterSchema: (schema) => {
-      schema.preset.actions.add.visibleOn = `${checkOrgLimit('orgTeam/addUser')}`
-      schema.preset.actions.editUser.visibleOn = `${checkOrgLimit('orgTeam/editUser')}`
-      schema.preset.actions.delUser.visibleOn = `${checkOrgLimit('orgTeam/delUser')}`
-
-      return schema
+      data: {
+        addUser: checkOrgLimit('orgTeam/addUser'),
+        editUser: checkOrgLimit('orgTeam/editUser'),
+        delUser: checkOrgLimit('orgTeam/delUser'),
+      },
     },
   })
 

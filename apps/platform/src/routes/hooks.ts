@@ -10,7 +10,7 @@ import { initState, useAppContext } from '~/components/app/context'
 import { orgConfigApi, sysConfigApi } from '~/core/api/resource'
 import { msgKey, storeKey } from '~/core/constants'
 import { AppInfo, CustomType } from '~/core/types'
-import { fetchUserInfo } from '~/core/user'
+import { fetchUserInfo, isLogin } from '~/core/user'
 import { getAppType, getOrgId, isSysAdmLogin } from '~/core/utils'
 
 // 获取 应用 基本信息
@@ -121,11 +121,13 @@ export const useAppConfig = () => {
 }
 
 // 获取用户信息
-export function useUserInfo(option: { isLogin: boolean }) {
+export function useUserInfo() {
   const { setContext } = useAppContext()
-  const { isLogin } = option
 
   const fetchInfo = () => {
+    if (!isLogin()) {
+      return
+    }
     fetchUserInfo().then((userInfo: any) => {
       // console.log('@===>', userInfo)
       setContext((d) => {
@@ -135,10 +137,7 @@ export function useUserInfo(option: { isLogin: boolean }) {
   }
 
   useEffect(() => {
-    if (!isLogin) {
-      return
-    }
     fetchInfo()
     subscribe(msgKey.updateSelfInfo, fetchInfo)
-  }, [isLogin])
+  }, [])
 }
