@@ -201,7 +201,7 @@ const members = {
           {
             type: 'action',
             label: '移除角色',
-            disabledOn: '!role.name || is_root',
+            disabledOn: '!this.role.name || this.is_root',
             level: 'link',
             className: 'text-danger',
             actionType: 'ajax',

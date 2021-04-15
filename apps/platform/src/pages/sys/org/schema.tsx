@@ -364,6 +364,7 @@ const orgSchema = {
       editOrg: {
         type: 'form',
         mode: 'horizontal',
+        horizontal: { left: 'col-sm-3', right: 'col-sm-8' },
         controls: [
           {
             name: 'user_id',
@@ -419,7 +420,7 @@ const orgSchema = {
           {
             type: 'tpl',
             tpl: `
-              <h6 class="cxd-section-header m-t-md m-b-md" style="margin-left: -20px;">组织信息</h6>
+              <h6 class="cxd-section-header m-t-md m-b-md" >组织信息</h6>
             `,
           },
           {
@@ -489,7 +490,7 @@ const orgSchema = {
           {
             type: 'tpl',
             tpl: `
-              <h6 class="cxd-section-header m-t-md m-b-md" style="margin-left: -20px;">管理员信息</h6>
+              <h6 class="cxd-section-header m-t-md m-b-md" >管理员信息</h6>
               `,
           },
           {
@@ -514,23 +515,23 @@ const orgSchema = {
                 },
                 controls: [
                   {
-                    name: 'real_name',
+                    name: 'user.real_name',
                     label: '姓名',
                     type: 'static',
                   },
                   {
                     type: 'static',
-                    name: 'username',
+                    name: 'user.username',
                     label: '登录账号',
                   },
                   {
                     type: 'static',
-                    name: 'email',
+                    name: 'user.email',
                     label: '邮箱',
                   },
                   {
                     type: 'static',
-                    name: 'phone',
+                    name: 'user.phone',
                     label: '手机号',
                   },
                 ],

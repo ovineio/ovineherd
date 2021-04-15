@@ -1,15 +1,9 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const StyledRegister = styled.div`
   position: fixed;
   height: 100%;
   width: 100%;
-
-  .cxd-Page-body {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-  }
 
   .img-bk {
     min-width: 105%;
@@ -34,20 +28,31 @@ export const StyledRegister = styled.div`
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
   }
 
-  .cxd-Panel--form {
-    position: relative;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-  }
-  .cxd-Panel-heading {
-    display: none;
-  }
-  .cxd-Panel-body {
-    padding: 0;
-  }
-  .cxd-Panel-footer {
-    padding-right: 0;
-  }
+  ${({ theme: { ns } }) => css`
+    .${ns}Page-main {
+      background: transparent;
+    }
+    .${ns}Page-body {
+      position: fixed;
+      height: 100%;
+      width: 100%;
+    }
+
+    .${ns}Panel--form {
+      position: relative;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      box-shadow: none;
+    }
+    .${ns}Panel-heading {
+      display: none;
+    }
+    .${ns}Panel-body {
+      padding: 0;
+    }
+    .${ns}Panel-footer {
+      padding-right: 0;
+    }
+  `}
 `

@@ -43,8 +43,8 @@ export const settingSchema = {
                       md: 6,
                       mode: 'horizontal',
                       horizontal: {
-                        left: 'col-md-2',
-                        right: 'col-md-10',
+                        left: 'col-md-3',
+                        right: 'col-md-8',
                       },
                       controls: [
                         {
@@ -187,6 +187,7 @@ export const settingSchema = {
                 icon: 'fa fa-lock pull-left',
                 level: 'success',
                 actionType: 'dialog',
+                className: 'm-t-md',
                 dialog: {
                   title: '修改密码',
                   body: '$preset.forms.updatePassword',

@@ -138,8 +138,10 @@ const orgSchema = {
             label: '用户ID',
             type: 'tpl',
             tpl: `
-            <span><%= data.id %></span> 
-            <span class="badge badge-pill badge-info m-l-md">创建于: <%= data.created_time%></span>
+            <div>
+              <span><%= data.id %></span> 
+              <span class="badge badge-pill badge-info m-l-md">创建于: <%= data.created_time%></span>
+            </div>
           `,
           },
           {

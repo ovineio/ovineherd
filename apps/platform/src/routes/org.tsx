@@ -12,9 +12,9 @@ import Team from '~/pages/org/team'
 export default (props: any) => {
   const { pathPrefix } = props
 
-  const limit = getOrgLimit('pages', { pathPrefix })
+  const limits = getOrgLimit('pages', { pathPrefix })
 
-  if (!limit.redirect) {
+  if (!limits.redirect) {
     linkTo(getLink('login'))
     return null
   }
@@ -22,24 +22,24 @@ export default (props: any) => {
   return (
     <Switch>
       <Route exact path={`${pathPrefix}`}>
-        <Redirect to={limit.redirect} />
+        <Redirect to={limits.redirect} />
       </Route>
-      {limit.application && (
+      {limits.application && (
         <Route path={`${pathPrefix}application`}>
           <App />
         </Route>
       )}
-      {limit.team && (
+      {limits.team && (
         <Route path={`${pathPrefix}team`}>
           <Team />
         </Route>
       )}
-      {limit.role && (
+      {limits.role && (
         <Route path={`${pathPrefix}role`}>
           <Role />
         </Route>
       )}
-      {limit.setting && (
+      {limits.setting && (
         <Route path={`${pathPrefix}setting`}>
           <Setting />
         </Route>

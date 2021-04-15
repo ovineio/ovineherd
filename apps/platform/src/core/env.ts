@@ -14,7 +14,7 @@ const env = {
   // 本地开发
   localhost: {
     domains: {
-      // api: 'http://localhost:7049',
+      api: 'http://localhost:7049',
     },
     // 日志配置
     logger: {

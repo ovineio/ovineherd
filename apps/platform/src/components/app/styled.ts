@@ -12,12 +12,11 @@ export const AppStyle = createGlobalStyle`
     ${({ theme: { ns } }: any) => css`
       .table-cell-image {
         .${ns}Image {
-          width: 50px;
-          height: 50px;
           padding: 0;
           &-thumb {
+            width: 50px;
+            height: 50px;
             overflow: inherit;
-            height: 100%;
           }
         }
       }

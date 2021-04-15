@@ -82,6 +82,8 @@ export function checkOrgLimit(key?: string) {
 }
 
 export function getOrgLimit(action: string, opts?: any): any {
+  const isRoot = userInfo.isOrgRoot
+
   // 应用 apps 相关的权限解析
   const { id: appId = '', pathPrefix = '' } = opts || {}
 
@@ -97,12 +99,17 @@ export function getOrgLimit(action: string, opts?: any): any {
     if (appId) {
       const prefix = `app/${appId}/`
       appActions.forEach((act) => {
-        if ((orgLimit[`orgApp/${act}`] && !orgLimit[`${prefix  }ignore`]) || orgLimit[prefix + act]) {
+        if (isRoot) {
+          info.viewApp = true
+          info[act] = true
+          return
+        }
+        if ((orgLimit[`orgApp/${act}`] && !orgLimit[`${prefix}ignore`]) || orgLimit[prefix + act]) {
           info.viewApp = true
           info[act] = true
         }
       })
-      if (!info.viewApp && info.addApp && !orgLimit[`${prefix  }ignore`]) {
+      if (!info.viewApp && info.addApp && !orgLimit[`${prefix}ignore`]) {
         info.viewApp = true
       }
     }
@@ -110,9 +117,9 @@ export function getOrgLimit(action: string, opts?: any): any {
 
   // 页面相关权限
   if (action === 'pages') {
-    info.application = new RegExp(['addApp'].concat(appActions).join('|')).test(limitStr)
-    info.team = /orgTeam/.test(limitStr)
-    info.role = /orgRole/.test(limitStr)
+    info.application = isRoot || new RegExp(['addApp'].concat(appActions).join('|')).test(limitStr)
+    info.team = isRoot || /orgTeam/.test(limitStr)
+    info.role = isRoot || /orgRole/.test(limitStr)
     info.setting = true // 一定会有权限
 
     if (pathPrefix) {
