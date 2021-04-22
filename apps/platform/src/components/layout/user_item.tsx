@@ -10,16 +10,24 @@ import { Amis } from '@core/components/amis/schema'
 import { publish } from '@ovine/core/lib/utils/message'
 
 import { msgKey } from '~/core/constants'
+import { setUserInfo } from '~/core/user'
 import { getLink } from '~/core/utils'
 
 import { useAppContext } from '../app/context'
 import * as S from './styled'
 
 export default () => {
-  const { userInfo: info, appInfo } = useAppContext()
+  const { userInfo: info = {}, appInfo, setContext } = useAppContext()
 
   const loginLink = getLink('login', appInfo.orgId)
   const selfInfoLink = getLink('selfInfo', appInfo.orgId)
+
+  const onLoginOutCLick = () => {
+    setUserInfo({})
+    setContext((d) => {
+      d.userInfo = undefined
+    })
+  }
 
   const renderAvatar = () => {
     return info.avatar || !info.real_name ? (
@@ -69,7 +77,7 @@ export default () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to={loginLink}>
+                  <Link to={loginLink} onClick={onLoginOutCLick}>
                     <i className="iconfont icon-exit" />
                     <span>退出登录</span>
                   </Link>

@@ -120,6 +120,7 @@ export const settingSchema = {
                 type: 'action',
                 label: '修改密码',
                 icon: 'fa fa-lock pull-left',
+                className: 'm-t-md',
                 level: 'success',
                 actionType: 'dialog',
                 dialog: {

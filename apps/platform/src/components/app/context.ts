@@ -5,7 +5,6 @@ import { getStore } from '@core/utils/store'
 
 import { storeKey } from '~/core/constants'
 import { AppInfo, AppType, CustomType, UserInfo } from '~/core/types'
-import { getUserInfo } from '~/core/user'
 
 export type AppContextState = {
   custom: Partial<CustomType>
@@ -22,7 +21,7 @@ export const initState: AppContextState = {
     orgId: '',
     isSysAdmLogin: true,
   },
-  userInfo: getUserInfo(),
+  userInfo: undefined,
   custom: getStore<CustomType>(storeKey.siteCustom) || {},
   setContext: () => {
     //

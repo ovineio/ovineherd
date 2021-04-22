@@ -123,6 +123,7 @@ export const schema = {
                 label: '修改密码',
                 icon: 'fa fa-lock pull-left',
                 level: 'success',
+                className: 'm-t-md',
                 actionType: 'dialog',
                 dialog: {
                   title: '修改密码',

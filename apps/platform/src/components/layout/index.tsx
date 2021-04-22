@@ -50,19 +50,21 @@ type LayoutProps = {
 export default (props: LayoutProps) => {
   const { children } = props
   const { path, url, params } = useRouteMatch<{ orgId: string }>()
-  const { appInfo } = useAppContext()
+  const { appInfo, userInfo } = useAppContext()
 
   return (
     <S.Layout>
       <Header menus={menus[appInfo.type]} urlPrefix={url} />
-      <S.Body className="m-t-md">
-        {params.orgId ? (
-          <OrgRoutes pathPrefix={`/org/${params.orgId}/`} />
-        ) : (
-          <SysRoutes pathPrefix={path} />
-        )}
-        {children}
-      </S.Body>
+      {userInfo && (
+        <S.Body className="m-t-md">
+          {params.orgId ? (
+            <OrgRoutes pathPrefix={`/org/${params.orgId}/`} />
+          ) : (
+            <SysRoutes pathPrefix={path} />
+          )}
+          {children}
+        </S.Body>
+      )}
     </S.Layout>
   )
 }

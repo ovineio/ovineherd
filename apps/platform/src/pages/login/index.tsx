@@ -41,7 +41,7 @@ const initState = {
 }
 export default () => {
   const history = useHistory()
-  const { custom, appInfo } = useAppContext()
+  const { custom, appInfo, setContext } = useAppContext()
 
   const { isSysAdmLogin, orgId } = appInfo
 
@@ -92,6 +92,9 @@ export default () => {
         return
       }
 
+      setContext((d) => {
+        d.userInfo = undefined
+      })
       setStore(storeKey.auth, data.id)
       setUserInfo(data)
 
