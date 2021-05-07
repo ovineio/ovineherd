@@ -194,10 +194,10 @@ CREATE TABLE `users` (
 -- ----------------------------
 
 INSERT INTO users
-( username, password, type) VALUES
-( "rootadmin", "admin123", "ovine_system_user");
+( username, password, type, created_time, updated_time) VALUES
+( "rootadmin", "admin123", "ovine_system_user", 1620378715197, 1620378715197);
 
 
 INSERT INTO configurations
-( type) VALUES
-( "ovine_system");
+( type, created_time, updated_time) VALUES
+( "ovine_system", 1620378715197, 1620378715197);

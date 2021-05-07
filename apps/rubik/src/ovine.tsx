@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep, set } from 'lodash'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -54,6 +54,7 @@ const renderOvineApp = (props) => {
       container ? container.querySelector(appRootSelector) : document.querySelector(appRootSelector)
     )
   })
+  set(window, 'ovine.app', app)
 }
 
 export default renderOvineApp

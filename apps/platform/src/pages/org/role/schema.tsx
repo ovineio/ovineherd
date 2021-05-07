@@ -36,7 +36,7 @@ export const orgRoleSchema = {
               toggled: false,
             },
             {
-              name: 'name',
+              name: 'label',
               label: '角色名称',
               type: 'text',
               // quickEdit: {
@@ -155,7 +155,7 @@ export const orgRoleSchema = {
         controls: [
           {
             type: 'text',
-            name: 'name',
+            name: 'label',
             label: '角色名称',
             required: true,
             placeholder: '请输入角色名称',

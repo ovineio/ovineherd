@@ -169,7 +169,7 @@ const members = {
       //   $ref: 'globalImageCell',
       // },
       {
-        name: 'role.name',
+        name: 'role.label',
         label: '角色名称',
         type: 'text',
       },

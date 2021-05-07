@@ -5,6 +5,7 @@
 .eslintcache
 .tmp
 .ovine
+backup
 
 npm-debug.log
 yarn-error.log

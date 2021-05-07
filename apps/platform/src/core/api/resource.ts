@@ -191,7 +191,7 @@ export async function sysCreateOrgApi(option: any) {
       apiName: ApiName.add,
       relation1: orgId,
       is_root: '1', // 超级权限
-      name: '超级权限',
+      label: '超级权限',
       desc: '由系统自动创建，拥有该组织所有权限，请谨慎操作。',
     })
     ids.roleId = `${roleId}`

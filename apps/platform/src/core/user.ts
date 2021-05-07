@@ -95,7 +95,7 @@ export function getOrgLimit(action: string, opts?: any): any {
 
   // apps 页面的权限
   if (action === 'apps') {
-    info.addApp = orgLimit['orgApp/addApp']
+    info.addApp = isRoot || orgLimit['orgApp/addApp']
     if (appId) {
       const prefix = `app/${appId}/`
       appActions.forEach((act) => {

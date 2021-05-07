@@ -40,7 +40,7 @@ export const getSchema = () => {
           toggled: false,
         },
         {
-          name: 'name',
+          name: 'label',
           label: '角色名称',
           type: 'text',
         },
@@ -159,7 +159,7 @@ export const getSchema = () => {
           controls: [
             {
               type: 'text',
-              name: 'name',
+              name: 'label',
               label: '角色名称',
               required: true,
               placeholder: '请输入角色名称',
