@@ -1,6 +1,6 @@
 import { app } from '@ovine/core/lib/app'
 
-import { getLink } from '~/core/utils'
+// import { getLink } from '~/core/utils'
 
 import { registerApis } from './api'
 
@@ -36,7 +36,7 @@ const registerSchema = {
             icon: 'fa fa-remove pull-left',
             level: 'light',
             onAction: () => {
-              app.routerHistory.push(getLink('login'))
+              app.routerHistory.push('/sys/login')
             },
           },
         ],
