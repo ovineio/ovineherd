@@ -21,6 +21,7 @@ module.exports = (option) => {
     publicPath: publicPathMap[env], // 静态资源公共路径
     favicon: '/static/images/favicon.ico',
     title: 'app',
+    appKey: 'rubik',
     envModes: ['localhost', 'staging', 'production'], // 环境列表
     dll: {
       useJsdelivr: true,

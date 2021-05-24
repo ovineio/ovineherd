@@ -21,6 +21,7 @@ module.exports = (option) => {
     publicPath: publicPathMap[env], // 静态资源公共路径
     favicon: '/static/images/favicon.ico',
     title: 'OvineHerd', // 页面标题
+    appKey: 'platform',
     envModes: ['localhost', 'staging', 'production'], // 环境列表
     dll: {
       useJsdelivr: true,

@@ -194,10 +194,10 @@ CREATE TABLE `users` (
 -- ----------------------------
 
 INSERT INTO users
-( username, password, type, created_time, updated_time) VALUES
-( "rootadmin", "admin123", "ovine_system_user", 1620378715197, 1620378715197);
+(id, username, password, type, phone, email, created_time, updated_time) VALUES
+(166129168264724480, "rootadmin", "admin123", "ovine_system_user", "12312341234", "root@qq.com", "2021-04-02 18:18:00", "2021-04-03 03:04:19");
 
 
 INSERT INTO configurations
-( type, created_time, updated_time) VALUES
-( "ovine_system", 1620378715197, 1620378715197);
+(id, type, created_time, updated_time) VALUES
+(166140488087240704, "ovine_system", "2021-04-01 19:02:59", "2021-05-09 07:36:05");
