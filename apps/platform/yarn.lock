@@ -975,10 +975,10 @@
   resolved "https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@ovine/cli@0.1.4-alpha.0":
+"@ovine/cli@0.1.5":
   version "0.1.5"
-  resolved "https://registry.npmjs.org/@ovine/cli/-/cli-0.1.4-alpha.0.tgz#5fe14bb04cbb58d2be60887eece5c28a043974b4"
-  integrity sha512-1jT4G+vT9WjB04mvQVVkHzUta29rtpSo3tRkz8rRnxkwBGyQgSR8gGVsLwQJKVS6dmxOYNaWygpFD+ELxhresA==
+  resolved "https://registry.npmjs.org/@ovine/cli/-/cli-0.1.5.tgz#880faaeaf009c988a9f07f52665cf32a38f91d10"
+  integrity sha512-R8omtJAhrzXkkDwMXs5kN/6BCJ0rpzYaDLjAfGfMpxIlqgdQqB4bfJqX4/4uc8tyYtWQIOwyje/nXLX1NwX8ag==
   dependencies:
     "@babel/core" "^7.7.4"
     "@babel/plugin-syntax-dynamic-import" "^7.7.4"
@@ -1032,13 +1032,13 @@
     webpack-merge "^4.2.2"
     webpackbar "^4.0.0"
 
-"@ovine/core@0.1.4-alpha.0":
+"@ovine/core@0.1.5":
   version "0.1.5"
-  resolved "https://registry.npmjs.org/@ovine/core/-/core-0.1.4-alpha.0.tgz#afca5c463f2f03b5b02e412b312edd883e132caf"
-  integrity sha512-XZERZP7gQ0tdzbXOLPjmd979OO3r8OwRthYDHnPy8hgXW6YO8BmnzPFHsXYCyRcSWZ87D65GOAQaF+5GUGQxqQ==
+  resolved "https://registry.npmjs.org/@ovine/core/-/core-0.1.5.tgz#980eb044b14326f0cc3f08512a562e466f2a57ae"
+  integrity sha512-vtkahd/rrU0FSfsbzik53Q0sUGJS1ff7wAMMv6tCgp1/MZTTw8zj6MA1OxAtPU0ADiKxoX+WQIeSQ+H+LIqgcA==
   dependencies:
     abortcontroller-polyfill "^1.4.0"
-    amis "1.1.6"
+    amis "1.2.1"
     animate.css "^3.7.2"
     bootstrap "^4.4.1"
     copy-to-clipboard "^3.3.1"
@@ -1585,10 +1585,10 @@ alphanum-sort@^1.0.0:
   resolved "https://registry.npmjs.org/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
-amis@1.1.6:
-  version "1.1.6"
-  resolved "https://registry.npmjs.org/amis/-/amis-1.1.6.tgz#5fa99ccc2b39bb59653ba9b09dc4de7670774177"
-  integrity sha512-meDTR6KUuRmI4PZRAPlU3HWRySnRfmm3X/uiUrY1NsbDxK/BThoOmq7siaRBKPb/1QLFlIsAs9LZ+zFLZdxLig==
+amis@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/amis/-/amis-1.2.1.tgz#81b4e03c0e0bbeb225dd97c610edd6cf15dbdcd3"
+  integrity sha512-DzdLqHUnIBaaaE4dnYiBvLeIIj/7zFXYHH2awUk9IhpPcH5Np3a/mRWtW+1amYtix6211n39mNaIoSCK0WutXA==
   dependencies:
     ansi-to-react "^6.1.4"
     async "2.6.0"
@@ -1597,7 +1597,7 @@ amis@1.1.6:
     classnames "2.3.1"
     dom-helpers "^3.3.1"
     downshift "3.1.4"
-    echarts "5.0.2"
+    echarts "5.1.2"
     echarts-stat "^1.2.0"
     exceljs "^4.2.0"
     file-saver "^2.0.2"
@@ -1614,9 +1614,9 @@ amis@1.1.6:
     match-sorter "2.2.1"
     mobx "^4.5.0"
     mobx-react "^6.1.4"
-    mobx-state-tree "^3.7.0"
+    mobx-state-tree "^3.17.3"
     moment "^2.19.3"
-    monaco-editor "0.23.0"
+    monaco-editor "0.24.0"
     papaparse "^5.3.0"
     prop-types "^15.6.1"
     punycode "^2.1.1"
@@ -1630,14 +1630,14 @@ amis@1.1.6:
     react-dom "^16.8.6"
     react-dropzone "11.2.4"
     react-input-range "1.3.0"
-    react-json-tree "0.13.0"
+    react-json-tree "0.15.0"
     react-overlays "0.8.3"
     react-textarea-autosize "5.1.0"
     react-transition-group "2.9.0"
     react-visibility-sensor "3.11.0"
     setimmediate "1.0.5"
     sortablejs "1.10.0"
-    tinymce "5.6.2"
+    tinymce ">=5.7.1"
     tslib "^2.1.0"
     uncontrollable "7.0.2"
     video-react "0.14.1"
@@ -4177,13 +4177,13 @@ echarts-stat@^1.2.0:
   resolved "https://registry.npmjs.org/echarts-stat/-/echarts-stat-1.2.0.tgz#d1e7a05d1827724c5cde81f76ee1d75a901746a2"
   integrity sha512-zLd7Kgs+tuTSeaK0VQEMNmnMivEkhvHIk1gpBtLzpRerfcIQ+Bd5XudOMmtwpaTc1WDZbA7d1V//iiBccR46Qg==
 
-echarts@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.npmjs.org/echarts/-/echarts-5.0.2.tgz#1726d17a57cf05d62cd0567b4325e1201a56baf6"
-  integrity sha512-En0VYpc96nw2/2AZoBWPHsGi471zMublttj50kfFpYAeR4geup0Tj9iVgEXh7QYZFPnRiruDJEjcB5PXZ+BYzQ==
+echarts@5.1.2:
+  version "5.1.2"
+  resolved "https://registry.npmjs.org/echarts/-/echarts-5.1.2.tgz#aa1ab0cef5b74fa2f7c620261a5f286893d30fd1"
+  integrity sha512-okUhO4sw22vwZp+rTPNjd/bvTdpug4K4sHNHyrV8NdAncIX9/AarlolFqtJCAYKGFYhUBNjIWu1EznFrSWTFxg==
   dependencies:
     tslib "2.0.3"
-    zrender "5.0.4"
+    zrender "5.1.1"
 
 ecstatic@^3.3.2:
   version "3.3.2"
@@ -6926,7 +6926,7 @@ mobx-react@^6.1.4:
   dependencies:
     mobx-react-lite "^2.2.0"
 
-mobx-state-tree@^3.7.0:
+mobx-state-tree@^3.17.3:
   version "3.17.3"
   resolved "https://registry.npmjs.org/mobx-state-tree/-/mobx-state-tree-3.17.3.tgz#e9c40dca17e7b72ad01270852a516145bf6b6c72"
   integrity sha512-ph4ee/Lh1qUJqHEGkfdWdBAUGdG+VAu7xZbYX/+4qem5hSSpdeZYAJOcN3bhtgEH8Wh/ZxRpQVOLM0aMFXfBSw==
@@ -6948,10 +6948,10 @@ monaco-editor-webpack-plugin@3.0.1:
   dependencies:
     loader-utils "^2.0.0"
 
-monaco-editor@0.23.0:
-  version "0.23.0"
-  resolved "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.23.0.tgz#24844ba5640c7adb3a2a3ff3b520cf2d7170a6f0"
-  integrity sha512-q+CP5zMR/aFiMTE9QlIavGyGicKnG2v/H8qVvybLzeFsARM8f6G9fL0sMST2tyVYCwDKkGamZUI6647A0jR/Lg==
+monaco-editor@0.24.0:
+  version "0.24.0"
+  resolved "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.24.0.tgz#990b55096bcc95d08d8d28e55264c6eb17707269"
+  integrity sha512-o1f0Lz6ABFNTtnEqqqvlY9qzNx24rQZx1RgYNQ8SkWkE+Ka63keHH/RqxQ4QhN4fs/UYOnvAtEUZsPrzccH++A==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -8393,10 +8393,10 @@ react-is@^16.12.0, react-is@^16.3.2, react-is@^16.5.2, react-is@^16.6.0, react-i
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-json-tree@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.npmjs.org/react-json-tree/-/react-json-tree-0.13.0.tgz#49b1e68e4ed7f4f918142a4b0d9af6c533c86a7d"
-  integrity sha512-FPJUQzYWi7pvBUAnMd9ENOnAUT2mXLhe01VUbPfKH9Q4gk4FQ0fpS1e1WZ3o7g6zfYJpYJeBTo1WwlMHlMlZOw==
+react-json-tree@0.15.0:
+  version "0.15.0"
+  resolved "https://registry.npmjs.org/react-json-tree/-/react-json-tree-0.15.0.tgz#16a5bbed761f711d1656de6c62818d40ddb09442"
+  integrity sha512-/bEFXZBfLFiep6ReuzatR8mz9G7sRmejElRDgcAuqY0Jsx7llouax2DM03rlQifrUJgmvTGmPA+olyWYyGagqA==
   dependencies:
     "@types/prop-types" "^15.7.3"
     prop-types "^15.7.2"
@@ -9772,10 +9772,10 @@ tinycolor2@^1.4.1:
   resolved "https://registry.npmjs.org/tinycolor2/-/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
   integrity sha512-vJhccZPs965sV/L2sU4oRQVAos0pQXwsvTLkWYdqJ+a8Q5kPFzJTuOFwy7UniPli44NKQGAglksjvOcpo95aZA==
 
-tinymce@5.6.2:
-  version "5.6.2"
-  resolved "https://registry.npmjs.org/tinymce/-/tinymce-5.6.2.tgz#4c20c22e328c5d0baab204928dbc2b0ecbed18b4"
-  integrity sha512-z7zvM5seOPiW86/vqf08kStwW5Zs5U9oQfuqh2rTj4jEcT2QzxT0v72i2zw3W6rbTLldkAej6edFZphj5ee5zg==
+tinymce@>=5.7.1:
+  version "5.9.2"
+  resolved "https://registry.npmjs.org/tinymce/-/tinymce-5.9.2.tgz#c56a1d7800ac23026fbe6e0fcf444c0f157ccafe"
+  integrity sha512-/dHTsbxo0YwLvB5krRqiw/qHEm04/k6l0dvAQ3hO5oNw4e9QalKcUQCdr+g/b/FWcsUMP6scvKmm8MX50/j3Cg==
 
 tmp@^0.0.33:
   version "0.0.33"
@@ -10569,9 +10569,9 @@ zip-stream@^4.0.4:
     compress-commons "^4.0.2"
     readable-stream "^3.6.0"
 
-zrender@5.0.4:
-  version "5.0.4"
-  resolved "https://registry.npmjs.org/zrender/-/zrender-5.0.4.tgz#89c355af908b9f64a301b38f751b7951f2c8a95a"
-  integrity sha512-DJpy0yrHYY5CuH6vhb9IINWbjvBUe/56J8aH86Jb7O8rRPAYZ3M2E469Qf5B3EOIfM3o3aUrO5edRQfLJ+l1Qw==
+zrender@5.1.1:
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/zrender/-/zrender-5.1.1.tgz#0515f4f8cc0f4742f02a6b8819550a6d13d64c5c"
+  integrity sha512-oeWlmUZPQdS9f5hK4pV21tHPqA3wgQ7CkKkw7l0CCBgWlJ/FP+lRgLFtUBW6yam4JX8y9CdHJo1o587VVrbcoQ==
   dependencies:
     tslib "2.0.3"

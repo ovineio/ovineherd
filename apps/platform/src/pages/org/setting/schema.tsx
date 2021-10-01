@@ -34,6 +34,7 @@ export const settingSchema = {
                       mode: 'normal',
                       controls: [
                         {
+                          label: false,
                           type: 'static-image',
                           name: 'logo',
                         },
@@ -42,10 +43,10 @@ export const settingSchema = {
                     {
                       md: 6,
                       mode: 'horizontal',
-                      horizontal: {
-                        left: 'col-md-3',
-                        right: 'col-md-8',
-                      },
+                      // horizontal: {
+                      //   left: 'col-md-3',
+                      //   right: 'col-md-8',
+                      // },
                       controls: [
                         {
                           type: 'static',
@@ -105,25 +106,25 @@ export const settingSchema = {
                         {
                           type: 'static',
                           name: 'id',
-                          label: '系统ID',
+                          label: '系统ID：',
                         },
                         {
                           type: 'static',
                           name: 'username',
-                          label: '登录账号',
+                          label: '登录账号：',
                         },
                         {
                           type: 'static',
                           name: 'real_name',
                           placeholder: '请输入姓名',
-                          label: '姓名',
+                          label: '姓名：',
                           quickEdit: true,
                         },
                         {
                           type: 'static',
                           name: 'email',
                           placeholder: '请输入邮箱地址',
-                          label: '邮箱',
+                          label: '邮箱：',
                           quickEdit: {
                             type: 'email',
                           },
@@ -132,7 +133,7 @@ export const settingSchema = {
                           type: 'static',
                           name: 'phone',
                           placeholder: '请输入手机号',
-                          label: '手机号',
+                          label: '手机号：',
                           quickEdit: true,
                         },
                       ],

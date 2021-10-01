@@ -1,5 +1,5 @@
 import { OptionsControl } from 'amis'
-import TextControl from 'amis/lib/renderers/Form/Text'
+import TextControl from 'amis/lib/renderers/Form/InputText'
 import * as React from 'react'
 
 import styled from 'styled-components'

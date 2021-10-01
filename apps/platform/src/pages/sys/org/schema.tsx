@@ -412,13 +412,15 @@ const orgSchema = {
       },
       viewOrg: {
         type: 'form',
-        horizontal: {
-          left: 'col-md-2',
-          right: 'col-md-10',
-        },
+        mode: 'horizontal',
+        // horizontal: {
+        //   left: 'col-md-2',
+        //   right: 'col-md-10',
+        // },
         controls: [
           {
             type: 'tpl',
+            mode: 'inline',
             tpl: `
               <h6 class="cxd-section-header m-t-md m-b-md" >组织信息</h6>
             `,
@@ -489,6 +491,7 @@ const orgSchema = {
           },
           {
             type: 'tpl',
+            mode: 'inline',
             tpl: `
               <h6 class="cxd-section-header m-t-md m-b-md" >管理员信息</h6>
               `,
