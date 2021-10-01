@@ -36,8 +36,8 @@ const webpackConfig = {
     clientLogLevel: 'warning',
     disableHostCheck: true,
     compress: true,
-    // open: true,
-    // openPage: config.publicPath.slice(1),
+    open: true,
+    openPage: 'platform/center/sys/admin',
     headers: {
       'Access-Control-Allow-Origin': '*',
     },

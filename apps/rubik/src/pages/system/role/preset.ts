@@ -136,7 +136,7 @@ const getAppRoleApis = () => {
     {
       apiType: relation.app.role.apiType,
       type: relation.app.role.type,
-      relation1: appId,
+      q_relation1: appId,
       apiName: ApiName.list,
       '&': '$$',
     },
@@ -145,7 +145,7 @@ const getAppRoleApis = () => {
         const options = source.data.items.map((item) => {
           return {
             value: item.id,
-            label: item.name,
+            label: item.label,
           }
         })
         source.data = { options }
@@ -208,7 +208,7 @@ const getOrgRoleApis = () => {
         const options = source.data.items.map((item) => {
           return {
             value: item.id,
-            label: item.name,
+            label: item.label,
           }
         })
         source.data = { options }

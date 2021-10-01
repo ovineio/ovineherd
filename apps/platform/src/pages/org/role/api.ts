@@ -35,7 +35,7 @@ export const getOrgRoleApi = () => {
     {
       apiType: relation.org.role.apiType,
       type: relation.org.role.type,
-      relation1: orgId,
+      q_relation1: orgId,
       apiName: ApiName.list,
       '&': '$$',
     },
@@ -44,7 +44,7 @@ export const getOrgRoleApi = () => {
         const options = source.data.items.map((item) => {
           return {
             value: item.id,
-            label: item.name,
+            label: item.label,
           }
         })
         source.data = { options }
