@@ -20,5 +20,5 @@ node_modules
 /packages/init/tmp/*
 
 /server/uniadmin/conf/app.conf
-/server/uniadmin/static/upload/images/
+# /server/uniadmin/static/upload/images/
 /server/uniadmin/nohup.out

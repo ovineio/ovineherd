@@ -1,6 +1,24 @@
+/*
+ Navicat MySQL Data Transfer
+
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 50720
+ Source Host           : localhost
+ Source Database       : ovineherd
+
+ Target Server Type    : MySQL
+ Target Server Version : 50720
+ File Encoding         : utf-8
+
+ Date: 09/30/2021 11:43:25 AM
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for attributes
+--  Table structure for `attributes`
 -- ----------------------------
 DROP TABLE IF EXISTS `attributes`;
 CREATE TABLE `attributes` (
@@ -19,7 +37,7 @@ CREATE TABLE `attributes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
--- Table structure for authorizations
+--  Table structure for `authorizations`
 -- ----------------------------
 DROP TABLE IF EXISTS `authorizations`;
 CREATE TABLE `authorizations` (
@@ -46,7 +64,7 @@ CREATE TABLE `authorizations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Table structure for categories
+--  Table structure for `categories`
 -- ----------------------------
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
@@ -61,12 +79,12 @@ CREATE TABLE `categories` (
   `relation4` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `relation5` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `relation6` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
-  `relation1_type` varchar(64) NOT NULL DEFAULT '',
-  `relation2_type` varchar(64) NOT NULL DEFAULT '',
-  `relation3_type` varchar(64) NOT NULL DEFAULT '',
-  `relation4_type` varchar(64) NOT NULL DEFAULT '',
-  `relation5_type` varchar(64) NOT NULL DEFAULT '',
-  `relation6_type` varchar(64) NOT NULL DEFAULT '',
+  `relation1_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `relation2_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `relation3_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `relation4_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `relation5_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `relation6_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `created_time` timestamp NULL DEFAULT NULL,
   `updated_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -75,7 +93,7 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
--- Table structure for configurations
+--  Table structure for `configurations`
 -- ----------------------------
 DROP TABLE IF EXISTS `configurations`;
 CREATE TABLE `configurations` (
@@ -98,7 +116,7 @@ CREATE TABLE `configurations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Table structure for files
+--  Table structure for `files`
 -- ----------------------------
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
@@ -110,7 +128,7 @@ CREATE TABLE `files` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Table structure for products
+--  Table structure for `products`
 -- ----------------------------
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
@@ -134,7 +152,7 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Table structure for relations
+--  Table structure for `relations`
 -- ----------------------------
 DROP TABLE IF EXISTS `relations`;
 CREATE TABLE `relations` (
@@ -148,7 +166,7 @@ CREATE TABLE `relations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Table structure for specifications
+--  Table structure for `specifications`
 -- ----------------------------
 DROP TABLE IF EXISTS `specifications`;
 CREATE TABLE `specifications` (
@@ -161,7 +179,7 @@ CREATE TABLE `specifications` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
--- Table structure for users
+--  Table structure for `users`
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -188,16 +206,4 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
--- ----------------------------
--- Insert Init Data
--- ----------------------------
-
-INSERT INTO users
-(id, username, password, type, phone, email, created_time, updated_time) VALUES
-(166129168264724480, "rootadmin", "admin123", "ovine_system_user", "12312341234", "root@qq.com", "2021-04-02 18:18:00", "2021-04-03 03:04:19");
-
-
-INSERT INTO configurations
-(id, type, created_time, updated_time) VALUES
-(166140488087240704, "ovine_system", "2021-04-01 19:02:59", "2021-05-09 07:36:05");
+SET FOREIGN_KEY_CHECKS = 1;

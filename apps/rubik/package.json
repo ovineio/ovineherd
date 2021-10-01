@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.8.6",
-    "@ovine/cli": "0.1.4-alpha.0",
-    "@ovine/core": "0.1.4-alpha.0",
-    "@ovine/editor": "0.1.4-alpha.0",
+    "@ovine/cli": "0.1.5",
+    "@ovine/core": "0.1.5",
+    "@ovine/editor": "0.1.5",
     "axios": "^0.21.1",
     "immer": "^5.3.2",
     "lodash": "^4.17.15",
